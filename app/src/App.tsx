@@ -9,6 +9,7 @@ import { reloadAt } from './lib/reload';
 import { readDefaultBrief } from './lib/brief';
 import { activeSection } from './lib/sections';
 import { setDefaultBrief, setDefaultBudget, toggleDetails, useBudget, useDetails, useOrigin, useSport } from './lib/store';
+import { useBasket } from './lib/basketball/data';
 import { useTennis } from './lib/tennis/data';
 import { frame } from './lib/text.en';
 import type { MetaFile } from './lib/types';
@@ -18,7 +19,7 @@ function TopBar() {
   const details = useDetails();
   const budget = useBudget();
   const { pathname } = useLocation();
-  const tennis = useSport() === 'tennis';
+  const sport = useSport();
   const sections = frame.sections;
   const active = activeSection(pathname, useOrigin(), sections.map((s) => s.path));
   return (
@@ -39,7 +40,7 @@ function TopBar() {
           <button className="chip" type="button" aria-pressed={details} data-tip={frame.detailsTip} onClick={toggleDetails}>
             {frame.detailsLabel} <b>{details ? frame.detailsOn : frame.detailsOff}</b>
           </button>
-          <span className="chip">{tennis ? frame.sports.tennis : frame.budgetChip(money(budget))}</span>
+          <span className="chip">{sport === 'football' ? frame.budgetChip(money(budget)) : frame.sports[sport]}</span>
         </div>
       </div>
     </header>
@@ -65,6 +66,15 @@ function TennisFooter() {
   );
 }
 
+function BasketFooter() {
+  const state = useBasket();
+  return (
+    <footer className="foot">
+      <div className="wrap">{state.status === 'ready' ? frame.basketballSource(state.data.meta.source, state.data.meta.season) : null}</div>
+    </footer>
+  );
+}
+
 function FootballFooter() {
   const state = useData();
   return (
@@ -75,7 +85,8 @@ function FootballFooter() {
 }
 
 function Footer() {
-  return useSport() === 'tennis' ? <TennisFooter /> : <FootballFooter />;
+  const sport = useSport();
+  return sport === 'tennis' ? <TennisFooter /> : sport === 'basketball' ? <BasketFooter /> : <FootballFooter />;
 }
 
 /** Installs the keyboard and takes the default budget and brief from meta.json once it has loaded. */

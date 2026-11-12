@@ -8,8 +8,8 @@ export const BUDGET_STEP = 50_000;
 /** The three budgets the brief offers as buttons. */
 export const BRIEF_BUDGETS: readonly number[] = [250_000, 500_000, 1_000_000];
 export type Origin = 'blind' | 'radar';
-export type Sport = 'football' | 'tennis';
-export const SPORTS: readonly Sport[] = ['football', 'tennis'];
+export type Sport = 'football' | 'tennis' | 'basketball';
+export const SPORTS: readonly Sport[] = ['football', 'tennis', 'basketball'];
 export type BlindStep = 'brief' | 'compare' | 'revealed';
 export type Brief = { position: Position; maxAge: MaxAge; matters: Matter[] };
 export type BlindPick = { scoutId: string; modelId: string };

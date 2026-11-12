@@ -3,12 +3,12 @@ import { SportSwitch } from '../../components/SportSwitch';
 import { useSport } from '../../lib/store';
 
 /** A section that exists for both sports: the sport switch on top, then the screen of the chosen sport. */
-export function BySport({ football, tennis }: { football: ReactNode; tennis: ReactNode }) {
+export function BySport({ football, tennis, basketball }: { football: ReactNode; tennis: ReactNode; basketball: ReactNode }) {
   const sport = useSport();
   return (
     <>
       <SportSwitch />
-      {sport === 'tennis' ? tennis : football}
+      {sport === 'tennis' ? tennis : sport === 'basketball' ? basketball : football}
     </>
   );
 }

@@ -92,7 +92,7 @@ The notes are written during data preparation by the Claude command-line program
 
 ## Tennis, the second sport
 
-The blind pick and the radar start with a choice of sport. Tennis uses the same idea with its own data and its own model, on all four screens: blind pick, radar, time machine and evidence.
+Every screen starts with a choice of sport: football, tennis or basketball. Tennis uses the same idea with its own data and its own model, on all four screens: blind pick, radar, time machine and evidence.
 
 - **Data:** the open ATP tables of Jeff Sackmann / Tennis Abstract (`tennis_atp`: players, weekly rankings, matches at tour, Challenger and entry level), licence CC BY-NC-SA 4.0: attribution required, non-commercial use only. The author's own repository was not reachable on 12 November 2026, so `scripts/tennis_data.py` downloads the tables from an unchanged public fork of it; the last ranking date in the data is shown in the app's footer.
 - **Pool:** men under 21 on the ranking date, ranked 101 to 1000.
@@ -102,6 +102,19 @@ The blind pick and the radar start with a choice of sport. Tennis uses the same 
 - **Limits:** the pool is small (about a hundred players at a time); the outcome is a ranking, not money; picking by best ranking alone is already a strong rule and the model's edge over it is inside the margin of error; the data ends at the last ranking date and is not refreshed by `make data`.
 
 `make tennis-data` rebuilds `app/public/data/tennis.json` (a few seconds once the tables are in `data/tennis/`).
+
+## Basketball, the third sport
+
+Basketball follows the same four screens with its own data and model.
+
+- **Data:** the public statistics of EuroLeague and EuroCup (EuroLeague Basketball), seasons 2007/08 to 2025/26: one line per player and season, and the players' birth dates, heights, positions and countries. `scripts/basketball_data.py` downloads them from the competitions' public API.
+- **Pool:** players under 23 at the start of a season with at least five games in either competition and under 18 minutes per game: young players with a small role.
+- **Outcome:** a season with at least ten games and at least 20 minutes per game in either competition within the three following seasons ("became a rotation player").
+- **Model:** a logistic regression on six inputs of the season: age, minutes per game, index rating and points per 40 minutes, games played, and whether the club plays in the EuroLeague. Tiers are cut as for the other sports.
+- **Test:** walk-forward over ten past seasons; the script prints the result and the evidence screen shows it next to three simple rules (most minutes, best index rating per game, youngest), with the margin of error and each season's result.
+- **Limits:** the pools are small (a few dozen players a season); the outcome is playing time, not money; a player who leaves for the NBA or for a league outside these two competitions has no later season in the data and counts as not reached; domestic leagues, where most young players are, are not covered, so the pool holds only those who already sit on the bench of a EuroLeague or EuroCup club. The pool's limits of age and minutes were set after a look at how many players each choice leaves.
+
+`make basketball-data` rebuilds `app/public/data/basketball.json`.
 
 ## Run it
 
