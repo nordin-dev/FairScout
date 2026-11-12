@@ -1,6 +1,7 @@
 import { redirect, type RouteObject } from 'react-router-dom';
 import { Account } from './screens/Account/Account';
 import { MyPicks } from './screens/Account/MyPicks';
+import { Report } from './screens/Account/Report';
 import { Evidence } from './screens/Evidence/Evidence';
 import { PlayerCard } from './screens/PlayerCard/PlayerCard';
 import { Radar } from './screens/Radar/Radar';
@@ -35,4 +36,5 @@ export const screenRoutes: RouteObject[] = [
   { path: 'evidence', element: <BySport football={<Evidence />} tennis={<TennisEvidence />} basketball={<BasketEvidence />} /> },
   { path: 'account', element: <Account /> },
   { path: 'my-picks', element: <MyPicks /> },
+  { path: 'my-picks/report', element: <Report /> },
 ];

@@ -1,0 +1,39 @@
+.report-tools{display:flex;flex-wrap:wrap;align-items:center;gap:16px;margin:4px 0 8px}
+.report-tools .caption{max-width:46ch}
+.report-head{display:flex;justify-content:space-between;align-items:flex-end;gap:32px;border-bottom:2px solid var(--ink);padding-bottom:18px;margin-top:12px}
+.report-head h1{margin-bottom:6px}
+.report-sum{display:flex;gap:32px}
+.report-sum div{display:grid;gap:6px}
+.report-sum b{font:600 36px/1 var(--sans);letter-spacing:-.02em;white-space:nowrap}
+.report-sport{margin-top:28px}
+.report-sport h2{font:600 22px/1.2 var(--sans);letter-spacing:-.01em;margin:0 0 12px}
+.report-player{border:1px solid var(--hair);border-radius:2px;background:var(--sheet);padding:20px 24px;margin-top:12px;display:grid;gap:14px;break-inside:avoid;page-break-inside:avoid}
+.rp-head{display:flex;justify-content:space-between;align-items:flex-start;gap:24px}
+.rp-name{font:600 24px/1.2 var(--sans);letter-spacing:-.015em;margin:0}
+.rp-sub{font-size:15px;color:var(--ink-2);margin-top:2px}
+.rp-tier{display:grid;justify-items:end;gap:6px;flex:none}
+.rp-figs{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;border-top:1px solid var(--ink);padding-top:14px}
+.rp-figs div{display:grid;gap:6px;align-content:start;min-width:0}
+.rp-figs b{font:600 24px/1.1 var(--sans);letter-spacing:-.02em;overflow-wrap:anywhere}
+.rp-why{display:grid;grid-template-columns:1fr 1fr;gap:16px;font-size:15px}
+.rp-why ul{margin:6px 0 0;padding-left:18px}
+.rp-why li{margin:2px 0}
+.rp-note{font-size:15px;line-height:1.45;color:var(--ink-2);border-left:3px solid var(--hair-strong);padding-left:12px}
+.rp-flags{display:flex;flex-wrap:wrap;gap:8px}
+.rp-foot{font:400 12px var(--mono);color:var(--ink-3)}
+.report-end{margin-top:28px;border-top:1px solid var(--hair);padding-top:12px;display:grid;gap:4px}
+.picks-report{margin-top:20px}
+@media (max-width:760px){.report-head{flex-direction:column;align-items:flex-start}.rp-figs{grid-template-columns:repeat(2,1fr)}.rp-why{grid-template-columns:1fr}}
+
+/* The printed report: no frame, no buttons, white paper, one player never split over two pages. */
+@page{size:A4;margin:14mm}
+@media print{
+  body:has(.report) .top,body:has(.report) .foot,.report-tools{display:none!important}
+  body:has(.report){background:#fff}
+  body:has(.report) main.wrap{padding:0;max-width:none;min-height:0}
+  .report{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .report-player{background:#fff}
+  .report-sport h2{break-after:avoid;page-break-after:avoid}
+  .report-head h1{font-size:34px}
+  .report-sum b{font-size:30px}
+}

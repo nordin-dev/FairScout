@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { cardPath, removePick, useAccount, type PickSport, type SavedPick } from '../../lib/account';
 import { myPicks as t, pickDate } from '../../lib/accountText';
+import { report } from '../../lib/reportText';
 import { setSport } from '../../lib/store';
 import { ChoiceChips } from '../../components/ChoiceChips';
 import { EmptyState } from '../../components/ScreenState';
@@ -60,6 +61,9 @@ export function MyPicks() {
               ]}
             />
           </div>
+          <Link className="btn picks-report" to={filter === 'all' ? '/my-picks/report' : `/my-picks/report?sport=${filter}`}>
+            {report.open}
+          </Link>
           {groups.map((g) => (
             <section key={g.sport} className="picks-group" aria-labelledby={`picks-${g.sport}`}>
               <h2 id={`picks-${g.sport}`}>{t.group(t.sports[g.sport], g.picks.length)}</h2>
