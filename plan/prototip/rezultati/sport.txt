@@ -1,0 +1,7 @@
+Sest sezona, bazen do 1M (svi mladi igraci):
+  uspio po vrijednosti (meta modela)         izbori modela  70/133 = 52.6% | cijeli bazen  395/1333 = 29.6% | pravilo 'najvise minuta'  59/133 = 44.4%
+  postao standardan (1.800+ min u sezoni)    izbori modela  50/133 = 37.6% | cijeli bazen  397/1333 = 29.8% | pravilo 'najvise minuta'  75/133 = 56.4%
+  zaigrao u ligi petice (900+ min)           izbori modela  29/133 = 21.8% | cijeli bazen   82/1333 =  6.2% | pravilo 'najvise minuta'  16/133 = 12.0%
+  ostao u prvoj ligi (450+ min)              izbori modela  99/133 = 74.4% | cijeli bazen  874/1333 = 65.6% | pravilo 'najvise minuta' 112/133 = 84.2%
+  samo igraci izvan liga petice: zaigrao u ligi petice: izbori modela 8/91 = 8.8% | bazen 59/1272 = 4.6%
+  izbori koji su uspjeli po vrijednosti (70): standardni 57%, liga petice 36% | oni koji nisu (63): standardni 16%, liga petice 6%

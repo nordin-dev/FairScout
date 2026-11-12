@@ -1,0 +1,5 @@
+.redact{position:relative;display:inline-block;min-width:var(--w,10ch)}
+.redact::after{content:"";position:absolute;inset:3px 0;background:var(--ink);border-radius:1px;transform-origin:left;transition:transform .45s cubic-bezier(.6,0,.2,1)}
+.redact.is-open::after{transform:scaleX(0)}
+.redact:not(.is-open){min-height:1em}
+@media (prefers-reduced-motion:reduce){.redact::after{transition:none}}

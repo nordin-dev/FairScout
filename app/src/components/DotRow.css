@@ -1,0 +1,8 @@
+.dotrow{display:grid;gap:8px;margin-top:14px}
+.dots{display:flex;gap:7px}
+.dots i{width:22px;height:22px;border-radius:50%;background:var(--accent-track)}
+.dots i.on{background:var(--accent)}
+.dots.ctx i{background:var(--context-track)}
+.dots.ctx i.on{background:var(--context)}
+.dotrow p{font-size:17px;color:var(--ink-2)}
+.dotrow p b{color:var(--ink);font-weight:600}

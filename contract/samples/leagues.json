@@ -1,0 +1,211 @@
+{
+  "leagues": [
+    {
+      "id": "GB1",
+      "name": "England",
+      "seasons": 14,
+      "factor": 0.59,
+      "factor_source": "moves",
+      "pool_1m": 0,
+      "pool_500k": 0
+    },
+    {
+      "id": "ES1",
+      "name": "Spain",
+      "seasons": 14,
+      "factor": 0.69,
+      "factor_source": "moves",
+      "pool_1m": 1,
+      "pool_500k": 0
+    },
+    {
+      "id": "IT1",
+      "name": "Italy",
+      "seasons": 14,
+      "factor": 0.71,
+      "factor_source": "moves",
+      "pool_1m": 0,
+      "pool_500k": 0
+    },
+    {
+      "id": "FR1",
+      "name": "France",
+      "seasons": 14,
+      "factor": 0.78,
+      "factor_source": "moves",
+      "pool_1m": 0,
+      "pool_500k": 0
+    },
+    {
+      "id": "L1",
+      "name": "Germany",
+      "seasons": 14,
+      "factor": 0.8,
+      "factor_source": "moves",
+      "pool_1m": 0,
+      "pool_500k": 0
+    },
+    {
+      "id": "RU1",
+      "name": "Russia",
+      "seasons": 14,
+      "factor": 1.0,
+      "factor_source": "moves",
+      "pool_1m": 15,
+      "pool_500k": 1
+    },
+    {
+      "id": "TR1",
+      "name": "Türkiye",
+      "seasons": 14,
+      "factor": 1.03,
+      "factor_source": "moves",
+      "pool_1m": 6,
+      "pool_500k": 4
+    },
+    {
+      "id": "PO1",
+      "name": "Portugal",
+      "seasons": 14,
+      "factor": 1.04,
+      "factor_source": "moves",
+      "pool_1m": 19,
+      "pool_500k": 10
+    },
+    {
+      "id": "NL1",
+      "name": "Netherlands",
+      "seasons": 14,
+      "factor": 1.15,
+      "factor_source": "moves",
+      "pool_1m": 24,
+      "pool_500k": 10
+    },
+    {
+      "id": "DK1",
+      "name": "Denmark",
+      "seasons": 14,
+      "factor": 1.21,
+      "factor_source": "moves",
+      "pool_1m": 23,
+      "pool_500k": 5
+    },
+    {
+      "id": "BE1",
+      "name": "Belgium",
+      "seasons": 14,
+      "factor": 1.21,
+      "factor_source": "moves",
+      "pool_1m": 13,
+      "pool_500k": 1
+    },
+    {
+      "id": "GR1",
+      "name": "Greece",
+      "seasons": 14,
+      "factor": 1.24,
+      "factor_source": "moves",
+      "pool_1m": 5,
+      "pool_500k": 3
+    },
+    {
+      "id": "SC1",
+      "name": "Scotland",
+      "seasons": 14,
+      "factor": 1.53,
+      "factor_source": "moves",
+      "pool_1m": 28,
+      "pool_500k": 24
+    },
+    {
+      "id": "UKR1",
+      "name": "Ukraine",
+      "seasons": 14,
+      "factor": 1.62,
+      "factor_source": "moves",
+      "pool_1m": 43,
+      "pool_500k": 28
+    },
+    {
+      "id": "C1",
+      "name": "Switzerland",
+      "seasons": 2,
+      "factor": 1.2,
+      "factor_source": "estimate",
+      "pool_1m": 22,
+      "pool_500k": 12
+    },
+    {
+      "id": "A1",
+      "name": "Austria",
+      "seasons": 2,
+      "factor": 1.27,
+      "factor_source": "estimate",
+      "pool_1m": 22,
+      "pool_500k": 10
+    },
+    {
+      "id": "NO1",
+      "name": "Norway",
+      "seasons": 2,
+      "factor": 1.31,
+      "factor_source": "estimate",
+      "pool_1m": 19,
+      "pool_500k": 5
+    },
+    {
+      "id": "KR1",
+      "name": "Croatia",
+      "seasons": 2,
+      "factor": 1.36,
+      "factor_source": "estimate",
+      "pool_1m": 38,
+      "pool_500k": 26
+    },
+    {
+      "id": "SE1",
+      "name": "Sweden",
+      "seasons": 2,
+      "factor": 1.36,
+      "factor_source": "estimate",
+      "pool_1m": 16,
+      "pool_500k": 12
+    },
+    {
+      "id": "PL1",
+      "name": "Poland",
+      "seasons": 2,
+      "factor": 1.39,
+      "factor_source": "estimate",
+      "pool_1m": 20,
+      "pool_500k": 7
+    },
+    {
+      "id": "RO1",
+      "name": "Romania",
+      "seasons": 2,
+      "factor": 1.39,
+      "factor_source": "estimate",
+      "pool_1m": 36,
+      "pool_500k": 26
+    },
+    {
+      "id": "SER1",
+      "name": "Serbia",
+      "seasons": 2,
+      "factor": 1.42,
+      "factor_source": "estimate",
+      "pool_1m": 54,
+      "pool_500k": 25
+    },
+    {
+      "id": "TS1",
+      "name": "Czech Republic",
+      "seasons": 2,
+      "factor": 1.46,
+      "factor_source": "estimate",
+      "pool_1m": 33,
+      "pool_500k": 18
+    }
+  ]
+}

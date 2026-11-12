@@ -1,0 +1,6 @@
+.score b{font:600 44px/1 var(--sans);letter-spacing:-.03em}
+.score .mini{display:block;height:6px;width:100%;max-width:96px;border-radius:3px;background:var(--accent-track);overflow:hidden}
+.score .mini i{display:block;height:100%;background:var(--accent)}
+.score .dim b{color:var(--ink-3);font-weight:500}
+.score .dim .mini{background:var(--context-track)}
+.score .dim .mini i{background:var(--context)}

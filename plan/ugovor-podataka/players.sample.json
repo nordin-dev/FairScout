@@ -1,0 +1,249 @@
+[
+  {
+    "_sample": "Invented player. Shows the shape of a record; the numbers match the mockup.",
+    "id": "sample-a",
+    "name": "Ivan Uzorak",
+    "club": "NK Primjer",
+    "league_id": "KR1",
+    "league_name": "Croatia",
+    "position_group": "Attack",
+    "position": "Right Winger",
+    "age": 20.2,
+    "birth_quarter": 4,
+    "height_cm": 178,
+    "foot": "left",
+    "value_eur": 150000,
+    "value_date": "2026-06-10",
+    "contract_until": "2027-06-30",
+    "minutes": 1180,
+    "matches": 19,
+    "goals": 4,
+    "assists": 3,
+    "ga90": 0.53,
+    "league_factor": 1.36,
+    "league_factor_source": "estimate",
+    "ga90_adj": 0.39,
+    "involvement": 0.31,
+    "role": 0.39,
+    "pct": {
+      "output": 86,
+      "scoring": 64,
+      "creating": 91,
+      "involvement": 91,
+      "role": 44
+    },
+    "score": 0.71,
+    "score_rank_pct": 96,
+    "tier": "A",
+    "drivers": [
+      {
+        "sign": "+",
+        "key": "rel_value",
+        "text": "Plays regularly at 20 in a squad valued well above him"
+      },
+      {
+        "sign": "+",
+        "key": "assists90",
+        "text": "Assist rate above the norm for his position"
+      },
+      {
+        "sign": "+",
+        "key": "value_momentum",
+        "text": "Market value has risen over the last 12 months"
+      },
+      {
+        "sign": "-",
+        "key": "minutes",
+        "text": "One season of evidence: 1,180 minutes"
+      }
+    ],
+    "flags": {
+      "under18": false,
+      "low_sample": false,
+      "contract_ending": true,
+      "born_q4": true,
+      "limited_position_data": false
+    },
+    "similar": [
+      {
+        "id": "sample-d",
+        "similarity": 91,
+        "diff": "More minutes, fewer assists."
+      },
+      {
+        "id": "sample-e",
+        "similarity": 87,
+        "diff": "A year older, right-footed."
+      },
+      {
+        "id": "sample-c",
+        "similarity": 84,
+        "diff": "Similar output on half the minutes."
+      }
+    ],
+    "note": "Uzorak is a 20-year-old left-footed right winger at NK Primjer. Adjusted for league strength, his output is better than 86% of wingers his age, and he is involved in 31% of his team's goals while on the pitch. The evidence is a single season of 1,180 minutes, so watch him live before deciding.",
+    "citizenship": "Croatia",
+    "value_history": [
+      [
+        "2024-06-12",
+        50000
+      ],
+      [
+        "2024-12-18",
+        75000
+      ],
+      [
+        "2025-06-10",
+        100000
+      ],
+      [
+        "2025-12-16",
+        125000
+      ],
+      [
+        "2026-06-10",
+        150000
+      ]
+    ]
+  },
+  {
+    "_sample": "Invented player.",
+    "id": "sample-b",
+    "name": "Jakub Příklad",
+    "club": "SK Vzor",
+    "league_id": "TS1",
+    "league_name": "Czech Republic",
+    "position_group": "Attack",
+    "position": "Right Winger",
+    "age": 21.6,
+    "birth_quarter": 1,
+    "height_cm": 183,
+    "foot": "right",
+    "value_eur": 450000,
+    "value_date": "2026-06-04",
+    "contract_until": "2028-06-30",
+    "minutes": 2240,
+    "matches": 28,
+    "goals": 9,
+    "assists": 4,
+    "ga90": 0.52,
+    "league_factor": 1.46,
+    "league_factor_source": "estimate",
+    "ga90_adj": 0.36,
+    "involvement": 0.17,
+    "role": 0.73,
+    "pct": {
+      "output": 78,
+      "scoring": 88,
+      "creating": 52,
+      "involvement": 52,
+      "role": 88
+    },
+    "score": 0.52,
+    "score_rank_pct": 84,
+    "tier": "B",
+    "drivers": [
+      {
+        "sign": "+",
+        "key": "role",
+        "text": "Plays most of his team's minutes"
+      },
+      {
+        "sign": "+",
+        "key": "goals90",
+        "text": "Scoring rate above the norm for his position"
+      },
+      {
+        "sign": "-",
+        "key": "age",
+        "text": "Older than most players in the pool"
+      }
+    ],
+    "flags": {
+      "under18": false,
+      "low_sample": false,
+      "contract_ending": false,
+      "born_q4": false,
+      "limited_position_data": false
+    },
+    "similar": [],
+    "note": null,
+    "citizenship": "Czech Republic",
+    "value_history": [
+      [
+        "2026-06-01",
+        450000
+      ]
+    ]
+  },
+  {
+    "_sample": "Invented player.",
+    "id": "sample-c",
+    "name": "Andrei Exemplu",
+    "club": "FC Model",
+    "league_id": "RO1",
+    "league_name": "Romania",
+    "position_group": "Attack",
+    "position": "Right Winger",
+    "age": 19.8,
+    "birth_quarter": 3,
+    "height_cm": 175,
+    "foot": "right",
+    "value_eur": 300000,
+    "value_date": "2026-05-28",
+    "contract_until": null,
+    "minutes": 620,
+    "matches": 14,
+    "goals": 2,
+    "assists": 1,
+    "ga90": 0.44,
+    "league_factor": 1.39,
+    "league_factor_source": "estimate",
+    "ga90_adj": 0.31,
+    "involvement": 0.22,
+    "role": 0.2,
+    "pct": {
+      "output": 64,
+      "scoring": 58,
+      "creating": 70,
+      "involvement": 70,
+      "role": 21
+    },
+    "score": 0.49,
+    "score_rank_pct": 81,
+    "tier": "B",
+    "drivers": [
+      {
+        "sign": "+",
+        "key": "age",
+        "text": "Among the youngest regular players in the pool"
+      },
+      {
+        "sign": "+",
+        "key": "rel_value",
+        "text": "Valued below most of his team-mates"
+      },
+      {
+        "sign": "-",
+        "key": "minutes",
+        "text": "Small sample: 620 minutes"
+      }
+    ],
+    "flags": {
+      "under18": false,
+      "low_sample": true,
+      "contract_ending": false,
+      "born_q4": false,
+      "limited_position_data": false
+    },
+    "similar": [],
+    "note": null,
+    "citizenship": "Romania",
+    "value_history": [
+      [
+        "2026-06-01",
+        300000
+      ]
+    ]
+  }
+]

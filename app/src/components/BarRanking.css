@@ -1,0 +1,16 @@
+.bars{display:grid;gap:16px;position:relative;margin-top:44px}
+.bar-row{display:grid;grid-template-columns:var(--lab,200px) 1fr;gap:12px;align-items:center;font-size:20px;color:var(--ink-2);border-radius:4px}
+.bar-row:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.bar-row.is-model{color:var(--ink);font-weight:600}
+.bar-track{position:relative;height:24px}
+.bar-fill{position:absolute;left:0;top:0;height:24px;background:var(--context);border-radius:0 4px 4px 0}
+.is-model .bar-fill{background:var(--accent)}
+.bar-ext{position:absolute;top:0;height:24px;background:var(--accent-light);border-radius:0 4px 4px 0;margin-left:2px}
+.bar-val{position:absolute;top:0;font:600 20px/24px var(--mono);font-variant-numeric:tabular-nums;color:var(--ink);padding-left:10px;white-space:nowrap;z-index:1;background:var(--sheet);padding-right:4px}
+.bar-ref{position:absolute;top:-8px;bottom:-8px;width:1px;background:var(--ink);pointer-events:none}
+.bar-ref span{position:absolute;bottom:100%;left:-1px;transform:translateY(-3px);font:500 13px var(--mono);color:var(--ink);white-space:nowrap}
+.bars.small{gap:10px;margin-top:30px;margin-right:56px}
+.bars.small .bar-row{font-size:14px}
+.bars.small .bar-track,.bars.small .bar-fill,.bars.small .bar-ext{height:18px}
+.bars.small .bar-val{font:500 13px/18px var(--mono)}
+.bars.small .bar-ref span{font-size:11px}

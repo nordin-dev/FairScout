@@ -1,0 +1,5 @@
+.meters{display:grid;gap:10px;margin:0}
+.meter{display:grid;grid-template-columns:minmax(0,1fr) 120px 28px;align-items:center;gap:12px;font-size:14px;color:var(--ink-2)}
+.m-bar{height:8px;border-radius:4px;background:var(--accent-track);overflow:hidden}
+.m-bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.m-val{font:500 14px var(--mono);font-variant-numeric:tabular-nums;text-align:right;color:var(--ink)}

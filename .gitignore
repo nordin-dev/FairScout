@@ -1,0 +1,34 @@
+# source tables (about 240 MB) and intermediate tables: rebuilt by the pipeline
+/data
+
+# Python
+.venv
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Node
+node_modules
+app/dist/
+app/test-results/
+app/playwright-report/
+
+# demo recording, kept outside version control
+demo/
+
+# local
+.DS_Store
+.env
+.env.*
+
+# story worktrees used while building
+/.worktrees
+
+# internal pitch preparation and assistant settings: kept out of the shared repository
+plan/05-ziri-i-bodovanje.md
+plan/08-pitch-i-demo.md
+.claude/
+.prodready/dashboard.html

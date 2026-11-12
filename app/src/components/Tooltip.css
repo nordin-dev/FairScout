@@ -1,0 +1,1 @@
+#tip{position:fixed;z-index:20;pointer-events:none;background:var(--ink);color:var(--on-ink);font:400 12px/1.45 var(--mono);padding:6px 8px;border-radius:2px;max-width:280px;opacity:0;transition:opacity .1s}

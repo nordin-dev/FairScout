@@ -1,0 +1,11 @@
+.tm-bar{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:28px}
+.tm-grid{display:grid;grid-template-columns:8.6fr 3.4fr;gap:24px;margin-top:20px;align-items:start}
+.tm-grid > .sheet:first-child{grid-column:1}
+.tm-how{margin-top:20px}
+.sk-rows{display:grid;gap:12px}
+.sk-row{display:grid;grid-template-columns:20px minmax(0,1fr) 52px 52px;gap:8px;align-items:center;padding:8px 0;border-bottom:1px solid var(--hair)}
+.sk-row .sk{height:13px}
+.sk-row .sk-who{display:grid;gap:5px}
+.tm-name{font:600 24px/1.2 var(--sans);letter-spacing:-.01em;margin:6px 0 2px}
+.tm-panel .caption{margin-top:8px}
+.tm-panel .tm-short{margin-top:14px;font-size:15px;color:var(--ink-2)}

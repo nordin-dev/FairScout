@@ -1,0 +1,156 @@
+player-seasons with 450+ min and a value at season end: 67224
+young (turn 21 or younger in the season's start year): 9537 | in 14 full leagues, seasons <=2022: 6679 | of those with value 3 years later: 6123
+labelled: 6123 | base rate (value at least doubled in 3 years): 37.7 %
+  T=2017: train 1328 (seasons 2012-2014) | test 385
+  T=2018: train 1783 (seasons 2012-2015) | test 365
+  T=2019: train 2255 (seasons 2012-2016) | test 371
+  T=2020: train 2640 (seasons 2012-2017) | test 342
+  T=2021: train 3005 (seasons 2012-2018) | test 323
+  T=2022: train 3376 (seasons 2012-2019) | test 307
+
+--- svi mladi do 5M: n=2093 | base rate 42.2%
+  model GB                     AUC 0.587 | top 10%: 56.2% (n=208, medijan x2.33) | top 20%: 51.2% (n=418, medijan x2.00)
+  model LR                     AUC 0.594 | top 10%: 57.7% (n=208, medijan x2.40) | top 20%: 55.3% (n=418, medijan x2.33)
+  samo golovi+asistencije/90   AUC 0.524 | top 10%: 52.4% (n=208, medijan x2.00) | top 20%: 44.5% (n=418, medijan x1.50)
+  samo najmladji               AUC 0.589 | top 10%: 48.6% (n=208, medijan x1.88) | top 20%: 51.2% (n=418, medijan x2.00)
+  samo najvise minuta          AUC 0.483 | top 10%: 45.2% (n=208, medijan x1.61) | top 20%: 43.1% (n=418, medijan x1.50)
+  samo najjeftiniji            AUC 0.537 | top 10%: 52.9% (n=208, medijan x2.00) | top 20%: 47.4% (n=418, medijan x1.71)
+
+--- mladi do 1M: n=1068 | base rate 45.1%
+  model GB                     AUC 0.620 | top 10%: 66.7% (n=108, medijan x2.60) | top 20%: 58.9% (n=214, medijan x2.33)
+  model LR                     AUC 0.634 | top 10%: 60.2% (n=108, medijan x2.86) | top 20%: 59.3% (n=214, medijan x2.50)
+  samo golovi+asistencije/90   AUC 0.507 | top 10%: 49.1% (n=108, medijan x1.88) | top 20%: 47.2% (n=214, medijan x1.67)
+  samo najmladji               AUC 0.582 | top 10%: 53.7% (n=108, medijan x2.00) | top 20%: 55.1% (n=214, medijan x2.00)
+  samo najvise minuta          AUC 0.501 | top 10%: 51.9% (n=108, medijan x2.00) | top 20%: 48.1% (n=214, medijan x1.75)
+  samo najjeftiniji            AUC 0.519 | top 10%: 59.3% (n=108, medijan x2.00) | top 20%: 52.3% (n=214, medijan x2.00)
+
+--- mladi do 500k: n=546 | base rate 46.5%
+  model GB                     AUC 0.626 | top 10%: 72.7% (n=55, medijan x3.00) | top 20%: 65.1% (n=109, medijan x2.40)
+  model LR                     AUC 0.660 | top 10%: 70.9% (n=55, medijan x3.00) | top 20%: 67.0% (n=109, medijan x2.50)
+  samo golovi+asistencije/90   AUC 0.514 | top 10%: 38.2% (n=55, medijan x1.40) | top 20%: 46.8% (n=109, medijan x1.67)
+  samo najmladji               AUC 0.598 | top 10%: 54.5% (n=55, medijan x2.00) | top 20%: 57.8% (n=109, medijan x2.00)
+  samo najvise minuta          AUC 0.502 | top 10%: 50.9% (n=55, medijan x2.00) | top 20%: 49.5% (n=109, medijan x1.75)
+  samo najjeftiniji            AUC 0.539 | top 10%: 76.4% (n=55, medijan x3.20) | top 20%: 59.6% (n=109, medijan x2.17)
+
+--- mladi do 1M, izvan top 5 liga: n=1018 | base rate 44.6%
+  model GB                     AUC 0.618 | top 10%: 65.3% (n=101, medijan x2.50) | top 20%: 58.3% (n=204, medijan x2.22)
+  model LR                     AUC 0.631 | top 10%: 63.4% (n=101, medijan x3.00) | top 20%: 56.4% (n=204, medijan x2.25)
+  samo golovi+asistencije/90   AUC 0.504 | top 10%: 51.5% (n=101, medijan x2.00) | top 20%: 46.6% (n=204, medijan x1.50)
+  samo najmladji               AUC 0.585 | top 10%: 54.5% (n=101, medijan x2.00) | top 20%: 53.9% (n=204, medijan x2.00)
+  samo najvise minuta          AUC 0.508 | top 10%: 50.5% (n=101, medijan x2.00) | top 20%: 49.0% (n=204, medijan x1.75)
+  samo najjeftiniji            AUC 0.518 | top 10%: 60.4% (n=101, medijan x2.12) | top 20%: 53.4% (n=204, medijan x2.00)
+
+--- mladi do 1M, odbrana i golmani: n=463 | base rate 49.5%
+  model GB                     AUC 0.600 | top 10%: 63.8% (n=47, medijan x3.00) | top 20%: 62.0% (n=92, medijan x2.80)
+  model LR                     AUC 0.624 | top 10%: 51.1% (n=47, medijan x2.00) | top 20%: 56.5% (n=92, medijan x2.57)
+  samo golovi+asistencije/90   AUC 0.518 | top 10%: 53.2% (n=47, medijan x2.00) | top 20%: 52.2% (n=92, medijan x2.00)
+  samo najmladji               AUC 0.544 | top 10%: 59.6% (n=47, medijan x2.50) | top 20%: 59.8% (n=92, medijan x2.60)
+  samo najvise minuta          AUC 0.499 | top 10%: 55.3% (n=47, medijan x3.00) | top 20%: 56.5% (n=92, medijan x2.73)
+  samo najjeftiniji            AUC 0.516 | top 10%: 72.3% (n=47, medijan x3.00) | top 20%: 60.9% (n=92, medijan x2.20)
+
+--- mladi do 1M, napad i vezni: n=605 | base rate 41.8%
+  model GB                     AUC 0.629 | top 10%: 67.2% (n=61, medijan x2.86) | top 20%: 59.5% (n=121, medijan x2.29)
+  model LR                     AUC 0.633 | top 10%: 70.5% (n=61, medijan x3.20) | top 20%: 62.0% (n=121, medijan x2.46)
+  samo golovi+asistencije/90   AUC 0.531 | top 10%: 54.1% (n=61, medijan x2.00) | top 20%: 42.1% (n=121, medijan x1.43)
+  samo najmladji               AUC 0.619 | top 10%: 54.1% (n=61, medijan x2.00) | top 20%: 53.7% (n=121, medijan x2.00)
+  samo najvise minuta          AUC 0.499 | top 10%: 47.5% (n=61, medijan x1.67) | top 20%: 42.1% (n=121, medijan x1.33)
+  samo najjeftiniji            AUC 0.517 | top 10%: 52.5% (n=61, medijan x2.00) | top 20%: 45.5% (n=121, medijan x1.67)
+  sezona 2017: top 10% modela n=21: udvostrucili 67% , dosegli 2M+ 33% | ostali n=190: 41% , 2M+ 22%
+  sezona 2018: top 10% modela n=21: udvostrucili 71% , dosegli 2M+ 14% | ostali n=185: 35% , 2M+ 20%
+  sezona 2019: top 10% modela n=21: udvostrucili 76% , dosegli 2M+ 38% | ostali n=187: 41% , 2M+ 26%
+  sezona 2020: top 10% modela n=16: udvostrucili 50% , dosegli 2M+ 25% | ostali n=143: 35% , 2M+ 22%
+  sezona 2021: top 10% modela n=14: udvostrucili 64% , dosegli 2M+ 43% | ostali n=124: 61% , 2M+ 36%
+  sezona 2022: top 10% modela n=15: udvostrucili 67% , dosegli 2M+ 40% | ostali n=131: 51% , 2M+ 35%
+
+vaznost osobina (pad AUC kad se osobina izmijesa), test 2022, AUC 0.55
+  age        +0.058
+  rel_v      +0.023
+  a90        +0.009
+  mom        +0.006
+  p_def      +0.003
+  lg_med     +0.003
+  h          +0.002
+  prev_min   +0.002
+  club_med   +0.002
+  p_gk       +0.001
+
+Primjer: 12 najboljih po modelu, sezona 2019/20 (vrijednost do 1M), model treniran na sezonama 2012-2016
+  Bünyamin Balcı             20.1g Def Antalyaspor            Türkiye      0.07M ->   4.00M (x53.3) max 4.0M  p=0.94
+  Akin Famewo                21.6g Def St. Mirren FC          Scotland     0.03M ->   0.30M (x12.0) max 0.3M  p=0.89
+  Ersin Destanoğlu           19.5g Goa Beşiktaş Jimnastik Kul Türkiye      0.05M ->   5.00M (x100.0) max 10.0M  p=0.88
+  George Cox                 22.5g Def Fortuna Sittardia Comb Netherlands  0.07M ->   0.85M (x11.3) max 1.0M  p=0.86
+  Nathan Baxter              21.6g Goa Ross County FC         Scotland     0.07M ->   0.40M (x5.3) max 0.6M  p=0.82
+  Lewis Moore                22.1g Mid Heart of Midlothian FC Scotland     0.05M ->   0.07M (x1.5) max 0.2M  p=0.79
+  Gonzalo Plata              19.7g Att Sporting CP            Portugal     0.90M ->   5.00M (x5.6) max 9.0M  p=0.78
+  Pavel Maslov               20.2g Def FK Spartak Moskva      Russia       0.62M ->   1.00M (x1.6) max 2.0M  p=0.78
+  Dmytro Riznyk              21.4g Goa Vorskla Poltava        Ukraine      0.10M ->   2.00M (x20.0) max 8.0M  p=0.77
+  Andrea Papetti             18.0g Def Brescia Calcio         Italy        0.50M ->   1.30M (x2.6) max 2.2M  p=0.74
+  Conor McCarthy             22.2g Def St. Mirren FC          Scotland     0.10M ->   0.40M (x4.0) max 0.5M  p=0.73
+  Ciaron Brown               22.5g Def Livingston FC          Scotland     0.07M ->   0.35M (x4.7) max 1.5M  p=0.73
+
+Primjer: 12 najboljih po modelu, sezona 2021/22 (vrijednost do 1M), model treniran na sezonama 2012-2018
+  Adam Montgomery            20.0g Def Celtic FC              Scotland     0.45M ->   0.50M (x1.1) max 0.5M  p=0.77
+  Marc Pubill                19.0g Def Levante UD             Spain        0.80M ->   4.00M (x5.0) max 35.0M  p=0.75
+  Daniil Khudyakov           18.5g Goa Футбольный клуб "Локом Russia       1.00M ->   0.80M (x0.8) max 2.5M  p=0.71
+  Nathan Ngoy                19.1g Def Standard Liège         Belgium      0.45M ->   3.50M (x7.8) max 25.0M  p=0.69
+  Nikita Krivtsov            19.9g Mid FK Krasnodar           Russia       1.00M ->   4.00M (x4.0) max 7.5M  p=0.66
+  Irakliy Manelov            19.8g Att FK Krasnodar           Russia       0.60M ->   0.60M (x1.0) max 0.6M  p=0.64
+  Aleksandr Kovalenko        18.9g Mid PFK Krylya Sovetov Sam Russia       0.50M ->   1.50M (x3.0) max 2.8M  p=0.64
+  Sergey Babkin              19.8g Mid Футбольный клуб "Локом Russia       0.80M ->   1.80M (x2.2) max 2.0M  p=0.62
+  Emil Holm                  22.1g Def Sönderjyske Fodbold    Denmark      0.80M ->   8.00M (x10.0) max 13.0M  p=0.60
+  Denys Shostak              19.4g Mid FK Mariupol            Ukraine      0.20M ->   0.40M (x2.0) max 0.4M  p=0.60
+  Mykola Mykhaylenko         21.1g Mid Chornomorets Odesa     Ukraine      0.40M ->   2.50M (x6.2) max 2.5M  p=0.58
+  Dominik Oroz               21.7g Def Vitesse Arnhem         Netherlands  0.60M ->   0.80M (x1.3) max 1.2M  p=0.57
+
+=== Kvartal rodjenja i rast vrijednosti (mladi, 14 liga, sezone 2012-2022)
+  svi | Q1: n=2237 udvostrucili 34.5% | Q2: n=1686 udvostrucili 37.8% | Q3: n=1220 udvostrucili 38.7% | Q4: n=980 udvostrucili 44.0%
+  do 1M | Q1: n=833 udvostrucili 38.4% | Q2: n=665 udvostrucili 37.4% | Q3: n=497 udvostrucili 42.9% | Q4: n=331 udvostrucili 50.5%
+  po igracu (prva sezona) | Q1: n=1394 udvostrucili 39.2% , medijan v0 1.30M | Q2: n=1041 udvostrucili 42.2% , medijan v0 1.00M | Q3: n=766 udvostrucili 42.7% , medijan v0 1.00M | Q4: n=608 udvostrucili 47.9% , medijan v0 1.50M
+  model na testu | Q1: n=759 stvarno 38.9% , model predvidja 33.5% | Q2: n=625 stvarno 41.4% , model predvidja 35.7% | Q3: n=403 stvarno 44.4% , model predvidja 36.0% | Q4: n=306 stvarno 49.0% , model predvidja 36.3%
+
+=== Mjesec rodjenja, svi igraci s 450+ min u nekoj sezoni (n=20241); rodjeni tacno 1.1.: 106 (0.52%)
+  1:11.4 2:9.7 3:10.1 4:8.9 5:9.0 6:8.2 7:8.0 8:7.9 9:7.3 10:6.8 11:6.4 12:6.2
+  Q1..Q4: [31.2, 26.2, 23.2, 19.4] | Q1/Q4 = 1.61 | bez 1.1.: Q1 = 30.8
+  rodjeni u Engleskoj (n=954): 1:11.9 2:9.3 3:9.7 4:6.8 5:7.2 6:4.8 7:5.3 8:6.3 9:11.2 10:10.9 11:8.1 12:8.3
+
+=== Radar danas (sezona 2025/26), prag = gornjih 10% iz provjere unazad (p >= 0.56)
+  Croatia         mladih 450+ min:  50 | do 500k:  26, iznad praga:  1 | do 1M:  38, iznad praga:  1
+  Serbia          mladih 450+ min:  86 | do 500k:  25, iznad praga:  3 | do 1M:  54, iznad praga:  4
+  Poland          mladih 450+ min:  43 | do 500k:   7, iznad praga:  0 | do 1M:  20, iznad praga:  0
+  Czech Republic  mladih 450+ min:  51 | do 500k:  18, iznad praga:  0 | do 1M:  33, iznad praga:  0
+  Romania         mladih 450+ min:  42 | do 500k:  26, iznad praga:  2 | do 1M:  36, iznad praga:  3
+  Austria         mladih 450+ min:  50 | do 500k:  10, iznad praga:  1 | do 1M:  22, iznad praga:  2
+  Switzerland     mladih 450+ min:  51 | do 500k:  12, iznad praga:  1 | do 1M:  22, iznad praga:  1
+  Norway          mladih 450+ min:  36 | do 500k:   5, iznad praga:  1 | do 1M:  19, iznad praga:  8
+  Sweden          mladih 450+ min:  19 | do 500k:  12, iznad praga:  5 | do 1M:  16, iznad praga:  5
+  Belgium         mladih 450+ min:  73 | do 500k:   1, iznad praga:  0 | do 1M:  13, iznad praga:  2
+  Denmark         mladih 450+ min:  54 | do 500k:   5, iznad praga:  0 | do 1M:  23, iznad praga:  1
+  Spain           mladih 450+ min:  38 | do 500k:   0, iznad praga:  0 | do 1M:   1, iznad praga:  1
+  France          mladih 450+ min:  73 | do 500k:   0, iznad praga:  0 | do 1M:   0, iznad praga:  0
+  England         mladih 450+ min:  46 | do 500k:   0, iznad praga:  0 | do 1M:   0, iznad praga:  0
+  Greece          mladih 450+ min:  14 | do 500k:   3, iznad praga:  1 | do 1M:   5, iznad praga:  1
+  Italy           mladih 450+ min:  42 | do 500k:   0, iznad praga:  0 | do 1M:   0, iznad praga:  0
+  Germany         mladih 450+ min:  61 | do 500k:   0, iznad praga:  0 | do 1M:   0, iznad praga:  0
+  Netherlands     mladih 450+ min:  76 | do 500k:  10, iznad praga:  0 | do 1M:  24, iznad praga:  0
+  Portugal        mladih 450+ min:  59 | do 500k:  10, iznad praga:  1 | do 1M:  19, iznad praga:  2
+  Russia          mladih 450+ min:  33 | do 500k:   1, iznad praga:  0 | do 1M:  15, iznad praga:  1
+  Scotland        mladih 450+ min:  37 | do 500k:  24, iznad praga:  1 | do 1M:  28, iznad praga:  1
+  Türkiye         mladih 450+ min:  22 | do 500k:   4, iznad praga:  0 | do 1M:   6, iznad praga:  0
+  Ukraine         mladih 450+ min:  59 | do 500k:  28, iznad praga:  2 | do 1M:  43, iznad praga:  2
+
+Primjer radara: 5 regionalnih liga, vrijednost do 500k, 15 najboljih po modelu
+  Andrej Petrovic            20.2g Central Midfield   FK TSC Backa Topola    Serbia     150k  min  700  G+A 1+0  p=0.65
+  Gabriel Dumitru            20.7g Centre-Back        FC Metaloglobus Buchar Romania    125k  min  655  G+A 0+0  p=0.59
+  David Barbu                20.0g Centre-Forward     UTA Arad               Romania    200k  min  530  G+A 2+1  p=0.59
+  Oriyomi Lebi               20.0g Centre-Forward     FK IMT Belgrad         Serbia     300k  min  620  G+A 2+2  p=0.57
+  Aleksa Trajkovic           19.4g Attacking Midfield FK Spartak Subotica    Serbia     125k  min  699  G+A 2+0  p=0.57
+  Milos Jovicic              20.4g Left Winger        NK Osijek              Croatia    150k  min  477  G+A 1+0  p=0.56
+  Alexandru Irimia           20.1g Central Midfield   FC Metaloglobus Buchar Romania    125k  min  944  G+A 0+0  p=0.54
+  Dukan Ahmeti               18.7g Attacking Midfield NK Istra 1961          Croatia    350k  min  576  G+A 0+0  p=0.51
+  Sven Lesjak                19.9g Centre-Back        NK Varazdin            Croatia    400k  min  729  G+A 1+0  p=0.50
+  Luka Djordjevic            20.1g Centre-Forward     FK Cukaricki           Serbia     300k  min  643  G+A 0+2  p=0.47
+  Luca Stancu                21.1g Right-Back         FC Hermannstadt        Romania    300k  min 1207  G+A 1+2  p=0.45
+  Robert Bădescu             21.2g Left-Back          FC Metaloglobus Buchar Romania    150k  min  955  G+A 1+0  p=0.45
+  Ionuț Cercel               19.6g Right-Back         FCSB                   Romania    450k  min  635  G+A 0+0  p=0.43
+  Natan Ława                 17.0g Attacking Midfield Pogon Szczecin         Poland     500k  min  467  G+A 0+0  p=0.43
+  Matei Popa                 19.2g Goalkeeper         FCSB                   Romania    300k  min  630  G+A 0+0  p=0.42

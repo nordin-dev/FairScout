@@ -1,0 +1,13 @@
+.dtable{width:100%;border-collapse:collapse;font-size:14px}
+.dtable thead th{font:500 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);text-align:left;padding:10px 12px 8px 0;border-bottom:1px solid var(--ink);white-space:nowrap}
+.dtable tbody td{padding:11px 12px 11px 0;border-bottom:1px solid var(--hair);vertical-align:middle}
+.dtable tbody tr.go:hover{background:var(--row-hover);cursor:pointer}
+.dtable td.r,.dtable th.r{text-align:right}
+.dtable td .num{font-size:13px}
+.dtable td .name{font-weight:600}
+.dtable td .sub{display:block;font-size:13px;color:var(--ink-3)}
+.dtable .meter{display:inline-grid;grid-template-columns:72px 28px;gap:8px}
+.dtable .meter>span:first-child{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.dtable .m-val{font-size:13px}
+.dtable tbody tr:focus-visible{outline-offset:-2px}
+.dtable td .chip+.chip{margin-left:6px}

@@ -1,0 +1,329 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fairscout/timemachine.schema.json",
+  "title": "Fair Scout timemachine.json",
+  "type": "object",
+  "properties": {
+    "as_of": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "six_seasons": {
+      "type": "object",
+      "properties": {
+        "tier_a_hits": {
+          "type": "integer"
+        },
+        "tier_a_picks": {
+          "type": "integer"
+        },
+        "pool_hits": {
+          "type": "integer"
+        },
+        "pool_players": {
+          "type": "integer"
+        },
+        "by_season": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "tier_a_hits",
+        "tier_a_picks",
+        "pool_hits",
+        "pool_players",
+        "by_season"
+      ],
+      "additionalProperties": false
+    },
+    "outcome_ranges": {
+      "type": "object",
+      "properties": {
+        "A": {
+          "type": "object",
+          "properties": {
+            "n": {
+              "type": "integer"
+            },
+            "hits": {
+              "type": "integer"
+            },
+            "rate": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "unknown_outcome": {
+              "type": "integer"
+            },
+            "multiple_p25": {
+              "type": "number"
+            },
+            "multiple_p50": {
+              "type": "number"
+            },
+            "multiple_p75": {
+              "type": "number"
+            },
+            "share_lost_value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "required": [
+            "n",
+            "hits",
+            "rate",
+            "unknown_outcome",
+            "multiple_p25",
+            "multiple_p50",
+            "multiple_p75",
+            "share_lost_value"
+          ],
+          "additionalProperties": false
+        },
+        "B": {
+          "type": "object",
+          "properties": {
+            "n": {
+              "type": "integer"
+            },
+            "hits": {
+              "type": "integer"
+            },
+            "rate": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "unknown_outcome": {
+              "type": "integer"
+            },
+            "multiple_p25": {
+              "type": "number"
+            },
+            "multiple_p50": {
+              "type": "number"
+            },
+            "multiple_p75": {
+              "type": "number"
+            },
+            "share_lost_value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "required": [
+            "n",
+            "hits",
+            "rate",
+            "unknown_outcome",
+            "multiple_p25",
+            "multiple_p50",
+            "multiple_p75",
+            "share_lost_value"
+          ],
+          "additionalProperties": false
+        },
+        "C": {
+          "type": "object",
+          "properties": {
+            "n": {
+              "type": "integer"
+            },
+            "hits": {
+              "type": "integer"
+            },
+            "rate": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "unknown_outcome": {
+              "type": "integer"
+            },
+            "multiple_p25": {
+              "type": "number"
+            },
+            "multiple_p50": {
+              "type": "number"
+            },
+            "multiple_p75": {
+              "type": "number"
+            },
+            "share_lost_value": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            }
+          },
+          "required": [
+            "n",
+            "hits",
+            "rate",
+            "unknown_outcome",
+            "multiple_p25",
+            "multiple_p50",
+            "multiple_p75",
+            "share_lost_value"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "A",
+        "B",
+        "C"
+      ],
+      "additionalProperties": false
+    },
+    "seasons": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "season": {
+            "type": "string"
+          },
+          "decision_date": {
+            "type": "string",
+            "format": "date",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "outcome_date": {
+            "type": "string",
+            "format": "date",
+            "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+          },
+          "trained_on": {
+            "type": "string"
+          },
+          "training_rows": {
+            "type": "integer"
+          },
+          "pool": {
+            "type": "integer"
+          },
+          "pool_rate": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "hits": {
+            "type": "integer"
+          },
+          "picks": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "rank": {
+                  "type": "integer"
+                },
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "club": {
+                  "type": "string"
+                },
+                "league": {
+                  "type": "string"
+                },
+                "position": {
+                  "type": "string"
+                },
+                "age": {
+                  "type": "number"
+                },
+                "value_then": {
+                  "type": "number"
+                },
+                "value_3y": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "made_it": {
+                  "type": "boolean"
+                },
+                "value_peak": {
+                  "type": "number"
+                },
+                "value_latest": {
+                  "type": "number"
+                },
+                "history": {
+                  "type": "array",
+                  "items": {
+                    "type": "array",
+                    "prefixItems": [
+                      {
+                        "type": "string",
+                        "format": "date",
+                        "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ],
+                    "items": false,
+                    "minItems": 2
+                  }
+                }
+              },
+              "required": [
+                "rank",
+                "id",
+                "name",
+                "club",
+                "league",
+                "position",
+                "age",
+                "value_then",
+                "value_3y",
+                "made_it",
+                "value_peak",
+                "value_latest",
+                "history"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "season",
+          "decision_date",
+          "outcome_date",
+          "trained_on",
+          "training_rows",
+          "pool",
+          "pool_rate",
+          "hits",
+          "picks"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "as_of",
+    "six_seasons",
+    "outcome_ranges",
+    "seasons"
+  ],
+  "additionalProperties": false
+}

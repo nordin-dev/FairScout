@@ -1,0 +1,12 @@
+.vc{display:block;width:100%;height:auto}
+.vc text{font-family:var(--mono);font-size:11px;fill:var(--ink-3)}
+.vc text.dl{font-family:var(--sans);font-size:12px;font-weight:500;fill:var(--ink)}
+.vc .axis{stroke:var(--hair-strong)}
+.vc .guide{stroke:var(--hair)}
+.vc .fan{fill:var(--accent-track);opacity:.6}
+.vc .mid{stroke:var(--accent);stroke-width:2;stroke-dasharray:5 5}
+.vc .band{fill:var(--accent-light)}
+.vc .tick{stroke:var(--accent-deep);stroke-width:2}
+.vc .line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.vc .dot{fill:var(--ink);stroke:var(--sheet);stroke-width:2}
+.vc .dot-out{fill:var(--accent-deep);stroke:var(--sheet);stroke-width:2}

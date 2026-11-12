@@ -1,0 +1,13 @@
+.plot-sheet .chart-title{margin:0;font-weight:600;color:var(--ink)}
+.plot-sheet .chart-sub{margin:2px 0 8px;color:var(--ink-3);font-size:13px}
+.plot svg{display:block;width:100%;height:auto;font-family:var(--sans);font-size:11px;fill:var(--ink-3)}
+.plot .grid{stroke:var(--hair)}
+.plot .mark{stroke:var(--ink);stroke-width:1}
+.plot .dl{fill:var(--ink);font-weight:600}
+.plot .dot{stroke:var(--sheet);stroke-width:2;cursor:pointer;fill:var(--context)}
+.plot .dot-a{fill:var(--accent-deep)}
+.plot .dot-over{fill:var(--hair-strong)}
+.plot .dot-a.dot-over{fill:var(--accent-light)}
+.plot .dot:focus{outline:none}
+.plot .dot:focus-visible{stroke:var(--ink)}
+.plot-none{margin:0;color:var(--ink-2)}

@@ -1,0 +1,4 @@
+.btn{all:unset;cursor:pointer;display:inline-block;background:var(--ink);color:var(--on-ink);font:500 13px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:14px 18px;border-radius:2px;text-align:center}
+.btn:hover{background:var(--ink-hover)}
+.btn:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+.btn[disabled]{background:var(--hair-strong);cursor:not-allowed}

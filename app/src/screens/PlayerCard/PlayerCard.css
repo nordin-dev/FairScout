@@ -1,0 +1,34 @@
+.p-head{display:grid;grid-template-columns:1fr auto;gap:40px;align-items:end;margin-bottom:28px}
+.tiles{display:grid;grid-template-columns:repeat(3,160px);border-top:1px solid var(--ink)}
+.back{cursor:pointer;display:inline-block;font:500 12px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:16px;text-decoration:none}
+.back:hover{color:var(--ink)}
+.d-note{margin-top:20px;padding-top:16px;border-top:1px solid var(--hair)}
+.p-limited{margin:14px 0 0}
+.sk-fig{height:56px;width:120px}
+.p-head .sk{margin-bottom:0}
+.tiles .sk{margin-top:2px}
+.sk-name{width:360px;max-width:100%;height:44px;margin-bottom:14px}
+.sk-sub{width:300px;max-width:100%;height:22px}
+.p-row2{display:grid;grid-template-columns:5fr 7fr;gap:24px;margin-top:24px}
+.p-row3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:24px}
+.p-row2.solo,.p-row3.solo{grid-template-columns:minmax(0,1fr)}
+.hero-fig{font:600 56px/1 var(--sans);letter-spacing:-.03em;display:block;margin:10px 0 18px}
+.p-row2 .state-block{margin:0}
+.drivers{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:12px;font-size:18px}
+.drivers li{display:grid;grid-template-columns:22px 1fr;gap:8px;align-items:baseline}
+.drivers .sign{font:600 18px var(--mono)}
+.drivers .plus .sign{color:var(--accent-ink)}
+.drivers .minus .sign{color:var(--ink-3)}
+.drivers .minus{color:var(--ink-2)}
+.p-flags{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+/* similar players */
+.simrows{display:grid;border-top:1px solid var(--ink);margin-top:14px}
+.simrow{display:grid;grid-template-columns:1fr auto;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid var(--hair);cursor:pointer;color:inherit;text-decoration:none}
+.simrow:last-child{border-bottom:0;padding-bottom:0}
+.simrow:hover .sim-name{color:var(--accent-ink)}
+.sim-name{font-weight:600;font-size:17px}
+.sim-meta{display:block;font-size:14px;color:var(--ink-3)}
+.simrow .pct{font:500 20px var(--mono);font-variant-numeric:tabular-nums}
+.say{font-size:20px;line-height:1.4;margin-top:14px}
+.say,.sim-meta{overflow-wrap:anywhere}

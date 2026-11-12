@@ -1,0 +1,24 @@
+/* Design tokens, ported from plan/dizajn/mockup.html. No raw colour value appears outside this file. */
+:root {
+  --paper: #f7f5ef;          /* page */
+  --sheet: #fcfbf8;          /* every card and every chart sits on this */
+  --ink: #14161a;            /* primary text, redaction bars, primary button */
+  --ink-2: #4a4b4f;          /* secondary text */
+  --ink-3: #6f706f;          /* labels, axis text */
+  --hair: #dcd9cf;           /* hairlines, grid */
+  --hair-strong: #c3c2b7;    /* baselines, axes */
+  --accent: #2a78d6;         /* the one data colour */
+  --accent-ink: #1c5cab;     /* accent used as text / links */
+  --accent-light: #86b6ef;   /* tier C, range extension */
+  --accent-deep: #104281;    /* tier A */
+  --accent-track: #cde2fb;   /* unfilled part of a meter */
+  --context: #9b998f;        /* everything that is "the rest" in a chart */
+  --context-track: #e6e3da;
+  --warn: #fab219;
+  --on-ink: #fff;            /* text on an ink surface */
+  --on-ink-muted: #c9c7bd;   /* secondary text on an ink surface */
+  --ink-hover: #2b2e34;      /* primary button on hover */
+  --row-hover: #f3f0e8;      /* table row on hover or selected */
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}

@@ -1,0 +1,3 @@
+.months{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;align-items:end;height:52px;border-bottom:1px solid var(--hair-strong);margin-top:16px}
+.months .col{background:var(--accent);border-radius:2px 2px 0 0;width:100%}
+.month-ends{display:grid;grid-template-columns:repeat(12,1fr);gap:3px;text-align:center;font:400 11px var(--mono);color:var(--ink-3);margin-top:5px}

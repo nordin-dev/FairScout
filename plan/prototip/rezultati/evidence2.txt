@@ -1,0 +1,20 @@
+
+=== bazen do 1000k: 1333 igraca | uspjelo 395 (29.6%) | bez kasnije vrijednosti 265
+  Model, logisticka regresija    top10%:  66/133 = 49.6% ±8 | top20%: 46.4% | AUC 0.660 | po sezonama 15/23 9/22 18/22 6/23 9/20 9/23
+  Model, gradient boosting       top10%:  63/133 = 47.4% ±8 | top20%: 48.7% | AUC 0.676 | po sezonama 12/23 9/22 14/22 7/23 11/20 10/23
+  LR, ucenje na svim igracima    top10%:  70/133 = 52.6% ±8 | top20%: 44.9% | AUC 0.669 | po sezonama 15/23 10/22 17/22 7/23 10/20 11/23
+  GB, ucenje na svim igracima    top10%:  63/133 = 47.4% ±8 | top20%: 49.1% | AUC 0.679 | po sezonama 11/23 12/22 13/22 6/23 11/20 10/23
+  Najvise minuta                 top10%:  59/133 = 44.4% ±8 | top20%: 39.7% | AUC 0.558 | po sezonama 10/23 7/22 13/22 7/23 9/20 13/23
+  Najvise golova i asistencija   top10%:  48/133 = 36.1% ±8 | top20%: 33.3% | AUC 0.534 | po sezonama 7/23 7/22 9/22 8/23 8/20 9/23
+  Najmladji                      top10%:  48/133 = 36.1% ±8 | top20%: 36.3% | AUC 0.576 | po sezonama 10/23 5/22 13/22 3/23 9/20 8/23
+  Najjeftiniji                   top10%:  16/133 = 12.0% ±6 | top20%: 13.5% | AUC 0.367 | po sezonama 1/23 2/22 4/22 2/23 6/20 1/23
+
+=== bazen do 500k: 732 igraca | uspjelo 167 (22.8%) | bez kasnije vrijednosti 186
+  Model, logisticka regresija    top10%:  27/ 74 = 36.5% ±11 | top20%: 40.8% | AUC 0.677 | po sezonama 5/13 4/12 11/13 0/13 3/11 4/12
+  Model, gradient boosting       top10%:  34/ 74 = 45.9% ±11 | top20%: 38.8% | AUC 0.688 | po sezonama 6/13 4/12 11/13 4/13 5/11 4/12
+  LR, ucenje na svim igracima    top10%:  31/ 74 = 41.9% ±11 | top20%: 40.8% | AUC 0.688 | po sezonama 8/13 4/12 11/13 0/13 4/11 4/12
+  GB, ucenje na svim igracima    top10%:  36/ 74 = 48.6% ±11 | top20%: 37.4% | AUC 0.693 | po sezonama 8/13 4/12 10/13 4/13 5/11 5/12
+  Najvise minuta                 top10%:  28/ 74 = 37.8% ±11 | top20%: 34.0% | AUC 0.565 | po sezonama 5/13 3/12 9/13 0/13 6/11 5/12
+  Najvise golova i asistencija   top10%:  12/ 74 = 16.2% ±8 | top20%: 21.1% | AUC 0.525 | po sezonama 2/13 3/12 3/13 1/13 2/11 1/12
+  Najmladji                      top10%:  25/ 74 = 33.8% ±11 | top20%: 29.3% | AUC 0.600 | po sezonama 4/13 2/12 9/13 1/13 5/11 4/12
+  Najjeftiniji                   top10%:  10/ 74 = 13.5% ±8 | top20%: 11.6% | AUC 0.349 | po sezonama 1/13 1/12 3/13 2/13 2/11 1/12

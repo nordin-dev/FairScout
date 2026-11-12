@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fairscout/leagues.schema.json",
+  "title": "Fair Scout leagues.json",
+  "type": "object",
+  "properties": {
+    "leagues": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "seasons": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "factor": {
+            "type": "number",
+            "exclusiveMinimum": 0
+          },
+          "factor_source": {
+            "enum": [
+              "moves",
+              "estimate"
+            ]
+          },
+          "pool_1m": {
+            "type": "integer",
+            "minimum": 0
+          },
+          "pool_500k": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "seasons",
+          "factor",
+          "factor_source",
+          "pool_1m",
+          "pool_500k"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "leagues"
+  ],
+  "additionalProperties": false
+}

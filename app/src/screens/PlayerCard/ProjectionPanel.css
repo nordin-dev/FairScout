@@ -1,0 +1,6 @@
+.proj-head{display:flex;flex-wrap:wrap;gap:12px 48px;margin:12px 0 4px}
+.proj-head > div{display:grid;gap:4px}
+.proj-head b{font:600 32px/1.1 var(--sans);letter-spacing:-.02em}
+.proj-head span{font-size:15px;color:var(--ink-2)}
+.proj-short{margin-top:14px;font-size:15px;color:var(--ink-2)}
+.proj-head ~ .vc{max-height:280px}

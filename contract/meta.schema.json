@@ -1,0 +1,119 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fairscout/meta.schema.json",
+  "title": "Fair Scout meta.json",
+  "type": "object",
+  "properties": {
+    "built": {
+      "type": "string"
+    },
+    "source": {
+      "type": "string"
+    },
+    "source_last_date": {
+      "type": "string",
+      "format": "date",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "leagues": {
+      "type": "integer"
+    },
+    "seasons": {
+      "type": "string"
+    },
+    "radar_season": {
+      "type": "string"
+    },
+    "pool": {
+      "type": "object",
+      "properties": {
+        "up_to_1m": {
+          "type": "integer"
+        },
+        "up_to_500k": {
+          "type": "integer"
+        },
+        "regional_up_to_500k": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "up_to_1m",
+        "up_to_500k",
+        "regional_up_to_500k"
+      ],
+      "additionalProperties": false
+    },
+    "model": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "type": "string"
+        },
+        "features": {
+          "type": "integer"
+        },
+        "training_rows": {
+          "type": "integer"
+        },
+        "trained_on_seasons": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "type",
+        "features",
+        "training_rows",
+        "trained_on_seasons"
+      ],
+      "additionalProperties": false
+    },
+    "validation": {
+      "type": "string"
+    },
+    "status": {
+      "type": "string"
+    },
+    "default_brief": {
+      "type": "object",
+      "properties": {
+        "position": {
+          "type": "string"
+        },
+        "max_age": {
+          "type": "number"
+        },
+        "budget_eur": {
+          "type": "number"
+        },
+        "matters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "position",
+        "max_age",
+        "budget_eur",
+        "matters"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "built",
+    "source",
+    "source_last_date",
+    "leagues",
+    "seasons",
+    "radar_season",
+    "pool",
+    "model",
+    "validation",
+    "status",
+    "default_brief"
+  ],
+  "additionalProperties": false
+}

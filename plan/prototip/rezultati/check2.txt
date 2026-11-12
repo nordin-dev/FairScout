@@ -1,0 +1,127 @@
+============================== 1. REKONSTRUKCIJA MINUTA (provjera na Belgiji i Holandiji, sezona 2024)
+lineup types: {'starting_lineup': 88770, 'substitutes': 79827}
+card descriptions: [('1. Yellow card', 5930), ('2. Yellow card', 4026), ('3. Yellow card', 2738), ('4. Yellow card', 1753), ('5. Yellow card', 1068), ('6. Yellow card', 636), ('Red card', 518), ('Yellow card', 364)]
+goal kinds: {'normal': 11795, 'own': 351}
+appearances rows: 16757 | reconstructed rows for same games: 16757 | matched: 16757
+minutes exact: 93.6% | within 5 min: 99.9%
+goals exact: 100.00% | assists exact: 99.76%
+total minutes truth vs rec: 1078255 1078274 | goals: 1507 1507 | assists: 1147 1179
+in appearances but not reconstructed: 0 | reconstructed with >0 min but not in appearances: 0
+
+Regionalne lige, rekonstruisano (igrac-sezona):
+  Austria         igrac-sezona   676 | mladji od 22:  242 | od toga 450+ min:  111 | 900+ min:   75
+  Switzerland     igrac-sezona   746 | mladji od 22:  252 | od toga 450+ min:  116 | 900+ min:   71
+  Croatia         igrac-sezona   657 | mladji od 22:  226 | od toga 450+ min:  104 | 900+ min:   65
+  Norway          igrac-sezona   788 | mladji od 22:  252 | od toga 450+ min:  111 | 900+ min:   51
+  Poland          igrac-sezona  1075 | mladji od 22:  266 | od toga 450+ min:  117 | 900+ min:   85
+  Romania         igrac-sezona   989 | mladji od 22:  188 | od toga 450+ min:   77 | 900+ min:   44
+  Sweden          igrac-sezona   813 | mladji od 22:  341 | od toga 450+ min:  141 | 900+ min:   48
+  Serbia          igrac-sezona  1077 | mladji od 22:  401 | od toga 450+ min:  200 | 900+ min:  125
+  Czech Republic  igrac-sezona   964 | mladji od 22:  265 | od toga 450+ min:  142 | 900+ min:   88
+
+============================== 2. PRELASCI IZMEDJU LIGA (14 liga s punom historijom)
+ukupno prelazaka (900+ min prije i poslije, uzastopne sezone): 3126 | parova liga: 177 | parova s 15+ prelazaka: 68
+napadaci i vezni, prelazaka u procjeni: 1610
+koliko je lako ostvariti gol+asistenciju (1.00 = prosjek 14 liga; manje = teza liga):
+  England       0.59
+  Spain         0.69
+  Italy         0.71
+  France        0.78
+  Germany       0.80
+  Russia        1.00
+  Türkiye       1.03
+  Portugal      1.04
+  Netherlands   1.15
+  Denmark       1.21
+  Belgium       1.21
+  Greece        1.24
+  Scotland      1.53
+  Ukraine       1.62
+primjeri parova (isti igraci, G+A na 90 prije -> poslije):
+  Netherlands <-> England: n=32  Netherlands 0.687  England 0.324
+  Netherlands <-> Germany: n=27  Netherlands 0.593  Germany 0.435
+  Belgium <-> England: n=22  Belgium 0.455  England 0.257
+  Portugal <-> England: n=18  Portugal 0.604  England 0.382
+  Portugal <-> Spain: n=33  Portugal 0.371  Spain 0.238
+  France <-> England: n=89  France 0.412  England 0.285
+  Denmark <-> Netherlands: n=16  Denmark 0.448  Netherlands 0.398
+  Scotland <-> England: n=11  Scotland 0.651  England 0.220
+  Belgium <-> Netherlands: n=25  Belgium 0.361  Netherlands 0.312
+
+Igraci regionalnih liga koji imaju sezonu s 900+ min u nekoj od 14 liga (most za koeficijent):
+  Austria         igraca s 450+ min:  313 | od toga 'most':   62
+  Switzerland     igraca s 450+ min:  372 | od toga 'most':   96
+  Croatia         igraca s 450+ min:  304 | od toga 'most':   71
+  Norway          igraca s 450+ min:  341 | od toga 'most':   39
+  Poland          igraca s 450+ min:  543 | od toga 'most':  124
+  Romania         igraca s 450+ min:  448 | od toga 'most':   62
+  Sweden          igraca s 450+ min:  345 | od toga 'most':   64
+  Serbia          igraca s 450+ min:  509 | od toga 'most':   80
+  Czech Republic  igraca s 450+ min:  460 | od toga 'most':   37
+
+============================== 3. RASPODJELA RODJENJA PO KVARTALIMA
+svi igraci u evropskim prvim ligama: n=30165  Q1 31.7%  Q2 26.2%  Q3 23.1%  Q4 19.0%
+  rodjeni u England              n= 1455  Q1 31.1  Q2 17.7  Q3 23.4  Q4 27.8
+  rodjeni u Spain                n= 1741  Q1 33.3  Q2 26.9  Q3 23.4  Q4 16.4
+  rodjeni u Germany              n= 1322  Q1 33.7  Q2 25.3  Q3 24.0  Q4 17.1
+  rodjeni u France               n= 2087  Q1 32.2  Q2 25.8  Q3 23.3  Q4 18.7
+  rodjeni u Netherlands          n= 1323  Q1 32.7  Q2 28.0  Q3 21.6  Q4 17.6
+  rodjeni u Italy                n=  983  Q1 33.4  Q2 26.6  Q3 22.7  Q4 17.4
+  rodjeni u Belgium              n=  737  Q1 32.6  Q2 25.4  Q3 22.8  Q4 19.3
+  rodjeni u Portugal             n=  990  Q1 31.9  Q2 26.9  Q3 24.1  Q4 17.1
+  rodjeni u Croatia              n=  379  Q1 30.3  Q2 28.2  Q3 25.3  Q4 16.1
+  rodjeni u Bosnia-Herzegovina   n=  131  Q1 22.9  Q2 25.2  Q3 28.2  Q4 23.7
+  rodjeni u Poland               n=  470  Q1 32.3  Q2 28.5  Q3 20.9  Q4 18.3
+  rodjeni u Czech Republic       n=  178  Q1 32.6  Q2 31.5  Q3 23.6  Q4 12.4
+  rodjeni u Romania              n=  408  Q1 28.4  Q2 29.9  Q3 22.3  Q4 19.4
+igraci koji su prije 20. godine imali sezonu s 900+ min: n=1613  Q1 27.9  Q2 18.6  Q3 30.5  Q4 23.0
+
+============================== 4. PRELIMINARNA PROVJERA SIGNALA
+mladi (<22) napadaci/vezni, 900+ min, sezone 2012-2021, s vrijednoscu na kraju sezone: 3075 | s vrijednoscu 3 godine kasnije: 2921
+svi: n=2921 | udvostrucili vrijednost za 3 god: 31.7% | medijan omjera: 1.20
+vrijednost <= 1M: n=766 | gornja cetvrtina ucinka n=96: udvostrucili 41.7% (medijan x1.50) | ostali n=670: 30.4% (x1.17) | donja cetvrtina n=279: 28.3%
+vrijednost <= 2M: n=1168 | gornja cetvrtina ucinka n=168: udvostrucili 36.3% (medijan x1.25) | ostali n=1000: 32.0% (x1.17) | donja cetvrtina n=400: 31.0%
+vrijednost <= 5M: n=1773 | gornja cetvrtina ucinka n=290: udvostrucili 37.6% (medijan x1.33) | ostali n=1483: 33.2% (x1.17) | donja cetvrtina n=564: 30.3%
+  top 5 liga, vrijednost <= 2M: gornja cetvrtina n=3 udvostrucili 66.7% | ostali n=107 37.4%
+  ostalih 9 liga, vrijednost <= 2M: gornja cetvrtina n=165 udvostrucili 35.8% | ostali n=893 31.4%
+Spearman (percentil ucinka, log omjer vrijednosti): 0.041
+Spearman (dob, log omjer vrijednosti): -0.154
+
+============================== 5. KOGA RADAR DANAS POKRIVA (sezona 2025/26, mladji od 22 na 1.7.2025)
+liga | mladih u postavama | 450+ min | 450+ min i vrijednost <= 500k | <= 1M
+  Austria         (2 sezone)    121 |   65 |   16 |   31
+  Croatia         (2 sezone)    125 |   59 |   27 |   41
+  Czech Republic  (2 sezone)    129 |   66 |   21 |   42
+  Norway          (2 sezone)    115 |   42 |    5 |   21
+  Poland          (2 sezone)    128 |   56 |   12 |   29
+  Romania         (2 sezone)    108 |   48 |   28 |   40
+  Serbia          (2 sezone)    193 |   97 |   27 |   63
+  Sweden          (2 sezone)    155 |   57 |   28 |   42
+  Switzerland     (2 sezone)    138 |   61 |   15 |   27
+  Belgium         (14 sezona)   164 |   88 |    1 |   15
+  Denmark         (14 sezona)   127 |   61 |    6 |   25
+  England         (14 sezona)   127 |   62 |    0 |    0
+  France          (14 sezona)   199 |   88 |    1 |    1
+  Germany         (14 sezona)   138 |   69 |    0 |    0
+  Greece          (14 sezona)    67 |   17 |    5 |    8
+  Italy           (14 sezona)   128 |   60 |    0 |    0
+  Netherlands     (14 sezona)   200 |   99 |   15 |   34
+  Portugal        (14 sezona)   159 |   81 |   13 |   25
+  Russia          (14 sezona)   117 |   38 |    1 |   15
+  Scotland        (14 sezona)    77 |   43 |   27 |   32
+  Spain           (14 sezona)   141 |   57 |    0 |    1
+  Türkiye         (14 sezona)   115 |   36 |    5 |   10
+  Ukraine         (14 sezona)   160 |   73 |   35 |   54
+
+Historija trzisnih vrijednosti igraca regionalnih liga:
+  Austria         igraca  481 | s barem jednom vrijednoscu  405 | medijan zapisa po igracu 12 | medijan prve godine 2020
+  Switzerland     igraca  546 | s barem jednom vrijednoscu  443 | medijan zapisa po igracu 13 | medijan prve godine 2020
+  Croatia         igraca  491 | s barem jednom vrijednoscu  373 | medijan zapisa po igracu 11 | medijan prve godine 2020
+  Norway          igraca  550 | s barem jednom vrijednoscu  435 | medijan zapisa po igracu 10 | medijan prve godine 2020
+  Poland          igraca  788 | s barem jednom vrijednoscu  610 | medijan zapisa po igracu 15 | medijan prve godine 2019
+  Romania         igraca  721 | s barem jednom vrijednoscu  542 | medijan zapisa po igracu 14 | medijan prve godine 2018
+  Sweden          igraca  581 | s barem jednom vrijednoscu  455 | medijan zapisa po igracu 8 | medijan prve godine 2021
+  Serbia          igraca  805 | s barem jednom vrijednoscu  575 | medijan zapisa po igracu 8 | medijan prve godine 2020
+  Czech Republic  igraca  655 | s barem jednom vrijednoscu  486 | medijan zapisa po igracu 12 | medijan prve godine 2020
+
+transferi: 175165 | s poznatom naknadom > 0: 17554 (10.0%)

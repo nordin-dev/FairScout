@@ -1,0 +1,21 @@
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:24px;margin-top:36px}
+.dossier{display:flex;flex-direction:column;gap:22px;position:relative;padding:28px}
+.dossier-head{display:flex;justify-content:space-between;align-items:center;min-height:24px}
+.dossier-head .label{color:var(--ink);font-weight:600;font-size:13px}
+.ident{display:grid;gap:8px}
+.ident-name{font:600 28px/36px var(--sans);letter-spacing:-.015em}
+.ident-sub{font:400 16px/24px var(--sans);color:var(--ink-2)}
+.score{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;border-top:1px solid var(--ink);padding-top:18px}
+.score div,.after div{display:grid;gap:8px;align-content:start;justify-items:start}
+.facts{font-size:15px;color:var(--ink-2)}
+.dossier .btn{margin-top:auto}
+.after{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;border-top:1px solid var(--ink);padding-top:18px;margin-top:auto}
+.after b{font:600 32px/1 var(--sans);letter-spacing:-.02em}
+.dossier.picked{box-shadow:0 0 0 2px var(--accent-ink)}
+.picked-mark{position:absolute;top:-11px;left:20px;background:var(--ink);color:#fff;font:600 11px var(--mono);letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:2px}
+.verdict{margin-top:24px;display:grid;grid-template-columns:1fr auto;gap:32px;align-items:center;border-left:3px solid var(--accent-ink);padding:28px}
+.verdict-line{font:600 30px/1.2 var(--sans);letter-spacing:-.02em}
+.verdict-sub{font-size:19px;line-height:1.4;color:var(--ink-2);margin-top:8px}
+.b-summary{display:flex;gap:12px;align-items:center;font-size:17px;color:var(--ink-2);margin-top:2px}
+.trio-cap{margin-top:16px;font-size:14px}
+.detail-cap{margin-top:20px}

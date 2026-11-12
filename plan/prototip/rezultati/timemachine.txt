@@ -1,0 +1,126 @@
+=== VREMEPLOV: radar pusten unazad (logisticka regresija, stroza meta, bazen do 1M, bez filtriranja po ishodu)
+sezona 2017/18: ucenje na sezonama 2012-2014 (1466 redova) | bazen 228 | rang A 23: uspjelo 15 (65%) | cijeli bazen 30%
+sezona 2018/19: ucenje na sezonama 2012-2015 (1944 redova) | bazen 222 | rang A 22: uspjelo 10 (45%) | cijeli bazen 27%
+sezona 2019/20: ucenje na sezonama 2012-2016 (2448 redova) | bazen 224 | rang A 22: uspjelo 17 (77%) | cijeli bazen 32%
+sezona 2020/21: ucenje na sezonama 2012-2017 (2850 redova) | bazen 229 | rang A 23: uspjelo 7 (30%) | cijeli bazen 22%
+sezona 2021/22: ucenje na sezonama 2012-2018 (3233 redova) | bazen 199 | rang A 20: uspjelo 10 (50%) | cijeli bazen 38%
+sezona 2022/23: ucenje na sezonama 2012-2019 (3625 redova) | bazen 231 | rang A 23: uspjelo 11 (48%) | cijeli bazen 31%
+
+zbirno 2017/18-2022/23:
+  rang A: n=133 uspjelo 70 (52.6%) | bez kasnije vrijednosti 16 | omjer vrijednosti nakon 3 god: p25 x1.33, medijan x3.00, p75 x7.20 | izgubili vrijednost 16%
+  rang B: n=134 uspjelo 50 (37.3%) | bez kasnije vrijednosti 19 | omjer vrijednosti nakon 3 god: p25 x1.00, medijan x1.80, p75 x4.29 | izgubili vrijednost 23%
+  rang C: n=1066 uspjelo 275 (25.8%) | bez kasnije vrijednosti 230 | omjer vrijednosti nakon 3 god: p25 x0.80, medijan x1.50, p75 x3.33 | izgubili vrijednost 33%
+  cijeli bazen: n=1333 uspjelo 395 (29.6%)
+
+--- 2019/20 (odluka 2020-06-30, model ucio na 2012/13–2016/17): rang A, 17 od 22 uspjelo; bazen 32%
+   1 Andrea Papetti           18.0 Centre-Back      Brescia Calcio         Italy        0.50M ->  1.30M USPIO vrh   2.2M  tacaka historije 9
+   2 Hugo Guillamón           20.4 Defensive Midfie Valencia CF            Spain        0.20M -> 14.00M USPIO vrh  25.0M  tacaka historije 26
+   3 Ersin Destanoğlu         19.5 Goalkeeper       Beşiktaş Jimnastik Kul Türkiye      0.05M ->  5.00M USPIO vrh  10.0M  tacaka historije 28
+   4 Martín Zubimendi         21.4 Defensive Midfie Real Sociedad          Spain        0.25M -> 40.00M USPIO vrh  80.0M  tacaka historije 22
+   5 Borja Sainz              19.4 Left Winger      Deportivo Alavés       Spain        0.30M ->  2.20M USPIO vrh  23.0M  tacaka historije 18
+   6 Pavel Maslov             20.2 Centre-Back      FK Spartak Moskva      Russia       0.62M ->  1.00M   -   vrh   2.0M  tacaka historije 21
+   7 Emre Demir               16.5 Attacking Midfie Kayserispor            Türkiye      0.90M ->  1.30M   -   vrh   1.8M  tacaka historije 17
+   8 David Carmo              21.0 Centre-Back      SC Braga               Portugal     0.90M -> 14.00M USPIO vrh  20.0M  tacaka historije 21
+   9 Konstantin Maradishvili  20.4 Defensive Midfie PFK CSKA Moskva        Russia       0.25M ->  1.80M USPIO vrh   3.5M  tacaka historije 22
+  10 Lutsharel Geertruida     20.0 Right-Back       Feyenoord Rotterdam    Netherlands  0.90M -> 25.00M USPIO vrh  35.0M  tacaka historije 28
+  11 Gonzalo Plata            19.7 Right Winger     Sporting CP            Portugal     0.90M ->  5.00M USPIO vrh   9.0M  tacaka historije 21
+  12 Mikkel Kaufmann          19.5 Centre-Forward   Aalborg BK             Denmark      0.90M ->  2.70M USPIO vrh   2.7M  tacaka historije 21
+  13 Anis Ben Slimane         19.3 Attacking Midfie Bröndby IF             Denmark      0.35M ->  2.50M USPIO vrh   3.5M  tacaka historije 13
+  14 Gustav Isaksen           19.2 Right Winger     FC Midtjylland         Denmark      0.33M ->  7.50M USPIO vrh  20.0M  tacaka historije 20
+  15 Massimiliano Mangraviti  22.4 Centre-Back      Brescia Calcio         Italy        0.20M ->  0.60M   -   vrh   1.1M  tacaka historije 17
+  16 Danil Glebov             20.7 Defensive Midfie FK Rostov              Russia       0.90M ->  8.00M USPIO vrh   8.0M  tacaka historije 23
+  17 Gaëtan Coucke            21.7 Goalkeeper       KRC Genk               Belgium      0.90M ->  1.50M   -   vrh   2.5M  tacaka historije 23
+  18 Alessandro Semprini      22.3 Right-Back       Brescia Calcio         Italy        0.20M ->  0.12M   -   vrh   0.8M  tacaka historije 15
+  19 Jens Cajuste             20.9 Defensive Midfie FC Midtjylland         Denmark      0.45M ->  6.00M USPIO vrh  12.0M  tacaka historije 23
+  20 Stanislav Magkeev        21.3 Centre-Back      Футбольный клуб "Локом Russia       0.80M ->  2.50M USPIO vrh   2.5M  tacaka historije 19
+  21 Júnior Brumado           21.1 Centre-Forward   FC Midtjylland         Denmark      0.45M ->  1.00M USPIO vrh   2.5M  tacaka historije 19
+  22 Armando Obispo           21.3 Centre-Back      Vitesse Arnhem         Netherlands  0.80M ->  4.50M USPIO vrh   5.5M  tacaka historije 27
+
+--- 2020/21 (odluka 2021-06-30, model ucio na 2012/13–2017/18): rang A, 7 od 23 uspjelo; bazen 22%
+   1 Daan Dierckx             18.3 Centre-Back      Parma Calcio 1913      Italy        1.00M ->  0.40M   -   vrh   1.5M  tacaka historije 14
+   2 Tom Lacoux               19.4 Defensive Midfie FC Girondins Bordeaux  France       0.80M ->  1.50M   -   vrh   1.8M  tacaka historije 9
+   3 Daan Huisman             18.9 Attacking Midfie Vitesse Arnhem         Netherlands  0.35M ->  0.35M   -   vrh   0.5M  tacaka historije 8
+   4 Kirill Bozhenov          20.6 Right-Back       FC Khimki (-2025)      Russia       1.00M ->  0.35M   -   vrh   1.0M  tacaka historije 16
+   5 Yorbe Vertessen          20.5 Centre-Forward   PSV Eindhoven          Netherlands  0.95M ->  5.00M USPIO vrh   6.0M  tacaka historije 20
+   6 Ziga Laci                18.9 Centre-Back      Athlitiki Enosi Konsta Greece       0.40M ->    n/a   -   vrh   0.4M  tacaka historije 6
+   7 Mehmet Aydın             19.4 Right-Back       FC Schalke 04          Germany      0.80M ->  1.50M   -   vrh   2.0M  tacaka historije 13
+   8 Frederik Jäkel           20.3 Centre-Back      KV Oostende            Belgium      0.50M ->    n/a   -   vrh   1.5M  tacaka historije 12
+   9 José Fontán              21.4 Centre-Back      Celta de Vigo          Spain        1.00M ->  1.00M   -   vrh   2.0M  tacaka historije 20
+  10 Serhat Ahmetoglu         19.4 Right-Back       Fatih Karagümrük       Türkiye      0.30M ->    n/a   -   vrh   0.4M  tacaka historije 9
+  11 Cristian Devenish        20.4 Centre-Back      Boavista FC            Portugal     1.00M ->  0.70M   -   vrh   1.0M  tacaka historije 14
+  12 Wouter Burger            20.4 Defensive Midfie Sparta Rotterdam       Netherlands  0.70M ->  4.50M USPIO vrh  20.0M  tacaka historije 23
+  13 Mattéo Ahlinvi           22.0 Central Midfield Nîmes Olympique        France       1.00M ->    n/a   -   vrh   1.0M  tacaka historije 8
+  14 Albert Grønbaek          20.1 Attacking Midfie Aarhus GF              Denmark      1.00M -> 12.00M USPIO vrh  15.0M  tacaka historije 18
+  15 Daan Heymans             22.0 Attacking Midfie SK Beveren             Belgium      1.00M ->  1.50M   -   vrh   6.0M  tacaka historije 23
+  16 Oleg Ocheretko           18.1 Attacking Midfie FK Mariupol            Ukraine      0.50M ->  0.70M   -   vrh   7.0M  tacaka historije 13
+  17 Abu Francis              20.2 Central Midfield FC Nordsjaelland       Denmark      1.00M ->  2.00M USPIO vrh   2.0M  tacaka historije 16
+  18 Leo Hjelde               17.8 Centre-Back      Ross County FC         Scotland     0.30M ->    n/a   -   vrh   1.5M  tacaka historije 5
+  19 Wesley Spieringhs        19.5 Central Midfield Willem II Tilburg      Netherlands  0.45M ->    n/a   -   vrh   0.5M  tacaka historije 7
+  20 Thijs van Leeuwen        20.0 Attacking Midfie FC Twente Enschede     Netherlands  0.30M ->    n/a   -   vrh   0.3M  tacaka historije 8
+  21 Sven Mijnans             21.3 Attacking Midfie Sparta Rotterdam       Netherlands  0.70M ->  6.50M USPIO vrh  15.0M  tacaka historije 16
+  22 Iván Jaime               20.8 Attacking Midfie FC Famalicão           Portugal     1.00M ->  8.00M USPIO vrh  10.0M  tacaka historije 20
+  23 Maduka Okoye             21.8 Goalkeeper       Sparta Rotterdam       Netherlands  0.90M ->  4.00M USPIO vrh  10.0M  tacaka historije 25
+
+--- 2021/22 (odluka 2022-06-30, model ucio na 2012/13–2018/19): rang A, 10 od 20 uspjelo; bazen 38%
+   1 Marc Pubill              19.0 Centre-Back      Levante UD             Spain        0.80M ->  4.00M USPIO vrh  35.0M  tacaka historije 17
+   2 Daniil Khudyakov         18.5 Goalkeeper       Футбольный клуб "Локом Russia       1.00M ->  0.80M   -   vrh   2.5M  tacaka historije 14
+   3 Nikita Krivtsov          19.9 Attacking Midfie FK Krasnodar           Russia       1.00M ->  4.00M USPIO vrh   7.5M  tacaka historije 16
+   4 Viktor Melekhin          18.5 Centre-Back      FK Rostov              Russia       1.00M ->  3.00M USPIO vrh   3.5M  tacaka historije 14
+   5 Tom Lacoux               20.4 Defensive Midfie FC Girondins Bordeaux  France       0.80M ->    n/a   -   vrh   1.8M  tacaka historije 9
+   6 Adam Montgomery          20.0 Left-Back        Celtic FC              Scotland     0.45M ->  0.50M   -   vrh   0.5M  tacaka historije 11
+   7 Javi López               20.3 Left-Back        Deportivo Alavés       Spain        0.70M ->  7.50M USPIO vrh   7.5M  tacaka historije 17
+   8 Kirill Kravtsov          20.0 Defensive Midfie FK Nizhny Novgorod     Russia       0.80M ->  1.50M   -   vrh   1.5M  tacaka historije 18
+   9 Kazımcan Karataş         19.5 Left-Back        Altay SK               Türkiye      0.95M ->  1.20M   -   vrh   2.5M  tacaka historije 21
+  10 Daan Huisman             19.9 Attacking Midfie Vitesse Arnhem         Netherlands  0.50M ->    n/a   -   vrh   0.5M  tacaka historije 8
+  11 Rocco Reitz              20.1 Central Midfield Sint-Truidense VV      Belgium      0.65M -> 15.00M USPIO vrh  20.0M  tacaka historije 16
+  12 Yuriy Zheleznov          19.6 Left Midfield    Ural Yekaterinburg     Russia       0.40M ->    n/a   -   vrh   0.4M  tacaka historije 11
+  13 Dango Ouattara           20.4 Right Winger     FC Lorient             France       0.90M -> 28.00M USPIO vrh  35.0M  tacaka historije 14
+  14 Nathan Ngoy              19.1 Centre-Back      Standard Liège         Belgium      0.45M ->  3.50M USPIO vrh  25.0M  tacaka historije 17
+  15 Danila Sukhomlinov       19.8 Attacking Midfie FK Rostov              Russia       0.70M ->    n/a   -   vrh   0.7M  tacaka historije 10
+  16 Sergey Babkin            19.8 Central Midfield Футбольный клуб "Локом Russia       0.80M ->  1.80M USPIO vrh   2.0M  tacaka historije 15
+  17 Ivan Kuzmichev           21.7 Centre-Back      Ural Yekaterinburg     Russia       0.80M ->    n/a   -   vrh   1.2M  tacaka historije 13
+  18 Dominik Oroz             21.7 Centre-Back      Vitesse Arnhem         Netherlands  0.60M ->  0.80M   -   vrh   1.2M  tacaka historije 21
+  19 Andrey Langovich         19.1 Right-Back       FK Rostov              Russia       0.75M ->  3.00M USPIO vrh   3.0M  tacaka historije 18
+  20 Daan Rots                20.9 Right Winger     FC Twente Enschede     Netherlands  0.80M ->  4.00M USPIO vrh   7.0M  tacaka historije 21
+
+--- 2022/23 (odluka 2023-06-30, model ucio na 2012/13–2019/20): rang A, 11 od 23 uspjelo; bazen 31%
+   1 Antoine Mendy            19.1 Centre-Back      OGC Nice               France       1.00M -> 10.00M USPIO vrh  10.0M  tacaka historije 14
+   2 Oscar Schwartau          17.1 Attacking Midfie Bröndby IF             Denmark      1.00M ->  3.50M USPIO vrh   3.5M  tacaka historije 9
+   3 Aïman Maurer             18.8 Attacking Midfie Clermont Foot 63       France       0.80M ->    n/a   -   vrh   0.8M  tacaka historije 6
+   4 Renato Veiga             19.9 Centre-Back      FC Augsburg            Germany      1.00M -> 25.00M USPIO vrh  25.0M  tacaka historije 12
+   5 Cheick Oumar Konaté      19.2 Right-Back       Clermont Foot 63       France       1.00M ->  1.20M   -   vrh   2.0M  tacaka historije 11
+   6 Leon King                19.5 Centre-Back      Rangers FC             Scotland     0.80M ->  0.30M   -   vrh   1.0M  tacaka historije 9
+   7 Sem Steijn               21.6 Attacking Midfie FC Twente Enschede     Netherlands  1.00M -> 11.00M USPIO vrh  16.0M  tacaka historije 19
+   8 Moussa Soumano           18.0 Centre-Forward   AC Ajaccio             France       0.90M ->  0.75M   -   vrh   1.0M  tacaka historije 10
+   9 Mayckel Lahdo            20.5 Right Winger     AZ Alkmaar             Netherlands  1.00M ->  2.70M USPIO vrh   3.0M  tacaka historije 12
+  10 Thomas Kristensen        21.4 Centre-Back      Aarhus GF              Denmark      0.70M -> 12.00M USPIO vrh  12.0M  tacaka historije 19
+  11 Arif Kocaman             19.8 Centre-Back      Kayserispor            Türkiye      0.80M ->    n/a   -   vrh   1.8M  tacaka historije 11
+  12 Julian Baas              21.2 Central Midfield Excelsior Rotterdam    Netherlands  0.80M ->  0.70M   -   vrh   1.3M  tacaka historije 15
+  13 Mohamed Sankoh           19.7 Centre-Forward   Vitesse Arnhem         Netherlands  0.70M ->    n/a   -   vrh   1.0M  tacaka historije 8
+  14 Oleksandr Saputin        19.6 Goalkeeper       Zorya Lugansk          Ukraine      1.00M ->  0.90M   -   vrh   1.0M  tacaka historije 11
+  15 Mehdi Boukamir           19.4 Centre-Back      Royal Charleroi Sporti Belgium      0.80M ->  0.50M   -   vrh   0.8M  tacaka historije 12
+  16 Novatus Miroshi          20.8 Defensive Midfie Zulte Waregem          Belgium      0.70M ->  5.00M USPIO vrh   5.0M  tacaka historije 14
+  17 Mads Hansen              20.9 Right Winger     FC Nordsjaelland       Denmark      1.00M ->  0.50M   -   vrh   1.0M  tacaka historije 14
+  18 Yaroslav Mikhailov       20.2 Central Midfield FK Nizhny Novgorod     Russia       0.80M ->  0.70M   -   vrh   0.8M  tacaka historije 14
+  19 Tanguy Zoukrou           20.1 Centre-Back      ESTAC Troyes           France       1.00M ->  1.20M   -   vrh   2.0M  tacaka historije 12
+  20 Filip Bundgaard          19.0 Centre-Forward   Randers FC             Denmark      1.00M ->  2.50M USPIO vrh   2.5M  tacaka historije 15
+  21 Rubén Sánchez            22.4 Right-Back       RCD Espanyol Barcelona Spain        0.70M ->  1.80M USPIO vrh   1.8M  tacaka historije 14
+  22 Antony                   21.8 Left Winger      FC Arouca              Portugal     0.60M ->  5.00M USPIO vrh   5.0M  tacaka historije 15
+  23 Theo Sander              18.5 Goalkeeper       Aalborg BK             Denmark      0.50M ->  1.00M USPIO vrh   1.0M  tacaka historije 10
+
+=== NASI VANI 2025/26: 66 igraca s bh. drzavljanstvom (450+ min); do 21 god (definicija bazena): 8; u bazenu radara do 1M: 2. Najmladjih 14:
+  Kerim Alajbegovic        18.8 Left Winger      Fußballclub Red Bull S Austria     22.00M  min 1911  9+3  ocjena  61  rang -  (Bosnia-Herzegovina/Germany)
+  Nidal Celik              20.0 Centre-Back      RC Lens                France       7.00M  min  618  0+0  ocjena   0  rang -  (Bosnia-Herzegovina/Bosnia-Herzegovina)
+  Filip Taraba             20.0 Right-Back       NK Istra 1961          Croatia      0.50M  min 1007  0+1  ocjena  45  rang C  (Bosnia-Herzegovina/Bosnia-Herzegovina)
+  Arjan Malic              20.8 Right-Back       Sportklub Puntigamer S Austria      1.80M  min 1042  1+0  ocjena  46  rang -  (Bosnia-Herzegovina/Slovenia)
+  Luka Mikulic             21.1 Centre-Back      Grasshopper Club Zuric Switzerland  0.70M  min 1069  0+0  ocjena   0  rang C  (Bosnia-Herzegovina/Croatia)
+  Ermin Mahmic             21.3 Attacking Midfie FC Slovan Liberec      Czech Repub  5.00M  min 1312  6+3  ocjena  85  rang -  (Bosnia-Herzegovina/Austria)
+  Esmir Bajraktarevic      21.3 Right Winger     PSV Eindhoven          Netherlands  8.00M  min 1062  4+5  ocjena  83  rang -  (Bosnia-Herzegovina/United States)
+  Muhamed Buljubasic       22.0 Central Midfield Caykur Rizespor        Türkiye      1.50M  min  786  0+0  ocjena   0  rang -  (Bosnia-Herzegovina/Bosnia-Herzegovina)
+  Vinko Rozic              22.9 Left Winger      NK Istra 1961          Croatia      0.60M  min 1570  3+1  ocjena  16  rang -  (Bosnia-Herzegovina/Bosnia-Herzegovina)
+  Dejan Popara             23.3 Defensive Midfie Zorya Lugansk          Ukraine      0.80M  min 1987  2+2  ocjena  35  rang -  (Bosnia-Herzegovina/Bosnia-Herzegovina)
+  Benjamin Tahirović       23.3 Central Midfield Bröndby IF             Denmark      4.50M  min 1040  1+1  ocjena  44  rang -  (Bosnia-Herzegovina/Sweden)
+  Tarik Muharemović        23.3 Centre-Back      US Sassuolo            Italy       25.00M  min 2835  2+2  ocjena  81  rang -  (Bosnia-Herzegovina/Slovenia)
+  Filip Cuic               23.4 Centre-Forward   HNK Gorica             Croatia      0.90M  min 1636  4+1  ocjena  20  rang -  (Bosnia-Herzegovina/Croatia)
+  Nail Omerovic            23.7 Left Winger      NK Osijek              Croatia      2.00M  min 2695  9+1  ocjena  27  rang -  (Bosnia-Herzegovina/Bosnia-Herzegovina)
+  bazen 2025/26 do 1M: 437 | rang A: 44

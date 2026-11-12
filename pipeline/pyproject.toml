@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=84.1.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fairscout"
+version = "0.1.0"
+description = "Data preparation for Fair Scout: from the open Transfermarkt tables to the app data files"
+requires-python = ">=3.12"
+# The lower bounds are the release lines the pipeline was built and tested on.
+dependencies = [
+    "pandas>=3.1,<4",
+    "numpy>=2.5,<3",
+    "scikit-learn>=1.9,<2",
+    "jsonschema>=4.26,<5",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=9.2,<10",
+    "ruff>=0.17.4,<0.18",
+    "mypy>=2.4,<3",
+    "pandas-stubs>=3.1,<4",
+    "types-jsonschema>=4.26,<5",
+]
+
+[tool.setuptools.packages.find]
+include = ["fairscout*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+src = ["."]
+
+[tool.ruff.lint]
+select = [
+    "E", "F", "W",  # pycodestyle and pyflakes
+    "I",            # import order
+    "N",            # naming
+    "UP",           # current syntax
+    "B", "A", "C4", "SIM", "RET", "PTH", "RUF",
+    "C90",          # function complexity
+    "ANN",          # every function is typed, tests included
+    "S",            # security checks
+    "BLE",          # no blind except
+    "ERA",          # no commented-out code
+    "FIX",          # no to-do notes
+]
+
+[tool.ruff.lint.mccabe]
+max-complexity = 10
+
+[tool.ruff.lint.per-file-ignores]
+# tests assert, and they start git and the command itself
+"tests/*" = ["S101", "S603", "S607"]
+
+# mypy is set up in mypy.ini in the repository root: `.venv/bin/mypy pipeline/fairscout` runs
+# from there, and mypy reads its settings from the folder it is started in.
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = ["-ra", "--strict-markers", "--strict-config"]
+xfail_strict = true

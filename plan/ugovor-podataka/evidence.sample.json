@@ -1,0 +1,218 @@
+{
+  "_status": "Prototype numbers from 11 Nov 2026, full pool: every young player of the season counts, also those with no valuation three seasons later. Re-derive in project code before showing them.",
+  "generated": "2026-11-11",
+  "definitions": {
+    "young_player": "Season start year minus birth year is at most 21, and at least 450 league minutes in the season",
+    "decision_value": "Last valuation between 1 December of the season and 30 June at its end",
+    "outcome": "Last valuation between 1 December and 30 June three seasons later",
+    "hit": "Outcome is at least twice the decision value and at least 1,000,000 EUR",
+    "no_later_value": "A player with no valuation three seasons later counts as not made it"
+  },
+  "backtest": {
+    "test_seasons": [
+      "2017/18",
+      "2018/19",
+      "2019/20",
+      "2020/21",
+      "2021/22",
+      "2022/23"
+    ],
+    "pick_share": 0.1,
+    "budgets": [
+      {
+        "budget_eur": 1000000,
+        "players": 1333,
+        "picks_per_rule": 133,
+        "margin_pp": 8,
+        "base_rate": 0.296,
+        "rows": [
+          {
+            "rule": "model_lr",
+            "label": "Model, logistic regression",
+            "hits": 70,
+            "picks": 133,
+            "rate": 0.526
+          },
+          {
+            "rule": "model_gb",
+            "label": "Model, gradient boosting",
+            "hits": 63,
+            "picks": 133,
+            "rate": 0.474
+          },
+          {
+            "rule": "most_minutes",
+            "label": "Most minutes played",
+            "hits": 59,
+            "picks": 133,
+            "rate": 0.444
+          },
+          {
+            "rule": "most_goals_assists",
+            "label": "Most goals and assists",
+            "hits": 48,
+            "picks": 133,
+            "rate": 0.361
+          },
+          {
+            "rule": "youngest",
+            "label": "Youngest",
+            "hits": 48,
+            "picks": 133,
+            "rate": 0.361
+          },
+          {
+            "rule": "cheapest",
+            "label": "Cheapest",
+            "hits": 16,
+            "picks": 133,
+            "rate": 0.12
+          }
+        ]
+      },
+      {
+        "budget_eur": 500000,
+        "players": 732,
+        "picks_per_rule": 74,
+        "margin_pp": 11,
+        "base_rate": 0.228,
+        "rows": [
+          {
+            "rule": "model_lr",
+            "label": "Model, logistic regression",
+            "hits": 31,
+            "picks": 74,
+            "rate": 0.419
+          },
+          {
+            "rule": "model_gb",
+            "label": "Model, gradient boosting",
+            "hits": 36,
+            "picks": 74,
+            "rate": 0.486
+          },
+          {
+            "rule": "most_minutes",
+            "label": "Most minutes played",
+            "hits": 28,
+            "picks": 74,
+            "rate": 0.378
+          },
+          {
+            "rule": "most_goals_assists",
+            "label": "Most goals and assists",
+            "hits": 12,
+            "picks": 74,
+            "rate": 0.162
+          },
+          {
+            "rule": "youngest",
+            "label": "Youngest",
+            "hits": 25,
+            "picks": 74,
+            "rate": 0.338
+          },
+          {
+            "rule": "cheapest",
+            "label": "Cheapest",
+            "hits": 10,
+            "picks": 74,
+            "rate": 0.135
+          }
+        ]
+      }
+    ]
+  },
+  "tiers": {
+    "_note": "Logistic regression, budget up to 1,000,000 EUR, six test seasons. multiple_* are percentiles of value three seasons later divided by value at decision, among players who still had a value.",
+    "A": {
+      "share": "top 10%",
+      "hits": 70,
+      "n": 133,
+      "rate": 0.526,
+      "multiple_p25": 1.33,
+      "multiple_p50": 3.0,
+      "multiple_p75": 7.2,
+      "no_later_value": 16
+    },
+    "B": {
+      "share": "next 10%",
+      "hits": 50,
+      "n": 134,
+      "rate": 0.373,
+      "multiple_p25": 1.0,
+      "multiple_p50": 1.8,
+      "multiple_p75": 4.29,
+      "no_later_value": 19
+    },
+    "C": {
+      "share": "rest",
+      "hits": 275,
+      "n": 1066,
+      "rate": 0.258,
+      "multiple_p25": 0.8,
+      "multiple_p50": 1.5,
+      "multiple_p75": 3.33,
+      "no_later_value": 230
+    }
+  },
+  "league_moves": {
+    "total": 3126,
+    "used_for_factors": 1610
+  },
+  "same_players_two_leagues": {
+    "league_a": "Netherlands",
+    "league_b": "England",
+    "players": 32,
+    "ga90_a": 0.69,
+    "ga90_b": 0.32
+  },
+  "birth_months": {
+    "players": 20241,
+    "pct_by_month": [
+      11.4,
+      9.7,
+      10.1,
+      8.9,
+      9.0,
+      8.2,
+      8.0,
+      7.9,
+      7.3,
+      6.8,
+      6.4,
+      6.2
+    ],
+    "pct_by_quarter": [
+      31.2,
+      26.2,
+      23.2,
+      19.4
+    ],
+    "born_on_1_jan_pct": 0.5
+  },
+  "birth_quarter_young": {
+    "players_by_quarter": [
+      1394,
+      1041,
+      766,
+      608
+    ],
+    "odds_ratio_q4_vs_q1": 1.23,
+    "ci95": [
+      1.02,
+      1.46
+    ],
+    "_note": "Outcome here is value at least doubled; controls for age and the other model features."
+  },
+  "minutes_check": {
+    "leagues": [
+      "Belgium",
+      "Netherlands"
+    ],
+    "season": "2024/25",
+    "appearances": 16757,
+    "within_5_min": 0.999,
+    "goals_exact": 1.0
+  }
+}

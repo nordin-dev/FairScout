@@ -1,0 +1,33 @@
+.r-layout{display:grid;grid-template-columns:248px minmax(0,1fr);gap:32px;margin-top:32px}
+.rail{display:grid;gap:24px;align-content:start}
+.rail .label{display:block;margin:0 0 10px}
+.r-main{display:grid;gap:24px;align-content:start;min-width:0}
+.r-table{padding-top:12px;overflow-x:auto}
+.r-foot{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.r-foot .caption,.r-foot .btn{margin-top:14px}
+.r-main .state-block{margin-top:0}
+
+.slider{position:relative;height:28px;--fill:50%}
+.slider::before{content:"";position:absolute;left:0;right:0;top:13px;height:2px;background:var(--hair-strong)}
+.slider::after{content:"";position:absolute;left:0;width:var(--fill);top:13px;height:2px;background:var(--ink)}
+.slider input{position:absolute;z-index:1;inset:0;width:100%;height:28px;margin:0;background:transparent;appearance:none;-webkit-appearance:none;cursor:pointer}
+.slider input::-webkit-slider-runnable-track{height:28px;background:transparent}
+.slider input::-moz-range-track{height:28px;background:transparent}
+.slider input::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;width:16px;height:16px;margin-top:6px;border-radius:50%;background:var(--ink);border:2px solid var(--sheet)}
+.slider input::-moz-range-thumb{width:12px;height:12px;border-radius:50%;background:var(--ink);border:2px solid var(--sheet)}
+.rail .row{display:flex;justify-content:space-between;font:400 12px var(--mono);color:var(--ink-3)}
+.rail .row .now{color:var(--ink);font-weight:600}
+
+.rail .choices{gap:6px}
+.rail .choice{font:500 12px var(--mono);padding:5px 9px;border-radius:2px}
+
+.check{all:unset;box-sizing:border-box;display:grid;grid-template-columns:16px 1fr auto;gap:8px;align-items:center;font:400 14px var(--sans);color:var(--ink-2);padding:3px 0;width:100%;cursor:pointer}
+.check:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+.check i{width:14px;height:14px;border:1px solid var(--ink);border-radius:1px;display:block}
+.check.on i{background:var(--ink);box-shadow:inset 0 0 0 2px var(--sheet)}
+.check .num{font-size:12px;color:var(--ink-3)}
+
+@media (max-width:900px){.r-layout{grid-template-columns:1fr}}
+
+.rail .choice:disabled,.check[aria-disabled="true"]{opacity:.45;cursor:not-allowed}
+.r-main .seg-row{margin-bottom:0}

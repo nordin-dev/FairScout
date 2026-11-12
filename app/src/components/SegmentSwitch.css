@@ -1,0 +1,6 @@
+.seg-row{display:flex;gap:8px}
+.seg{all:unset;cursor:pointer;font:500 15px/1 var(--sans);padding:11px 16px;border-radius:2px;box-shadow:inset 0 0 0 1px var(--hair-strong);background:var(--sheet);color:var(--ink-2)}
+.seg:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
+.seg b{font:500 13px var(--mono);margin-left:6px;color:var(--ink-3)}
+.seg.on{background:var(--ink);color:var(--on-ink);box-shadow:none}
+.seg.on b{color:var(--on-ink-muted)}

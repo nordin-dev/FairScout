@@ -1,0 +1,5 @@
+.pair{display:flex;align-items:flex-start;gap:20px;margin-top:12px}
+.pair > div{display:grid;gap:6px}
+.pair b{font:600 48px/1 var(--sans);letter-spacing:-.03em}
+.pair span{font-size:15px;color:var(--ink-2)}
+.pair > i{font:400 26px/48px var(--mono);font-style:normal;color:var(--hair-strong)}

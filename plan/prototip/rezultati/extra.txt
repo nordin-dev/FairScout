@@ -1,0 +1,103 @@
+=== A. Odakle dolaze podaci za ucenje (mladi s poznatim ishodom, sezone 2012-2022)
+  Netherlands   svi mladi  852 | do 1M  439 | do 500k  185
+  Denmark       svi mladi  447 | do 1M  348 | do 500k  230
+  Ukraine       svi mladi  380 | do 1M  297 | do 500k  204
+  Belgium       svi mladi  551 | do 1M  224 | do 500k   59
+  Greece        svi mladi  266 | do 1M  220 | do 500k  137
+  Scotland      svi mladi  231 | do 1M  195 | do 500k  168
+  Portugal      svi mladi  380 | do 1M  174 | do 500k   75
+  Russia        svi mladi  285 | do 1M  117 | do 500k   45
+  France        svi mladi  726 | do 1M  103 | do 500k   28
+  Türkiye       svi mladi  192 | do 1M   62 | do 500k   27
+  Spain         svi mladi  453 | do 1M   55 | do 500k   17
+  Germany       svi mladi  522 | do 1M   44 | do 500k   12
+  Italy         svi mladi  469 | do 1M   34 | do 500k   10
+  England       svi mladi  369 | do 1M   14 | do 500k    6
+  UKUPNO [6123, 2326, 1203]
+
+=== D1. Glavna meta: vrijednost se barem udvostrucila za 3 godine
+
+--- mladi do 1M: n=1068 | osnovna stopa 45.1%
+  model GB               AUC 0.620 | top 10%: 66.7% ±9 (n=108) | top 20%: 58.9% ±7 (n=214)
+  model LR               AUC 0.634 | top 10%: 60.2% ±9 (n=108) | top 20%: 59.3% ±7 (n=214)
+  model prosjek GB+LR    AUC 0.641 | top 10%: 60.2% ±9 (n=108) | top 20%: 60.3% ±7 (n=214)
+  samo G+A/90            AUC 0.507 | top 10%: 49.1% ±9 (n=108) | top 20%: 47.2% ±7 (n=214)
+  samo najmladji         AUC 0.582 | top 10%: 53.7% ±9 (n=108) | top 20%: 55.1% ±7 (n=214)
+  samo najjeftiniji      AUC 0.519 | top 10%: 59.3% ±9 (n=108) | top 20%: 52.3% ±7 (n=214)
+  samo najvise minuta    AUC 0.501 | top 10%: 51.9% ±9 (n=108) | top 20%: 48.1% ±7 (n=214)
+
+--- mladi do 500k: n=546 | osnovna stopa 46.5%
+  model GB               AUC 0.626 | top 10%: 72.7% ±12 (n=55) | top 20%: 65.1% ±9 (n=109)
+  model LR               AUC 0.660 | top 10%: 70.9% ±12 (n=55) | top 20%: 67.0% ±9 (n=109)
+  model prosjek GB+LR    AUC 0.658 | top 10%: 69.1% ±12 (n=55) | top 20%: 67.9% ±9 (n=109)
+  samo G+A/90            AUC 0.514 | top 10%: 38.2% ±13 (n=55) | top 20%: 46.8% ±9 (n=109)
+  samo najmladji         AUC 0.598 | top 10%: 54.5% ±13 (n=55) | top 20%: 57.8% ±9 (n=109)
+  samo najjeftiniji      AUC 0.539 | top 10%: 70.9% ±12 (n=55) | top 20%: 57.8% ±9 (n=109)
+  samo najvise minuta    AUC 0.502 | top 10%: 50.9% ±13 (n=55) | top 20%: 49.5% ±9 (n=109)
+
+=== D2. Stroza meta: udvostrucio I dosegao najmanje 1M
+
+--- mladi do 1M: n=1068 | osnovna stopa 37.0%
+  model GB               AUC 0.671 | top 10%: 52.8% ±9 (n=108) | top 20%: 55.1% ±7 (n=214)
+  model LR               AUC 0.668 | top 10%: 59.3% ±9 (n=108) | top 20%: 53.7% ±7 (n=214)
+  model prosjek GB+LR    AUC 0.683 | top 10%: 53.7% ±9 (n=108) | top 20%: 53.7% ±7 (n=214)
+  samo G+A/90            AUC 0.535 | top 10%: 44.4% ±9 (n=108) | top 20%: 40.2% ±7 (n=214)
+  samo najmladji         AUC 0.575 | top 10%: 42.6% ±9 (n=108) | top 20%: 44.9% ±7 (n=214)
+  samo najjeftiniji      AUC 0.387 | top 10%: 15.7% ±7 (n=108) | top 20%: 21.0% ±5 (n=214)
+  samo najvise minuta    AUC 0.547 | top 10%: 50.0% ±9 (n=108) | top 20%: 46.3% ±7 (n=214)
+
+--- mladi do 500k: n=546 | osnovna stopa 30.6%
+  model GB               AUC 0.694 | top 10%: 58.2% ±13 (n=55) | top 20%: 46.8% ±9 (n=109)
+  model LR               AUC 0.697 | top 10%: 49.1% ±13 (n=55) | top 20%: 52.3% ±9 (n=109)
+  model prosjek GB+LR    AUC 0.710 | top 10%: 54.5% ±13 (n=55) | top 20%: 51.4% ±9 (n=109)
+  samo G+A/90            AUC 0.542 | top 10%: 21.8% ±11 (n=55) | top 20%: 30.3% ±9 (n=109)
+  samo najmladji         AUC 0.594 | top 10%: 36.4% ±13 (n=55) | top 20%: 38.5% ±9 (n=109)
+  samo najjeftiniji      AUC 0.347 | top 10%: 18.2% ±10 (n=55) | top 20%: 17.4% ±7 (n=109)
+  samo najvise minuta    AUC 0.557 | top 10%: 45.5% ±13 (n=55) | top 20%: 45.0% ±9 (n=109)
+
+=== E. Objektivna meta: 900+ minuta u ligi petice u naredne 3 sezone (igraci izvan liga petice)
+
+--- svi mladi izvan liga petice: n=2259 | osnovna stopa 15.6%
+  model GB               AUC 0.800 | top 10%: 50.2% ±7 (n=225) | top 20%: 42.3% ±5 (n=452)
+  model LR               AUC 0.825 | top 10%: 55.1% ±6 (n=225) | top 20%: 45.1% ±5 (n=452)
+  model prosjek GB+LR    AUC 0.818 | top 10%: 52.9% ±7 (n=225) | top 20%: 44.5% ±5 (n=452)
+  samo G+A/90            AUC 0.626 | top 10%: 31.1% ±6 (n=225) | top 20%: 27.0% ±4 (n=452)
+  samo najmladji         AUC 0.539 | top 10%: 20.4% ±5 (n=225) | top 20%: 16.2% ±3 (n=452)
+  samo najjeftiniji      AUC 0.179 | top 10%: 0.4% ±1 (n=225) | top 20%: 0.7% ±1 (n=452)
+  samo najvise minuta    AUC 0.702 | top 10%: 35.6% ±6 (n=225) | top 20%: 29.9% ±4 (n=452)
+
+--- mladi do 1M: n=1272 | osnovna stopa 4.6%
+  model GB               AUC 0.689 | top 10%: 8.7% ±5 (n=127) | top 20%: 7.1% ±3 (n=254)
+  model LR               AUC 0.746 | top 10%: 10.2% ±5 (n=127) | top 20%: 10.2% ±4 (n=254)
+  model prosjek GB+LR    AUC 0.730 | top 10%: 10.2% ±5 (n=127) | top 20%: 8.7% ±3 (n=254)
+  samo G+A/90            AUC 0.491 | top 10%: 3.1% ±3 (n=127) | top 20%: 2.8% ±2 (n=254)
+  samo najmladji         AUC 0.519 | top 10%: 3.9% ±3 (n=127) | top 20%: 3.5% ±2 (n=254)
+  samo najjeftiniji      AUC 0.278 | top 10%: 0.0% ±0 (n=127) | top 20%: 0.4% ±1 (n=254)
+  samo najvise minuta    AUC 0.664 | top 10%: 11.8% ±6 (n=127) | top 20%: 10.2% ±4 (n=254)
+
+--- mladi do 2M: n=1580 | osnovna stopa 6.9%
+  model GB               AUC 0.704 | top 10%: 15.1% ±6 (n=159) | top 20%: 14.6% ±4 (n=316)
+  model LR               AUC 0.755 | top 10%: 17.6% ±6 (n=159) | top 20%: 15.5% ±4 (n=316)
+  model prosjek GB+LR    AUC 0.742 | top 10%: 15.7% ±6 (n=159) | top 20%: 15.8% ±4 (n=316)
+  samo G+A/90            AUC 0.537 | top 10%: 9.4% ±5 (n=159) | top 20%: 7.0% ±3 (n=316)
+  samo najmladji         AUC 0.517 | top 10%: 6.3% ±4 (n=159) | top 20%: 5.4% ±2 (n=316)
+  samo najjeftiniji      AUC 0.253 | top 10%: 0.0% ±0 (n=159) | top 20%: 0.3% ±1 (n=316)
+  samo najvise minuta    AUC 0.677 | top 10%: 15.7% ±6 (n=159) | top 20%: 15.8% ±4 (n=316)
+
+  model za rast vrijednosti, top 10% (do 1M, izvan petice): 5/101 = 5.0% zaigralo u ligi petice | osnovna stopa 5.8%
+
+=== B. Kvartal rodjenja uz kontrolu dobi
+  dob 0-19.5: Q1: n=215 47.0% | Q2: n=147 53.7% | Q3: n=94 51.1% | Q4: n=69 63.8%
+  dob 19.5-20.5: Q1: n=408 43.9% | Q2: n=282 46.1% | Q3: n=211 50.7% | Q4: n=184 50.5%
+  dob 20.5-21.5: Q1: n=696 35.1% | Q2: n=534 39.1% | Q3: n=372 41.1% | Q4: n=295 43.4%
+  dob 21.5-23: Q1: n=918 26.9% | Q2: n=723 30.3% | Q3: n=543 30.2% | Q4: n=432 38.4%
+  logisticka regresija (sve osobine + sezona): omjer sansi Q4 naspram Q1 = 1.23
+  bootstrap po igracu (300): 95% interval 1.02 - 1.46 | udio ispod 1.0: 0.013
+  ista regresija za objektivnu metu (liga petice): omjer sansi Q4 naspram Q1 = 1.20
+  udio po kvartalu medju mladima (po igracu): {1: 1394, 2: 1041, 3: 766, 4: 608}
+
+=== C. Da li podatak o kvartalu rodjenja popravlja model (glavna meta, do 1M)
+  bez kvartala  gb: AUC 0.620, top10% 66.7% | lr: AUC 0.634, top10% 60.2% | ens: AUC 0.641, top10% 60.2%
+  s kvartalom   gb: AUC 0.618, top10% 64.8% | lr: AUC 0.632, top10% 62.0% | ens: AUC 0.639, top10% 62.0%
+  bez kvartala  Q1: stvarno 38.9% model 32.2% | Q2: stvarno 41.4% model 34.2% | Q3: stvarno 44.4% model 35.1% | Q4: stvarno 49.0% model 35.8%
+  s kvartalom   Q1: stvarno 38.9% model 32.1% | Q2: stvarno 41.4% model 34.0% | Q3: stvarno 44.4% model 35.0% | Q4: stvarno 49.0% model 36.1%
