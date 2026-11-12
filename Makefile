@@ -1,4 +1,4 @@
-.PHONY: setup typecheck lint build test verify data dev preview health demo demo-check demo-record readme
+.PHONY: setup typecheck lint build test verify data dev preview health demo demo-check demo-record readme tennis-data
 
 # Can be run again at any time: an environment from an earlier run is replaced.
 setup:
@@ -68,3 +68,7 @@ demo-record:
 
 readme:
 	python3 scripts/readme_numbers.py
+
+# Rebuilds the tennis data file of the app from the open ATP tables (downloads the ones that are missing).
+tennis-data:
+	.venv/bin/python scripts/tennis_data.py

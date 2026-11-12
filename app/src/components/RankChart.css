@@ -1,0 +1,6 @@
+.rc{display:block;width:100%;height:auto;max-height:300px;margin-top:14px}
+.rc-line{fill:none;stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+.rc-ref{stroke:var(--accent-ink);stroke-width:1.5;stroke-dasharray:5 4}
+.rc-dot{fill:var(--ink);stroke:var(--sheet);stroke-width:2}
+.rc-lab{font:500 12px var(--mono);fill:var(--accent-ink)}
+.rc-val{font:600 13px var(--mono);fill:var(--ink)}

@@ -8,7 +8,8 @@ import { useKeys } from './lib/keys';
 import { reloadAt } from './lib/reload';
 import { readDefaultBrief } from './lib/brief';
 import { activeSection } from './lib/sections';
-import { setDefaultBrief, setDefaultBudget, toggleDetails, useBudget, useDetails, useOrigin } from './lib/store';
+import { setDefaultBrief, setDefaultBudget, toggleDetails, useBudget, useDetails, useOrigin, useSport } from './lib/store';
+import { useTennis } from './lib/tennis/data';
 import { frame } from './lib/text.en';
 import type { MetaFile } from './lib/types';
 import { screenRoutes } from './routes';
@@ -17,7 +18,9 @@ function TopBar() {
   const details = useDetails();
   const budget = useBudget();
   const { pathname } = useLocation();
-  const active = activeSection(pathname, useOrigin(), frame.sections.map((s) => s.path));
+  const tennis = useSport() === 'tennis';
+  const sections = frame.sections;
+  const active = activeSection(pathname, useOrigin(), sections.map((s) => s.path));
   return (
     <header className="top">
       <div className="wrap">
@@ -25,7 +28,7 @@ function TopBar() {
           <b>{frame.brand}</b>
         </div>
         <nav className="steps" aria-label={frame.sectionsLabel}>
-          {frame.sections.map((s) => (
+          {sections.map((s) => (
             <Link key={s.path} to={s.path} aria-current={active === s.path ? 'page' : undefined}>
               <i>{s.number}</i>
               {s.name}
@@ -36,7 +39,7 @@ function TopBar() {
           <button className="chip" type="button" aria-pressed={details} data-tip={frame.detailsTip} onClick={toggleDetails}>
             {frame.detailsLabel} <b>{details ? frame.detailsOn : frame.detailsOff}</b>
           </button>
-          <span className="chip">{frame.budgetChip(money(budget))}</span>
+          <span className="chip">{tennis ? frame.sports.tennis : frame.budgetChip(money(budget))}</span>
         </div>
       </div>
     </header>
@@ -53,13 +56,26 @@ export function sourceLine(meta: MetaFile): string {
   ].join(' · ');
 }
 
-function Footer() {
+function TennisFooter() {
+  const state = useTennis();
+  return (
+    <footer className="foot">
+      <div className="wrap">{state.status === 'ready' ? frame.tennisSource(state.data.meta.source, state.data.meta.source_last_date) : null}</div>
+    </footer>
+  );
+}
+
+function FootballFooter() {
   const state = useData();
   return (
     <footer className="foot">
       <div className="wrap">{state.status === 'ready' ? sourceLine(state.data.meta) : null}</div>
     </footer>
   );
+}
+
+function Footer() {
+  return useSport() === 'tennis' ? <TennisFooter /> : <FootballFooter />;
 }
 
 /** Installs the keyboard and takes the default budget and brief from meta.json once it has loaded. */

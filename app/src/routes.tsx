@@ -3,6 +3,12 @@ import { BlindPick } from './screens/BlindPick/BlindPick';
 import { Evidence } from './screens/Evidence/Evidence';
 import { PlayerCard } from './screens/PlayerCard/PlayerCard';
 import { Radar } from './screens/Radar/Radar';
+import { BySport } from './screens/Tennis/BySport';
+import { TennisBlind } from './screens/Tennis/TennisBlind';
+import { TennisCard } from './screens/Tennis/TennisCard';
+import { TennisEvidence } from './screens/Tennis/TennisEvidence';
+import { TennisRadar } from './screens/Tennis/TennisRadar';
+import { TennisTimeMachine } from './screens/Tennis/TennisTimeMachine';
 import { TimeMachine } from './screens/TimeMachine/TimeMachine';
 
 /**
@@ -11,9 +17,10 @@ import { TimeMachine } from './screens/TimeMachine/TimeMachine';
  * screen are part of the frame (App.tsx) and need no entry here.
  */
 export const screenRoutes: RouteObject[] = [
-  { path: 'blind', element: <BlindPick /> },
-  { path: 'radar', element: <Radar /> },
+  { path: 'blind', element: <BySport football={<BlindPick />} tennis={<TennisBlind />} /> },
+  { path: 'radar', element: <BySport football={<Radar />} tennis={<TennisRadar />} /> },
+  { path: 'tennis/:id', element: <TennisCard /> },
   { path: 'player/:id', element: <PlayerCard /> },
-  { path: 'time-machine', element: <TimeMachine /> },
-  { path: 'evidence', element: <Evidence /> },
+  { path: 'time-machine', element: <BySport football={<TimeMachine />} tennis={<TennisTimeMachine />} /> },
+  { path: 'evidence', element: <BySport football={<Evidence />} tennis={<TennisEvidence />} /> },
 ];

@@ -8,11 +8,14 @@ export const BUDGET_STEP = 50_000;
 /** The three budgets the brief offers as buttons. */
 export const BRIEF_BUDGETS: readonly number[] = [250_000, 500_000, 1_000_000];
 export type Origin = 'blind' | 'radar';
+export type Sport = 'football' | 'tennis';
+export const SPORTS: readonly Sport[] = ['football', 'tennis'];
 export type BlindStep = 'brief' | 'compare' | 'revealed';
 export type Brief = { position: Position; maxAge: MaxAge; matters: Matter[] };
 export type BlindPick = { scoutId: string; modelId: string };
 
 export type StoreState = {
+  sport: Sport;
   budget: number;
   details: boolean;
   origin: Origin;
@@ -29,6 +32,7 @@ const isBudget = (v: unknown): v is number =>
 
 let defaultBudget = FALLBACK_BUDGET;
 const initial = (): StoreState => ({
+  sport: 'football',
   budget: defaultBudget,
   details: false,
   origin: 'blind',
@@ -98,6 +102,7 @@ export const setBlindStep = (step: BlindStep): void => update({ blindStep: step 
 
 export const toggleDetails = (): void => update({ details: !state.details });
 export const setDetails = (on: boolean): void => update({ details: on });
+export const setSport = (sport: Sport): void => update({ sport });
 export const setOrigin = (section: Origin): void => update({ origin: section });
 export const addBlindPick = (pick: BlindPick): void => update({ blindPicks: [...state.blindPicks, pick] });
 export const setModelPick = (id: string | null): void => update({ modelPickId: id });
@@ -114,6 +119,7 @@ export function reset(): void {
 
 const select = <T,>(pick: (s: StoreState) => T) => () => useSyncExternalStore(subscribe, () => pick(state));
 
+export const useSport = select((s) => s.sport);
 export const useBudget = select((s) => s.budget);
 export const useDetails = select((s) => s.details);
 export const useOrigin = select((s) => s.origin);

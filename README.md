@@ -90,6 +90,19 @@ Product model, top 10% at 1,000,000 EUR, season by season:
 
 The notes are written during data preparation by the Claude command-line program, installed and signed in on the team's machine. No API key is used, and a key variable set in the shell is not passed on to the program. Without it, or when a note fails its checks, a template sentence built from the player's own numbers is used and labelled "Summary". The app itself never calls a model. Their one setting is the environment variable `FAIRSCOUT_NOTES`, with the values `model` (the default) and `template`.
 
+## Tennis, the second sport
+
+The blind pick and the radar start with a choice of sport. Tennis uses the same idea with its own data and its own model, on all four screens: blind pick, radar, time machine and evidence.
+
+- **Data:** the open ATP tables of Jeff Sackmann / Tennis Abstract (`tennis_atp`: players, weekly rankings, matches at tour, Challenger and entry level), licence CC BY-NC-SA 4.0: attribution required, non-commercial use only. The author's own repository was not reachable on 12 November 2026, so `scripts/tennis_data.py` downloads the tables from an unchanged public fork of it; the last ranking date in the data is shown in the app's footer.
+- **Pool:** men under 21 on the ranking date, ranked 101 to 1000.
+- **Outcome:** a ranking inside the top 100 at any time in the following three years. Tennis has no market value, so this replaces the rise in value used for football.
+- **Model:** a logistic regression on five inputs from the 52 weeks before the ranking date: age, ranking, win rate, share of matches at Challenger level or higher, and wins over top-200 players. The top tenth of the pool by score is tier A, the next tenth tier B, the rest tier C.
+- **Test:** walk-forward over past June pools: each year's pool is scored by a model that saw only pools whose three years had already ended. The script prints the result and the evidence screen shows it, next to three simple rules (best ranking, most wins, youngest), the margin of error and the result of each year. The time machine shows, for each tested year, the players the model ranked highest then and what happened to them, and the players it missed.
+- **Limits:** the pool is small (about a hundred players at a time); the outcome is a ranking, not money; picking by best ranking alone is already a strong rule and the model's edge over it is inside the margin of error; the data ends at the last ranking date and is not refreshed by `make data`.
+
+`make tennis-data` rebuilds `app/public/data/tennis.json` (a few seconds once the tables are in `data/tennis/`).
+
 ## Run it
 
 You need Python 3.12, the tool `uv`, Node.js with npm, and Chrome or Chromium for the health check and the browser checks.
