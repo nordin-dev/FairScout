@@ -35,6 +35,8 @@ export type LookRow = {
   adjust: { where: string; raw: string; adjusted: string } | null;
   /** Short warnings: few minutes, born late in the year. */
   flags: readonly string[];
+  /** True for a player who is found by name only: he is not among the players offered to start from. */
+  searchOnly?: boolean;
 };
 
 export type LookMatch = { row: LookRow; similarity: number };
@@ -66,7 +68,7 @@ export function lookalikes(ref: LookRow, rows: readonly LookRow[], limit: number
 /** The players a scout is most likely to name: the furthest out of reach first. */
 export function suggestions(rows: readonly LookRow[]): LookRow[] {
   return rows
-    .filter((r) => r.compare)
+    .filter((r) => r.compare && !r.searchOnly)
     .sort((a, b) => b.cost - a.cost || (a.id < b.id ? -1 : 1))
     .slice(0, MAX_SUGGESTIONS);
 }
@@ -78,12 +80,19 @@ const plain = (text: string): string =>
     .replace(/đ/gi, 'd')
     .toLowerCase();
 
-/** Players whose name contains the typed text, accents ignored ("demirovic" finds "Demirović"). */
+/**
+ * Players whose name contains every typed word, accents ignored ("demirovic" finds "Demirović",
+ * "dias ruben" finds "Rúben Dias"). The furthest out of reach first.
+ */
 export function searchRows(rows: readonly LookRow[], query: string): LookRow[] {
-  const q = plain(query.trim());
-  if (!q) return [];
+  const words = plain(query).split(/\s+/).filter(Boolean);
+  if (words.length === 0) return [];
   return rows
-    .filter((r) => r.compare && plain(r.name).includes(q))
+    .filter((r) => {
+      if (!r.compare) return false;
+      const name = plain(r.name);
+      return words.every((w) => name.includes(w));
+    })
     .sort((a, b) => b.cost - a.cost || (a.id < b.id ? -1 : 1))
     .slice(0, MAX_SUGGESTIONS);
 }

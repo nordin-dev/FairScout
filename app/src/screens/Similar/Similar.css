@@ -1,3 +1,6 @@
+.sim-back{all:unset;cursor:pointer;display:inline-block;font:500 12px/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--accent-ink);margin-bottom:16px}
+.sim-back:hover{color:var(--ink)}
+.sim-back:focus-visible{outline:2px solid var(--accent-ink);outline-offset:2px}
 .sim-controls{display:flex;align-items:center;gap:16px;margin-top:6px}
 .sim-find{margin-top:24px;padding:28px;display:grid;gap:18px}
 .sim-search{font:500 22px/1.2 var(--sans);color:var(--ink);background:var(--paper);border:1px solid var(--hair-strong);border-radius:2px;padding:14px 16px;width:100%;max-width:520px}
@@ -9,7 +12,8 @@
 .sim-pick b{font:600 20px/1.2 var(--sans);letter-spacing:-.01em;overflow-wrap:anywhere}
 .sim-pick .sim-pick-cost{font:600 20px/1.2 var(--sans);letter-spacing:-.01em;white-space:nowrap}
 .sim-pick .sim-pick-line{grid-column:1/-1;font-size:14px;color:var(--ink-2)}
-.sim-none{font-size:17px;color:var(--ink-2)}
+.sim-none{font-size:17px;color:var(--ink-2);display:grid;gap:4px}
+.sim-none-hint{font-size:14px}
 .sim-ref{margin-top:24px;padding:24px 28px;display:grid;grid-template-columns:minmax(0,1.2fr) auto minmax(0,1fr) auto;gap:36px;align-items:center;border-left:3px solid var(--ink)}
 .sim-ref-id{display:grid;gap:4px}
 .sim-name{font:600 28px/34px var(--sans);letter-spacing:-.015em;overflow-wrap:anywhere}

@@ -8,6 +8,7 @@ export const similar = {
   loadingPlayers: 'Loading players…',
   wanted: 'You want',
   change: 'Change player',
+  back: '← Back to search',
   percent: (n: number) => `${n}%`,
   similarWord: 'similar',
   matchLabel: (name: string) => `Similar player: ${name}`,
@@ -33,6 +34,7 @@ export const similar = {
     facts: (position: string, age: number) => `${position} · age ${age}`,
     detail:
       'The three scores are percentiles of league-adjusted assists, league-adjusted goals and share of team minutes, so a goal in a weaker league counts for less. Only players of the same position are compared. Similarity is 100 minus the mean gap of the three scores: a display scale, not a probability. Matches come from the pool of young players and cost less than the player you named.',
+    noneHint: 'Only players with enough league minutes this season, in one of the leagues Fair Scout covers, can be named.',
     errorFile: 'players.json',
   },
   tennis: {

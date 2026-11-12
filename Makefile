@@ -1,4 +1,4 @@
-.PHONY: setup typecheck lint build test verify data dev preview health demo demo-check demo-record readme tennis-data basketball-data
+.PHONY: setup typecheck lint build test verify data dev preview health demo demo-check demo-record readme tennis-data basketball-data references-data
 
 # Can be run again at any time: an environment from an earlier run is replaced.
 setup:
@@ -76,3 +76,7 @@ tennis-data:
 # Rebuilds the basketball data file of the app from the public EuroLeague and EuroCup statistics (downloads the seasons that are missing).
 basketball-data:
 	.venv/bin/python scripts/basketball_data.py
+
+# Rebuilds the list of players that can be named on the "Similar" screen from the work tables of the pipeline (run `make data` first).
+references-data:
+	.venv/bin/python scripts/reference_players.py

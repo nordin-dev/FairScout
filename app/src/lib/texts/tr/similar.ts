@@ -10,6 +10,7 @@ export const similar: Loose<typeof en.similar> = {
   loadingPlayers: 'Oyuncular yükleniyor…',
   wanted: 'İstediğin',
   change: 'Oyuncuyu değiştir',
+  back: '← Aramaya dön',
   percent: (n: number) => `%${n}`,
   similarWord: 'benzer',
   matchLabel: (name: string) => `Benzer oyuncu: ${name}`,
@@ -35,6 +36,7 @@ export const similar: Loose<typeof en.similar> = {
     facts: (position: string, age: number) => `${position} · ${age} yaş`,
     detail:
       'Üç puan; lige göre düzeltilmiş asist, lige göre düzeltilmiş gol ve takım dakikalarındaki pay için yüzdelik dilimlerdir; yani zayıf bir ligdeki gol daha az sayılır. Yalnızca aynı mevkideki oyuncular kıyaslanır. Benzerlik, 100 eksi üç puanın ortalama farkıdır: bir gösterim ölçeğidir, olasılık değildir. Benzer oyuncular genç oyuncu havuzundan gelir ve seçtiğin oyuncudan ucuzdur.',
+    noneHint: 'Yalnızca bu sezon, Fair Scout’un kapsadığı liglerden birinde yeterli lig dakikası olan oyuncular seçilebilir.',
     errorFile: 'players.json',
   },
   tennis: {

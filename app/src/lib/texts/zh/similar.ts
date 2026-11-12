@@ -10,6 +10,7 @@ export const similar: Loose<typeof en.similar> = {
   loadingPlayers: '正在加载球员…',
   wanted: '你想要',
   change: '更换球员',
+  back: '← 返回搜索',
   percent: (n: number) => `${n}%`,
   similarWord: '相似',
   matchLabel: (name: string) => `相似球员：${name}`,
@@ -35,6 +36,7 @@ export const similar: Loose<typeof en.similar> = {
     facts: (position: string, age: number) => `${position} · ${age} 岁`,
     detail:
       '三项分数是联赛修正后的助攻、联赛修正后的进球以及占球队出场时间比例的百分位，所以弱联赛里的进球分量更轻。只比较同位置的球员。相似度是 100 减去三项分数的平均差距：这是展示用的刻度，不是概率。相似球员来自年轻球员候选池，身价低于你选的球员。',
+    noneHint: '只能选择本赛季在 Fair Scout 覆盖的联赛中有足够联赛出场时间的球员。',
     errorFile: 'players.json',
   },
   tennis: {

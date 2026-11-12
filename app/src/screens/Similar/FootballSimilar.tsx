@@ -5,6 +5,7 @@ import { dataText } from '../../lib/dataText';
 import { money } from '../../lib/format';
 import type { LookRow } from '../../lib/lookalike';
 import { fixed2, isLimitedPosition } from '../../lib/rating';
+import { useReferences, type Reference } from '../../lib/references';
 import { similar as t } from '../../lib/similarText';
 import { BRIEF_BUDGETS, setBudget, setModelPick, useBudget } from '../../lib/store';
 import { states } from '../../lib/text.en';
@@ -40,6 +41,42 @@ export function footballRow(p: Player): LookRow {
   };
 }
 
+/**
+ * A player of references.json as a row: he can be named, and is never offered as a match or as a
+ * player to start from. Goals say little about a defender or a goalkeeper, so they get no output line.
+ */
+export function referenceRow(p: Reference): LookRow {
+  const scores = [p.creating, p.scoring, p.role] as const;
+  const flags: string[] = [];
+  if (p.low_sample) flags.push(t.flagLowSample);
+  if (p.born_q4) flags.push(t.flagBornLate);
+  const limited = p.group === 'Defender' || p.group === 'Goalkeeper';
+  return {
+    id: p.id,
+    name: p.name,
+    line: `${p.club} · ${p.league}`,
+    group: positionOf({ position: p.position, position_group: p.group }),
+    scores,
+    compare: scores,
+    cost: p.value,
+    costText: money(p.value),
+    facts: t.football.facts(dataText(p.position), Math.floor(p.age)),
+    tier: null,
+    eligible: false,
+    adjust: !limited && known(p.ga90_adj) ? { where: p.league, raw: fixed2(p.ga90), adjusted: fixed2(p.ga90_adj) } : null,
+    flags,
+    searchOnly: true,
+  };
+}
+
+/** The rows of players.json, then the players of references.json that are not among them. */
+export function footballRows(players: readonly Player[], references: readonly Reference[]): LookRow[] {
+  const rows = players.map(footballRow);
+  const have = new Set(rows.map((r) => r.id));
+  for (const p of references) if (!have.has(p.id)) rows.push(referenceRow(p));
+  return rows;
+}
+
 /** How many times cheaper: whole from 10 up, one decimal below. */
 export function timesCheaper(ref: LookRow, row: LookRow): string {
   const times = row.cost > 0 ? ref.cost / row.cost : 0;
@@ -51,7 +88,8 @@ export function FootballSimilar() {
   const state = useData();
   const budget = useBudget();
   const players = state.status === 'ready' ? state.data.players : null;
-  const rows = useMemo(() => (players ? players.map(footballRow) : []), [players]);
+  const references = useReferences();
+  const rows = useMemo(() => (players ? footballRows(players, references) : []), [players, references]);
   const w = t.football;
 
   if (state.status === 'error') {

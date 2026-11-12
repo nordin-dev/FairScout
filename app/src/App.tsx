@@ -7,6 +7,7 @@ import './components/Frame.css';
 import { DataProvider, useData } from './lib/data';
 import { LANGS, LANG_NAMES, LANG_SHORT, setLang, useLang } from './lib/i18n';
 import { useKeys } from './lib/keys';
+import { loadReferences } from './lib/references';
 import { reloadAt } from './lib/reload';
 import { activeSection } from './lib/sections';
 import { setDefaultBudget, toggleDetails, useDetails, useOrigin, useSport } from './lib/store';
@@ -110,10 +111,17 @@ function Footer() {
   return sport === 'tennis' ? <TennisFooter /> : sport === 'basketball' ? <BasketFooter /> : <FootballFooter />;
 }
 
-/** Installs the keyboard and takes the default budget from meta.json once it has loaded. */
+/**
+ * Installs the keyboard and takes the default budget from meta.json once it has loaded. It also asks
+ * for the players that can be named on the "Similar" screen at the first load, whatever screen is open,
+ * so that the search still knows them after the network is switched off.
+ */
 function FrameEffects() {
   const state = useData();
   useKeys();
+  useEffect(() => {
+    loadReferences().catch(() => undefined);
+  }, []);
   const defaultBudget = state.status === 'ready' ? state.data.meta.default_brief.budget_eur : null;
   useEffect(() => {
     if (defaultBudget !== null) setDefaultBudget(defaultBudget);

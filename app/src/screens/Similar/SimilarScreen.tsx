@@ -24,6 +24,8 @@ export type SimilarWords = {
   costLabel: string;
   scores: readonly string[];
   detail: string;
+  /** Who can be named at all, shown when a typed name finds nobody. */
+  noneHint?: string;
 };
 
 type Props = {
@@ -138,6 +140,13 @@ export function SimilarScreen({ sport, rows, words, limit, limitText, limitOptio
 
   return (
     <>
+      {refRow && (
+        <div>
+          <button type="button" className="sim-back" onClick={() => setRef(sport, null)}>
+            {t.back}
+          </button>
+        </div>
+      )}
       <p className="kicker">{t.kicker}</p>
       <h1>{refRow ? words.title(refRow.name, limitText) : words.question}</h1>
       <div className="sim-controls">
@@ -188,9 +197,10 @@ export function SimilarScreen({ sport, rows, words, limit, limitText, limitOptio
             onChange={(e) => setQuery(e.target.value)}
           />
           {picks.length === 0 ? (
-            <p className="sim-none" role="status">
-              {t.noneFound}
-            </p>
+            <div className="sim-none" role="status">
+              <p>{t.noneFound}</p>
+              {words.noneHint ? <p className="sim-none-hint">{words.noneHint}</p> : null}
+            </div>
           ) : (
             <div className="sim-picks" role="group" aria-label={t.suggestionsLabel}>
               {picks.map((r) => (

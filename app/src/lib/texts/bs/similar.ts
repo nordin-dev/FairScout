@@ -10,6 +10,7 @@ export const similar: Loose<typeof en.similar> = {
   loadingPlayers: 'Učitavam igrače…',
   wanted: 'Želiš',
   change: 'Promijeni igrača',
+  back: '← Nazad na pretragu',
   percent: (n: number) => `${n}%`,
   similarWord: 'sličan',
   matchLabel: (name: string) => `Sličan igrač: ${name}`,
@@ -35,6 +36,7 @@ export const similar: Loose<typeof en.similar> = {
     facts: (position: string, age: number) => `${position} · ${age} god.`,
     detail:
       'Tri boda su percentili asistencija prilagođenih ligi, golova prilagođenih ligi i udjela u minutama ekipe, pa gol u slabijoj ligi vrijedi manje. Porede se samo igrači iste pozicije. Sličnost je 100 minus prosječna razlika ta tri boda: skala za prikaz, a ne vjerovatnoća. Slični igrači dolaze iz grupe mladih igrača i koštaju manje od igrača kojeg si izabrao.',
+    noneHint: 'Mogu se imenovati samo igrači s dovoljno ligaških minuta ove sezone, u jednoj od liga koje Fair Scout pokriva.',
     errorFile: 'players.json',
   },
   tennis: {
