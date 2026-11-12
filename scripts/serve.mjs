@@ -56,7 +56,9 @@ export function serve(root, port = 0, host = LOCAL_HOST) {
         res.writeHead(404).end('not found');
         return;
       }
-      res.writeHead(200, { 'content-type': TYPES[path.extname(file)] ?? 'application/octet-stream' });
+      // The page itself is never served from the browser's cache, so a new build shows on the next load.
+      const cache = path.extname(file) === '.html' ? { 'cache-control': 'no-cache' } : {};
+      res.writeHead(200, { 'content-type': TYPES[path.extname(file)] ?? 'application/octet-stream', ...cache });
       res.end(body);
     });
   });

@@ -34,7 +34,7 @@ export const myPicks = {
   signedOutText: 'Your list is kept for the scout who is logged in.',
   signedOutAction: 'Log in',
   title: (n: number) => (n === 0 ? 'Your list is empty.' : n === 1 ? '1 player on your list.' : `${n} players on your list.`),
-  emptyText: 'Add players from the blind pick, the radar or a player card.',
+  emptyText: 'Add players from the similar players, the radar or a player card.',
   lede: (name: string) => `Scout: ${name}`,
   filterLabel: 'Show sport',
   all: 'All',
@@ -42,7 +42,8 @@ export const myPicks = {
   group: (sport: string, n: number) => `${sport} · ${n}`,
   noOutlook: '—',
   from: {
-    blind: 'From the blind pick',
+    similar: 'From the similar players',
+    blind: 'From the similar players',
     radar: 'From the radar',
     card: 'From the player card',
   } satisfies Record<PickSource, string>,

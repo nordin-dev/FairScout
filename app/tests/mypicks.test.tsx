@@ -38,7 +38,7 @@ describe('My picks', () => {
     await register('Ana', 'secret');
     renderPicks();
     expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Your list is empty.');
-    expect(screen.getByText('Add players from the blind pick, the radar or a player card.')).toBeInTheDocument();
+    expect(screen.getByText('Add players from the similar players, the radar or a player card.')).toBeInTheDocument();
     expect(screen.getByText('Scout: Ana')).toBeInTheDocument();
   });
 

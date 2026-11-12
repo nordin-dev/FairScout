@@ -8,7 +8,7 @@ const pl = (n: number, one: string, few: string, many: string) => {
 };
 
 export const tennisCard: Loose<typeof en.tennisCard> = {
-  backToBlind: '← Nazad na Slijepi izbor',
+  backToSimilar: '← Nazad na Slične',
   backToRadar: '← Nazad na Radar',
   headline: (age: number, country: string, hand: 'Right' | 'Left' | null): string =>
     ['Tenis', `${age} god.`, country, hand ? (hand === 'Left' ? 'ljevak' : 'dešnjak') : ''].filter(Boolean).join(' · '),

@@ -64,29 +64,29 @@ describe('loader', () => {
 });
 
 describe('frame', () => {
-  it('redirects the start address to /blind', async () => {
+  it('redirects the start address to /similar', async () => {
     const router = renderAt('/');
-    await waitFor(() => expect(router.state.location.pathname).toBe('/blind'));
+    await waitFor(() => expect(router.state.location.pathname).toBe('/similar'));
   });
 
-  it('shows the not-found message with a link to /blind for an unknown address', async () => {
+  it('shows the not-found message with a link to /similar for an unknown address', async () => {
     renderAt('/nowhere');
     expect(await screen.findByText('This page does not exist.')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Go to the blind pick' })).toHaveAttribute('href', '/blind');
+    expect(screen.getByRole('link', { name: 'Go to the similar players' })).toHaveAttribute('href', '/similar');
   });
 
   it('lists the four sections in order and marks the active one', async () => {
     renderAt('/radar');
     const nav = await screen.findByRole('navigation', { name: 'Sections' });
     const links = within(nav).getAllByRole('link');
-    expect(links.map((l) => l.textContent)).toEqual(['01Blind pick', '02Radar', '03Time machine', '04Evidence']);
-    expect(links.map((l) => l.getAttribute('href'))).toEqual(['/blind', '/radar', '/time-machine', '/evidence']);
+    expect(links.map((l) => l.textContent)).toEqual(['01Similar', '02Radar', '03Time machine', '04Evidence']);
+    expect(links.map((l) => l.getAttribute('href'))).toEqual(['/similar', '/radar', '/time-machine', '/evidence']);
     expect(links.map((l) => l.getAttribute('aria-current'))).toEqual([null, 'page', null, null]);
     expect(screen.getByText('FAIR SCOUT')).toBeInTheDocument();
   });
 
   it('shows the loading state, then the source line from meta.json', async () => {
-    renderAt('/blind');
+    renderAt('/similar');
     expect(screen.getByRole('status')).toHaveTextContent('Loading players');
     expect(screen.getByText('FAIR SCOUT')).toBeInTheDocument();
     const meta = sample('meta') as { source: string; leagues: number; seasons: string; built: string };
@@ -102,7 +102,7 @@ describe('frame', () => {
     stubFetch({
       evidence: () => (broken ? new Response('{ not json', { status: 200 }) : new Response(JSON.stringify(sample('evidence')))),
     });
-    renderAt('/blind');
+    renderAt('/similar');
     const alert = await screen.findByRole('alert');
     expect(alert).toHaveTextContent('The data could not be loaded.');
     expect(alert).toHaveTextContent('evidence.json');
@@ -112,7 +112,7 @@ describe('frame', () => {
 
     broken = false;
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
-    expect(await screen.findByRole('heading', { name: 'What are you looking for?' })).toBeInTheDocument();
+    expect(await screen.findByRole('heading', { name: 'Who can you not afford?' })).toBeInTheDocument();
     expect(screen.queryByRole('alert')).not.toBeInTheDocument();
   });
 });
@@ -121,7 +121,7 @@ describe('scroll', () => {
   it('scrolls to the top on every change of route', async () => {
     const scrollTo = vi.fn();
     vi.stubGlobal('scrollTo', scrollTo);
-    const router = renderAt('/blind');
+    const router = renderAt('/similar');
     await waitFor(() => expect(scrollTo).toHaveBeenCalledWith(0, 0));
     scrollTo.mockClear();
     await router.navigate('/radar');
@@ -149,7 +149,7 @@ describe('a screen that throws', () => {
     const block = await screen.findByRole('alert');
     expect(within(block).getByRole('heading', { level: 1 })).toHaveTextContent(frame.screenErrorTitle);
     await userEvent.click(within(block).getByRole('link', { name: frame.screenErrorLink }));
-    expect(reloadAt).toHaveBeenCalledWith('#/blind');
+    expect(reloadAt).toHaveBeenCalledWith('#/similar');
     expect(screen.getByRole('navigation', { name: 'Sections' })).toBeInTheDocument();
     quiet.mockRestore();
   });

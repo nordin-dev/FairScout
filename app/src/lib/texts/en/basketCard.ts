@@ -1,6 +1,6 @@
 /** All user-visible English text of the basketball player card. */
 export const basketCard = {
-  backToBlind: '← Back to blind pick',
+  backToSimilar: '← Back to similar',
   backToRadar: '← Back to radar',
   headline: (position: string | null, age: number, team: string, competition: string, country: string | null): string =>
     ['Basketball', position, `age ${age}`, `${team}, ${competition}`, country].filter(Boolean).join(' · '),

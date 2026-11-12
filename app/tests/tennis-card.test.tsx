@@ -86,9 +86,9 @@ describe('tennis card', () => {
   });
 
   it('links back to the section it was opened from', () => {
-    setOrigin('blind');
+    setOrigin('similar');
     renderCard('t1');
-    expect(screen.getByRole('link', { name: t.backToBlind })).toHaveAttribute('href', '/blind');
+    expect(screen.getByRole('link', { name: t.backToSimilar })).toHaveAttribute('href', '/similar');
   });
 });
 

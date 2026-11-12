@@ -3,7 +3,7 @@ import type * as en from '../en/basketCard';
 
 /** 篮球球员卡片的全部界面文字。 */
 export const basketCard: Loose<typeof en.basketCard> = {
-  backToBlind: '← 返回盲选',
+  backToSimilar: '← 返回相似',
   backToRadar: '← 返回雷达',
   headline: (position: string | null, age: number, team: string, competition: string, country: string | null): string =>
     ['篮球', position, `${age} 岁`, `${team}，${competition}`, country].filter(Boolean).join(' · '),

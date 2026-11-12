@@ -35,7 +35,7 @@ export const myPicks: Loose<typeof en.myPicks> = {
   signedOutText: 'Listen, giriş yapan gözlemci için saklanır.',
   signedOutAction: 'Giriş yap',
   title: (n: number) => (n === 0 ? 'Listen boş.' : `Listende ${n} oyuncu var.`),
-  emptyText: 'Kör seçimden, radardan ya da bir oyuncu kartından oyuncu ekle.',
+  emptyText: 'Benzerlerden, radardan ya da bir oyuncu kartından oyuncu ekle.',
   lede: (name: string) => `Gözlemci: ${name}`,
   filterLabel: 'Sporu göster',
   all: 'Tümü',
@@ -43,7 +43,8 @@ export const myPicks: Loose<typeof en.myPicks> = {
   group: (sport: string, n: number) => `${sport} · ${n}`,
   noOutlook: '—',
   from: {
-    blind: 'Kör seçimden',
+    similar: 'Benzerlerden',
+    blind: 'Benzerlerden',
     radar: 'Radardan',
     card: 'Oyuncu kartından',
   } satisfies Record<PickSource, string>,

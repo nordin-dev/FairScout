@@ -9,7 +9,7 @@ const pl = (n: number, one: string, few: string, many: string) => {
 
 /** Svi tekstovi kartice košarkaša. */
 export const basketCard: Loose<typeof en.basketCard> = {
-  backToBlind: '← Nazad na Slijepi izbor',
+  backToSimilar: '← Nazad na Slične',
   backToRadar: '← Nazad na Radar',
   headline: (position: string | null, age: number, team: string, competition: string, country: string | null): string =>
     ['Košarka', position, `${age} god.`, `${team}, ${competition}`, country].filter(Boolean).join(' · '),

@@ -36,7 +36,7 @@ export const myPicks: Loose<typeof en.myPicks> = {
   signedOutText: '名单会保存给当前登录的球探。',
   signedOutAction: '登录',
   title: (n: number) => (n === 0 ? '你的名单是空的。' : `你的名单里有 ${n} 名球员。`),
-  emptyText: '从盲选、雷达或球员卡片中添加球员。',
+  emptyText: '从相似、雷达或球员卡片中添加球员。',
   lede: (name: string) => `球探：${name}`,
   filterLabel: '显示项目',
   all: '全部',
@@ -44,7 +44,8 @@ export const myPicks: Loose<typeof en.myPicks> = {
   group: (sport: string, n: number) => `${sport} · ${n}`,
   noOutlook: '—',
   from: {
-    blind: '来自盲选',
+    similar: '来自相似',
+    blind: '来自相似',
     radar: '来自雷达',
     card: '来自球员卡片',
   } satisfies Record<PickSource, string>,

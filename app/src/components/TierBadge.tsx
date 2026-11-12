@@ -1,5 +1,5 @@
 import type { Tier } from '../lib/types';
-import { blind } from '../lib/text.en';
+import { tier as t } from '../lib/text.en';
 import './TierBadge.css';
 
 type TierBadgeProps = {
@@ -11,7 +11,7 @@ type TierBadgeProps = {
 export function TierBadge({ tier, size = 'normal' }: TierBadgeProps) {
   const cls = `tier tier-${tier.toLowerCase()}${size === 'xl' ? ' xl' : ''}`;
   return (
-    <span className={cls} role="img" aria-label={blind.tierLabel(tier)}>
+    <span className={cls} role="img" aria-label={t.label(tier)}>
       {tier}
     </span>
   );

@@ -30,7 +30,7 @@ export const frame: Loose<typeof en.frame> = {
   brand: 'FAIR SCOUT',
   sectionsLabel: 'Dijelovi',
   sections: [
-    { number: '01', name: 'Slijepi izbor', path: '/blind' },
+    { number: '01', name: 'Slični', path: '/similar' },
     { number: '02', name: 'Radar', path: '/radar' },
     { number: '03', name: 'Vremeplov', path: '/time-machine' },
     { number: '04', name: 'Dokazi', path: '/evidence' },
@@ -39,7 +39,6 @@ export const frame: Loose<typeof en.frame> = {
   detailsOn: 'uklj.',
   detailsOff: 'isklj.',
   detailsTip: 'Pokazuje metod iza svake brojke. Tipka: D',
-  budgetChip: (budget: string) => `Budžet ≤ ${budget}`,
   picks: {
     add: '+ Dodaj u moje izbore',
     saved: '✓ U mojim izborima',
@@ -56,10 +55,10 @@ export const frame: Loose<typeof en.frame> = {
   basketballSource: (source: string, season: string) => `Podaci: ${source} · sezona ${season}`,
   tennisSource: (source: string, date: string) => `Podaci: ${source} · ATP plasman, ${date}`,
   notFoundTitle: 'Ova stranica ne postoji.',
-  notFoundLink: 'Idi na Slijepi izbor',
+  notFoundLink: 'Idi na Slične',
   screenErrorTitle: 'Ovaj ekran se nije mogao prikazati.',
   screenErrorBody: 'Ostali ekrani i dalje rade.',
-  screenErrorLink: 'Učitaj ponovo na Slijepom izboru',
+  screenErrorLink: 'Učitaj ponovo na Sličnima',
   sourceLabel: 'Podaci',
   leagues: (n: number) => `${n} ${liga(n)}`,
   seasons: (range: string) => `sezone ${range}`,
@@ -75,116 +74,12 @@ export const states: Loose<typeof en.states> = {
   loading: 'Učitavam podatke…',
 };
 
-export const blind: Loose<typeof en.blind> = {
-  kicker: '01 — Slijepi izbor',
-  question: 'Šta tražiš?',
-  positionLabel: 'Pozicija',
-  positions: [
-    { value: 'winger', label: 'Krilo' },
-    { value: 'striker', label: 'Napadač' },
-    { value: 'midfielder', label: 'Vezni igrač' },
-    { value: 'defender', label: 'Odbrambeni igrač' },
-    { value: 'goalkeeper', label: 'Golman' },
-  ],
-  ageLabel: 'Godine',
-  ages: (bornFrom: number | null) => [
-    { value: '19', label: '19 ili mlađi' },
-    { value: '21', label: bornFrom === null ? 'U21' : `U21 · rođeni ${bornFrom}+` },
-  ],
-  ageWords: (maxAge: number) => (maxAge === 21 ? 'U21' : `${maxAge} ili mlađi`),
-  budgetLabel: 'Budžet',
-  budgets: [
-    { value: '250000', label: 'Do €250k' },
-    { value: '500000', label: 'Do €500k' },
-    { value: '1000000', label: 'Do €1M' },
-  ],
-  mattersLabel: 'Najvažnije',
-  mattersHint: 'izaberi dvoje',
-  matters: [
-    { value: 'creates', label: 'Stvara šanse' },
-    { value: 'scores', label: 'Daje golove' },
-    { value: 'plays', label: 'Igra redovno' },
-  ],
-  countPlural: 'igrača po tvojim uslovima',
-  tooFew: (n: number) =>
-    `${pl(n, 'igrač odgovara', 'igrača odgovaraju', 'igrača odgovara')}. Trebaju tri: povećaj budžet ili starosnu granicu.`,
-  loadingPlayers: 'Učitavam igrače…',
-  showThree: 'Pokaži mi trojicu, bez imena →',
-  title: (plural: string) => `Tri ${plural}. Bez imena. Izaberi jednog.`,
-  plurals: {
-    winger: 'krila',
-    striker: 'napadača',
-    midfielder: 'vezna igrača',
-    defender: 'odbrambena igrača',
-    goalkeeper: 'golmana',
-  },
-  summary: (position: string, ageWords: string, budget: string, matters: string[]) =>
-    `${position} · ${ageWords} · do ${budget} · ${matters.join(', ')}`,
-  matterWords: { creates: 'stvara šanse', scores: 'daje golove', plays: 'igra redovno' },
-  change: 'Promijeni',
-  dimLabels: { creates: 'Kreacija', scores: 'Golovi', plays: 'Minutaža' },
-  caption: 'Bodovi do 100, u odnosu na igrače iste pozicije i istih godina. Podebljano = ono što tražiš.',
-  detailCaption:
-    'Bodovi su percentili golova prilagođenih ligi, asistencija prilagođenih ligi i udjela u minutama ekipe. Tri kandidata su najbolji po modelu, prvi na sirovoj listi strijelaca i najbolji preostali za tvoj zahtjev, prikazani stalnim redoslijedom za taj zahtjev. Cijena, klub, liga i mišljenje modela ostaju skriveni do izbora.',
-  candidate: (letter: string) => `Igrač ${letter}`,
-  hiddenLabel: 'skriveno dok ne izabereš',
-  facts: (position: string, age: number) => `${position} · ${age} god.`,
-  pick: 'Izaberi ovog igrača',
-  pickLabel: (letter: string) => `Izaberi igrača ${letter}`,
-  labelPrice: 'Cijena',
-  labelGoals: 'Golovi',
-  labelOutlook: 'Izgledi',
-  tierLabel: (tier: string) => `Tier ${tier}`,
-  noTier: '—',
-  yourPick: 'Tvoj izbor',
-  tagModel: 'Izbor modela',
-  tagGoals: 'Najviše golova',
-  verdictAgree: (letter: string) => `Ti i model se slažete: ${letter}.`,
-  verdictAgreeSub: 'Izabran po onome šta radi, a ne po tome ko je. Na tvojoj je listi.',
-  verdictDisagree: (you: string, model: string) => `Tvoj izbor je ${you}. Model bira ${model}.`,
-  verdictDisagreeSub: 'Obojica idu na tvoju listu. Gdje se ne slažete, vrijedi puta.',
-  seeWhy: 'Pogledaj zašto →',
-  reasonLabel: (model: string, scout: string) => `${model} i ${scout} jedan pored drugog`,
-  reasonCandidate: (letter: string, name: string) => `${letter} · ${name}`,
-  reasonRows: {
-    tier: 'Izgledi',
-    rating: 'Ocjena, od 100',
-    price: 'Cijena',
-    age: 'Godine',
-    minutes: 'Minute',
-  },
-  reasonAheadMark: '✓',
-  reasonAheadWord: 'bolji',
-  reasonAheadNote: '✓ = bolji u ovom redu',
-  reasonTiers: (model: string, modelTier: string, scout: string, scoutTier: string) =>
-    modelTier === scoutTier
-      ? `${model} i ${scout} imaju iste izglede: tier ${modelTier}.`
-      : `${model} ima izglede tier ${modelTier}, ${scout} tier ${scoutTier}.`,
-  reasonTiersBetter: (model: string, modelTier: string, scout: string, scoutTier: string) =>
-    `${model} je modelu draži zbog izgleda: tier ${modelTier}, dok je ${scout} tier ${scoutTier}.`,
-  reasonDrivers: (model: string, items: string[]) => `${model}, šta model vidi: ${items.join(' · ')}.`,
-  reasonScoreHigher: (model: string) => `U tom tieru ${model} kod modela ima više bodova.`,
-  reasonTierUnknown: (model: string, scout: string) => `Izgledi nisu poznati: ${model} ili ${scout}.`,
-  reasonAhead: {
-    rating: 'višu ocjenu',
-    price: 'nižu cijenu',
-    age: 'manje godina',
-    minutes: 'više minuta',
-  },
-  reasonBehind: {
-    rating: 'nižu ocjenu',
-    price: 'višu cijenu',
-    age: 'više godina',
-    minutes: 'manje minuta',
-  },
-  reasonRowsAhead: (model: string, ahead: string, behind: string) =>
-    ahead && behind ? `${model} ima ${ahead}, ali ${behind}.` : ahead ? `${model} ima ${ahead}.` : behind ? `${model} ima ${behind}.` : '',
-  reasonList: (items: string[]) =>
-    items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} i ${items[items.length - 1]}`,
+export const tier: Loose<typeof en.tier> = {
+  label: (tier: string) => `Tier ${tier}`,
 };
 
 export const player: Loose<typeof en.player> = {
-  backToBlind: '← Nazad na Slijepi izbor',
+  backToSimilar: '← Nazad na Slične',
   similarLabel: 'Slični, u tvom budžetu',
   similarNone: 'Nema sličnog igrača u ovom budžetu.',
   similarMeta: (league: string, price: string) => `${league} · ${price}`,

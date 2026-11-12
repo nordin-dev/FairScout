@@ -1,5 +1,5 @@
 export const tennisCard = {
-  backToBlind: '← Back to blind pick',
+  backToSimilar: '← Back to similar',
   backToRadar: '← Back to radar',
   headline: (age: number, country: string, hand: 'Right' | 'Left' | null): string =>
     ['Tennis', `age ${age}`, country, hand ? `${hand === 'Left' ? 'left' : 'right'}-handed` : ''].filter(Boolean).join(' · '),

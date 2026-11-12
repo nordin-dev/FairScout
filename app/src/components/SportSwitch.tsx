@@ -3,7 +3,7 @@ import { frame } from '../lib/text.en';
 import './SegmentSwitch.css';
 import './SportSwitch.css';
 
-/** The choice of sport above the blind pick and the radar: one pressed at a time. */
+/** The choice of sport above every section: one pressed at a time. */
 export function SportSwitch() {
   const sport = useSport();
   return (

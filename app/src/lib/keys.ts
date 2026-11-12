@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { toggleDetails, getState, type StoreState } from './store';
 
 const SECTION_KEYS: Record<string, string> = {
-  '1': '/blind',
+  '1': '/similar',
   '2': '/radar',
   '3': '/time-machine',
   '4': '/evidence',
@@ -30,13 +30,13 @@ export function decideKey(
   if (k === 'd') return { type: 'details' };
   const onCard = path.startsWith('/player/');
   if (key === 'ArrowRight') {
-    if (path === '/blind') return go(state.modelPickId ? `/player/${state.modelPickId}` : '/radar');
+    if (path === '/similar') return go(state.modelPickId ? `/player/${state.modelPickId}` : '/radar');
     if (onCard || path === '/radar') return go(onCard ? '/radar' : '/time-machine');
     if (path === '/time-machine') return go('/evidence');
   }
   if (key === 'ArrowLeft') {
-    if (onCard) return go(state.origin === 'radar' ? '/radar' : '/blind');
-    if (path === '/radar') return go('/blind');
+    if (onCard) return go(state.origin === 'radar' ? '/radar' : '/similar');
+    if (path === '/radar') return go('/similar');
     if (path === '/time-machine') return go('/radar');
     if (path === '/evidence') return go('/time-machine');
   }

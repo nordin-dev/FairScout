@@ -138,7 +138,7 @@ describe('player card', () => {
     stubFetch({ players: () => Promise.resolve(new Response('', { status: 500 })) });
     renderCard('sample-a');
     expect(await screen.findByRole('alert')).toHaveTextContent('players.json');
-    expect(screen.getByRole('link', { name: '← Back to blind pick' })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: '← Back to similar' })).toBeInTheDocument();
     stubFetch();
     await userEvent.click(screen.getByRole('button', { name: 'Try again' }));
     await waitFor(() => expect(screen.getByRole('heading', { name: 'Ivan Uzorak' })).toBeInTheDocument());
@@ -154,11 +154,11 @@ describe('player card', () => {
 
 describe('active section', () => {
   it('follows the origin on a player card and the path elsewhere', () => {
-    const sections = ['/blind', '/radar', '/time-machine', '/evidence'];
+    const sections = ['/similar', '/radar', '/time-machine', '/evidence'];
     expect(activeSection('/player/x', 'radar', sections)).toBe('/radar');
-    expect(activeSection('/player/x', 'blind', sections)).toBe('/blind');
+    expect(activeSection('/player/x', 'similar', sections)).toBe('/similar');
     expect(activeSection('/time-machine', 'radar', sections)).toBe('/time-machine');
-    expect(activeSection('/nowhere', 'blind', sections)).toBeNull();
+    expect(activeSection('/nowhere', 'similar', sections)).toBeNull();
   });
 });
 

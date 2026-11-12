@@ -6,7 +6,7 @@ export const frame: Loose<typeof en.frame> = {
   brand: 'FAIR SCOUT',
   sectionsLabel: 'Bölümler',
   sections: [
-    { number: '01', name: 'Kör seçim', path: '/blind' },
+    { number: '01', name: 'Benzerler', path: '/similar' },
     { number: '02', name: 'Radar', path: '/radar' },
     { number: '03', name: 'Zaman makinesi', path: '/time-machine' },
     { number: '04', name: 'Kanıt', path: '/evidence' },
@@ -15,7 +15,6 @@ export const frame: Loose<typeof en.frame> = {
   detailsOn: 'açık',
   detailsOff: 'kapalı',
   detailsTip: 'Her rakamın arkasındaki yöntemi gösterir. Kısayol: D',
-  budgetChip: (budget: string) => `Bütçe ≤ ${budget}`,
   picks: {
     add: '+ Seçimlerime ekle',
     saved: '✓ Seçimlerimde',
@@ -32,10 +31,10 @@ export const frame: Loose<typeof en.frame> = {
   basketballSource: (source: string, season: string) => `Veri: ${source} · ${season} sezonu`,
   tennisSource: (source: string, date: string) => `Veri: ${source} · ATP sıralaması, ${date}`,
   notFoundTitle: 'Bu sayfa yok.',
-  notFoundLink: 'Kör seçime git',
+  notFoundLink: 'Benzerlere git',
   screenErrorTitle: 'Bu ekran çizilemedi.',
   screenErrorBody: 'Diğer ekranlar çalışıyor.',
-  screenErrorLink: 'Kör seçimde yeniden yükle',
+  screenErrorLink: 'Benzerlerde yeniden yükle',
   sourceLabel: 'Veri',
   leagues: (n: number) => `${n} lig`,
   seasons: (range: string) => `sezonlar ${range}`,
@@ -51,115 +50,12 @@ export const states: Loose<typeof en.states> = {
   loading: 'Veri yükleniyor…',
 };
 
-export const blind: Loose<typeof en.blind> = {
-  kicker: '01 — Kör seçim',
-  question: 'Ne arıyorsun?',
-  positionLabel: 'Mevki',
-  positions: [
-    { value: 'winger', label: 'Kanat' },
-    { value: 'striker', label: 'Forvet' },
-    { value: 'midfielder', label: 'Orta saha' },
-    { value: 'defender', label: 'Defans' },
-    { value: 'goalkeeper', label: 'Kaleci' },
-  ],
-  ageLabel: 'Yaş',
-  ages: (bornFrom: number | null) => [
-    { value: '19', label: '19 ve altı' },
-    { value: '21', label: bornFrom === null ? 'U21' : `U21 · ${bornFrom} ve sonrası doğumlu` },
-  ],
-  ageWords: (maxAge: number) => (maxAge === 21 ? 'U21' : `${maxAge} ve altı`),
-  budgetLabel: 'Bütçe',
-  budgets: [
-    { value: '250000', label: '€250k’ya kadar' },
-    { value: '500000', label: '€500k’ya kadar' },
-    { value: '1000000', label: '€1M’ye kadar' },
-  ],
-  mattersLabel: 'En önemlisi',
-  mattersHint: 'iki tane seç',
-  matters: [
-    { value: 'creates', label: 'Şans yaratır' },
-    { value: 'scores', label: 'Gol atar' },
-    { value: 'plays', label: 'Düzenli oynar' },
-  ],
-  countPlural: 'oyuncu uyuyor',
-  tooFew: (n: number) => `${n} oyuncu uyuyor. 3 oyuncu gerekli: bütçeyi veya yaş sınırını yükselt.`,
-  loadingPlayers: 'Oyuncular yükleniyor…',
-  showThree: 'Bana üç oyuncu göster, isimsiz →',
-  title: (plural: string) => `Üç ${plural}. İsim yok. Birini seç.`,
-  plurals: {
-    winger: 'kanat oyuncusu',
-    striker: 'forvet',
-    midfielder: 'orta saha oyuncusu',
-    defender: 'defans oyuncusu',
-    goalkeeper: 'kaleci',
-  },
-  summary: (position: string, ageWords: string, budget: string, matters: string[]) =>
-    `${position} · ${ageWords} · en çok ${budget} · ${matters.join(', ')}`,
-  matterWords: { creates: 'şans yaratır', scores: 'gol atar', plays: 'düzenli oynar' },
-  change: 'Değiştir',
-  dimLabels: { creates: 'Yaratıcılık', scores: 'Gol', plays: 'Süre' },
-  caption: '100 üzerinden puanlar; aynı mevki ve yaştaki oyuncularla kıyaslanır. Kalın = istediğin ölçüt.',
-  detailCaption:
-    'Puanlar; lige göre düzeltilmiş gol, lige göre düzeltilmiş asist ve takım dakikalarındaki pay için yüzdelik dilimlerdir. Üç aday şunlardır: modelin en uygun eşleşmesi, ham skorer listesinin zirvesi ve bu istek için kalan en iyi eşleşme; bu istek için sabit bir sırayla gösterilir. Fiyat, kulüp, lig ve modelin görüşü seçim yapılana kadar gizli kalır.',
-  candidate: (letter: string) => `Oyuncu ${letter}`,
-  hiddenLabel: 'seçene kadar gizli',
-  facts: (position: string, age: number) => `${position} · ${age} yaşında`,
-  pick: 'Bu oyuncuyu seç',
-  pickLabel: (letter: string) => `${letter} oyuncusunu seç`,
-  labelPrice: 'Fiyat',
-  labelGoals: 'Gol',
-  labelOutlook: 'Görünüm',
-  tierLabel: (tier: string) => `${tier} seviyesi`,
-  noTier: '—',
-  yourPick: 'Senin seçimin',
-  tagModel: 'Modelin seçimi',
-  tagGoals: 'En çok gol',
-  verdictAgree: (letter: string) => `Sen ve model aynı fikirdesiniz: ${letter}.`,
-  verdictAgreeSub: 'Kim olduğuna göre değil, ne yaptığına göre seçildi. Listende.',
-  verdictDisagree: (you: string, model: string) => `Sen ${you} oyuncusunu seçtin. Model ${model} oyuncusunu seçti.`,
-  verdictDisagreeSub: 'İkisi de listene giriyor. Fikir ayrılığı olan yer bir geziyi hak eder.',
-  seeWhy: 'Nedenini gör →',
-  reasonLabel: (model: string, scout: string) => `${model} ve ${scout} yan yana`,
-  reasonCandidate: (letter: string, name: string) => `${letter} · ${name}`,
-  reasonRows: {
-    tier: 'Görünüm',
-    rating: 'Puan, 100 üzerinden',
-    price: 'Fiyat',
-    age: 'Yaş',
-    minutes: 'Dakika',
-  },
-  reasonAheadMark: '✓',
-  reasonAheadWord: 'önde',
-  reasonAheadNote: '✓ = bu satırda önde',
-  reasonTiers: (model: string, modelTier: string, scout: string, scoutTier: string) =>
-    modelTier === scoutTier
-      ? `${model} ve ${scout}: ikisinin de görünümü ${modelTier} seviyesinde.`
-      : `${model}: görünüm ${modelTier} seviyesi, ${scout}: görünüm ${scoutTier} seviyesi.`,
-  reasonTiersBetter: (model: string, modelTier: string, scout: string, scoutTier: string) =>
-    `Model görünümü nedeniyle şu oyuncuyu tercih ediyor: ${model}. ${modelTier} seviyesi, ${scout} için ise ${scoutTier} seviyesi.`,
-  reasonDrivers: (model: string, items: string[]) => `Modelin ${model} için gördükleri: ${items.join(' · ')}.`,
-  reasonScoreHigher: (model: string) => `Bu seviye içinde model, ${model} için daha yüksek puan veriyor.`,
-  reasonTierUnknown: (model: string, scout: string) => `${model} veya ${scout} için görünüm bilinmiyor.`,
-  reasonAhead: {
-    rating: 'daha yüksek puan',
-    price: 'daha düşük fiyat',
-    age: 'daha genç yaş',
-    minutes: 'daha fazla dakika',
-  },
-  reasonBehind: {
-    rating: 'daha düşük puan',
-    price: 'daha yüksek fiyat',
-    age: 'daha büyük yaş',
-    minutes: 'daha az dakika',
-  },
-  reasonRowsAhead: (model: string, ahead: string, behind: string) =>
-    ahead && behind ? `${model}: ${ahead}, ancak ${behind}.` : ahead ? `${model}: ${ahead}.` : behind ? `${model}: ${behind}.` : '',
-  reasonList: (items: string[]) =>
-    items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} ve ${items[items.length - 1]}`,
+export const tier: Loose<typeof en.tier> = {
+  label: (tier: string) => `${tier} seviyesi`,
 };
 
 export const player: Loose<typeof en.player> = {
-  backToBlind: '← Kör seçime dön',
+  backToSimilar: '← Benzerlere dön',
   similarLabel: 'Benzer, bütçene uygun',
   similarNone: 'Bu bütçede benzer oyuncu yok.',
   similarMeta: (league: string, price: string) => `${league} · ${price}`,

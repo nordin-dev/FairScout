@@ -5,13 +5,11 @@ import { account as accountText } from './lib/accountText';
 import { Tooltip } from './components/Tooltip';
 import './components/Frame.css';
 import { DataProvider, useData } from './lib/data';
-import { money } from './lib/format';
 import { LANGS, LANG_NAMES, LANG_SHORT, setLang, useLang } from './lib/i18n';
 import { useKeys } from './lib/keys';
 import { reloadAt } from './lib/reload';
-import { readDefaultBrief } from './lib/brief';
 import { activeSection } from './lib/sections';
-import { setDefaultBrief, setDefaultBudget, toggleDetails, useBudget, useDetails, useOrigin, useSport } from './lib/store';
+import { setDefaultBudget, toggleDetails, useDetails, useOrigin, useSport } from './lib/store';
 import { useBasket } from './lib/basketball/data';
 import { useTennis } from './lib/tennis/data';
 import { frame } from './lib/text.en';
@@ -21,9 +19,7 @@ import { screenRoutes } from './routes';
 function TopBar() {
   const lang = useLang();
   const details = useDetails();
-  const budget = useBudget();
   const { pathname } = useLocation();
-  const sport = useSport();
   const who = useAccount();
   const sections = frame.sections;
   const active = activeSection(pathname, useOrigin(), sections.map((s) => s.path));
@@ -52,7 +48,6 @@ function TopBar() {
           <button className="chip" type="button" aria-pressed={details} data-tip={frame.detailsTip} onClick={toggleDetails}>
             {frame.detailsLabel} <b>{details ? frame.detailsOn : frame.detailsOff}</b>
           </button>
-          <span className="chip">{sport === 'football' ? frame.budgetChip(money(budget)) : frame.sports[sport]}</span>
           {who ? (
             <>
               <Link className="chip" to="/my-picks">
@@ -115,16 +110,14 @@ function Footer() {
   return sport === 'tennis' ? <TennisFooter /> : sport === 'basketball' ? <BasketFooter /> : <FootballFooter />;
 }
 
-/** Installs the keyboard and takes the default budget and brief from meta.json once it has loaded. */
+/** Installs the keyboard and takes the default budget from meta.json once it has loaded. */
 function FrameEffects() {
   const state = useData();
   useKeys();
-  const defaultBrief = state.status === 'ready' ? state.data.meta.default_brief : null;
+  const defaultBudget = state.status === 'ready' ? state.data.meta.default_brief.budget_eur : null;
   useEffect(() => {
-    if (!defaultBrief) return;
-    setDefaultBudget(defaultBrief.budget_eur);
-    setDefaultBrief(readDefaultBrief(defaultBrief));
-  }, [defaultBrief]);
+    if (defaultBudget !== null) setDefaultBudget(defaultBudget);
+  }, [defaultBudget]);
   return null;
 }
 
@@ -157,7 +150,7 @@ function NotFound() {
   return (
     <div className="not-found">
       <h1>{frame.notFoundTitle}</h1>
-      <Link to="/blind">{frame.notFoundLink}</Link>
+      <Link to="/similar">{frame.notFoundLink}</Link>
     </div>
   );
 }
@@ -169,10 +162,10 @@ function ScreenError() {
       <h1>{frame.screenErrorTitle}</h1>
       <p>{frame.screenErrorBody}</p>
       <a
-        href="#/blind"
+        href="#/similar"
         onClick={(event) => {
           event.preventDefault();
-          reloadAt('#/blind');
+          reloadAt('#/similar');
         }}
       >
         {frame.screenErrorLink}
@@ -193,7 +186,7 @@ export const frameRoutes: RouteObject[] = [
     children: [
       {
         errorElement: <ScreenError />,
-        children: [{ index: true, loader: () => redirect('/blind') }, ...screenRoutes, { path: '*', element: <NotFound /> }],
+        children: [{ index: true, loader: () => redirect('/similar') }, ...screenRoutes, { path: '*', element: <NotFound /> }],
       },
     ],
   },

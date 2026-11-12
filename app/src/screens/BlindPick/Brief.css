@@ -1,7 +1,0 @@
-.brief{padding:6px 28px 26px;margin-top:28px}
-.b-row{display:grid;grid-template-columns:190px 1fr;gap:24px;align-items:center;padding:20px 0;border-bottom:1px solid var(--hair)}
-.b-row .label small{display:block;text-transform:none;letter-spacing:0;font:400 13px var(--sans);color:var(--ink-3);margin-top:4px}
-.b-foot{display:flex;justify-content:space-between;align-items:center;gap:24px;padding-top:24px}
-.b-count{font-size:19px;color:var(--ink-2);display:flex;align-items:baseline;gap:10px}
-.b-count b{font:600 36px/1 var(--sans);color:var(--ink);letter-spacing:-.02em}
-.b-count .sk{width:44px;height:36px;align-self:center}

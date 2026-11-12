@@ -42,7 +42,7 @@ export const myPicks: Loose<typeof en.myPicks> = {
   signedOutText: 'Lista se čuva za skauta koji je prijavljen.',
   signedOutAction: 'Prijava',
   title: (n: number) => (n === 0 ? 'Tvoja lista je prazna.' : `${n} ${pl(n, 'igrač', 'igrača', 'igrača')} na tvojoj listi.`),
-  emptyText: 'Dodaj igrače iz Slijepog izbora, s Radara ili s kartice igrača.',
+  emptyText: 'Dodaj igrače iz Sličnih, s Radara ili s kartice igrača.',
   lede: (name: string) => `Skaut: ${name}`,
   filterLabel: 'Prikaži sport',
   all: 'Sve',
@@ -50,7 +50,8 @@ export const myPicks: Loose<typeof en.myPicks> = {
   group: (sport: string, n: number) => `${sport} · ${n}`,
   noOutlook: '—',
   from: {
-    blind: 'Iz Slijepog izbora',
+    similar: 'Iz Sličnih',
+    blind: 'Iz Sličnih',
     radar: 'S Radara',
     card: 'S kartice igrača',
   } satisfies Record<PickSource, string>,

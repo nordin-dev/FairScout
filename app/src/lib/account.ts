@@ -7,7 +7,8 @@ import { useSyncExternalStore } from 'react';
  */
 
 export type PickSport = 'football' | 'tennis' | 'basketball';
-export type PickSource = 'blind' | 'radar' | 'card';
+/** 'blind' marks picks saved from section 01 before it became the similar screen; they are listed as picks of that screen. */
+export type PickSource = 'similar' | 'blind' | 'radar' | 'card';
 export type PickTier = 'A' | 'B' | 'C' | null;
 
 /** A saved player: enough to list him and to open his card again. */

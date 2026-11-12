@@ -2,77 +2,42 @@ import { expect, type Page } from '@playwright/test';
 
 const num = (s: string): number => Number(/[−-]?\d+(?:\.\d+)?/.exec(s)?.[0].replace('−', '-'));
 
-/** The brief is filled in from the default and at least three players match. Returns the count. */
-export async function checkBrief(page: Page): Promise<number> {
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText('What are you looking for?');
-  await expect(page.getByRole('group', { name: 'Position', exact: true }).locator('[aria-pressed="true"]')).toHaveCount(1);
-  await expect(page.getByRole('group', { name: 'Age', exact: true }).locator('[aria-pressed="true"]')).toHaveCount(1);
+const euros = (s: string): number => {
+  const m = /€\s?(\d+(?:\.\d+)?)([kM]?)/.exec(s);
+  return m ? Number(m[1]) * (m[2] === 'M' ? 1_000_000 : m[2] === 'k' ? 1_000 : 1) : NaN;
+};
+
+/** Section 01 before a player is named: the question, one budget chosen, six players to start from, no match yet. */
+export async function checkAsk(page: Page): Promise<void> {
+  await expect(page.getByRole('heading', { level: 1 })).toHaveText('Who can you not afford?');
   await expect(page.getByRole('group', { name: 'Budget', exact: true }).locator('[aria-pressed="true"]')).toHaveCount(1);
-  await expect(page.getByRole('group', { name: 'Most important', exact: true }).locator('[aria-pressed="true"]')).toHaveCount(2);
-  const count = num(await page.locator('.b-count b').innerText());
-  expect(count, 'players matching the default brief').toBeGreaterThanOrEqual(3);
-  await expect(page.getByRole('button', { name: /Show me three/ })).toBeEnabled();
+  await expect(page.locator('.sim-pick')).toHaveCount(6);
+  await expect(page.locator('.sim-card')).toHaveCount(0);
   await checkNoLongDecimals(page);
-  return count;
 }
 
-export type Covered = { before: string };
-
-/** Three candidates, each with name, club and league covered; no price in the page. Returns the page text before the pick. */
-export async function checkCovered(page: Page): Promise<Covered> {
-  await expect(page.getByRole('heading', { level: 1 })).toHaveText(/^Three \w+\. No names\. Pick one\.$/);
-  await expect(page.locator('.dossier')).toHaveCount(3);
-  await expect(page.locator('.dossier .redact:not(.is-open)')).toHaveCount(6);
-  await checkScores(page);
-  await expect(page.locator('.dossier .secret')).toHaveCount(0);
-  await expect(page.locator('.dossier .after')).toHaveCount(0);
-  await expect(page.locator('.verdict')).toHaveCount(0);
-  expect(await page.locator('.dossier').allInnerTexts().then((t) => t.join(' ')), 'no price in the candidates before the pick').not.toMatch(/€\s?\d|Price/);
-  const before = await page.locator('body').innerText();
-  await checkNoLongDecimals(page);
-  return { before };
-}
-
-/** Every score printed on the three candidates is a whole number from 0 to 100. */
-export async function checkScores(page: Page): Promise<void> {
-  const scores = await page.locator('.dossier .score b').allInnerTexts();
-  expect(scores, 'three scores on each of the three candidates').toHaveLength(9);
+/** After a player is named: one to three similar players, most similar first, each inside the budget and cheaper than him. */
+export async function checkSimilar(page: Page): Promise<void> {
+  const title = await page.getByRole('heading', { level: 1 }).innerText();
+  expect(title).toMatch(/^Like .+\. Within €\d+(?:\.\d+)?[kM]\.$/);
+  const budget = euros(title.slice(title.lastIndexOf('€')));
+  const cards = await page.locator('.sim-card').count();
+  expect(cards, 'similar players shown').toBeGreaterThanOrEqual(1);
+  expect(cards).toBeLessThanOrEqual(3);
+  const scores = await page.locator('.sim-card .sim-scores b').allInnerTexts();
+  expect(scores, 'three scores on each similar player').toHaveLength(cards * 3);
   for (const s of scores) {
     expect(s, 'score printed as a whole number').toMatch(/^\d{1,3}$/);
     expect(Number(s)).toBeLessThanOrEqual(100);
   }
-}
-
-/** The black overlay of every bar has finished opening: its scale is zero, so no black is left (waits out the 0.45 s). */
-export async function checkBarsOpen(page: Page): Promise<void> {
-  await expect
-    .poll(
-      () =>
-        page.locator('.dossier .redact').evaluateAll((bars) =>
-          bars.every((b) => b.getAttribute('data-open') === 'true' && new DOMMatrixReadOnly(getComputedStyle(b, '::after').transform).a === 0),
-        ),
-      { message: 'the black bars are fully open', timeout: 5000 },
-    )
-    .toBe(true);
-}
-
-/** After the pick: all three revealed, names that were not in the page before, the verdict. */
-export async function checkRevealed(page: Page, covered: Covered): Promise<void> {
-  await expect(page.locator('.verdict')).toBeVisible();
-  await checkScores(page);
-  await expect(page.locator('.verdict-line')).toHaveText(/^(You and the model agree: [ABC]\.|You picked [ABC]\. The model picks [ABC]\.)$/);
-  await expect(page.locator('.dossier .redact[data-open="true"]')).toHaveCount(6);
-  await expect(page.locator('.dossier .after')).toHaveCount(3);
-  await checkBarsOpen(page);
-  const names = await page.locator('.dossier .ident-name .secret').allInnerTexts();
-  expect(names).toHaveLength(3);
-  for (const n of names) {
-    expect(n.length).toBeGreaterThan(2);
-    expect(covered.before, `name "${n}" must not be in the page before the pick`).not.toContain(n);
+  const alike = (await page.locator('.sim-card .sim-pct b').allInnerTexts()).map(num);
+  expect(alike, 'most similar first').toEqual([...alike].sort((a, b) => b - a));
+  const wanted = euros(await page.locator('.sim-ref .sim-cost b').innerText());
+  for (const text of await page.locator('.sim-card .sim-cost b').allInnerTexts()) {
+    expect(euros(text), `price ${text} is inside the budget`).toBeLessThanOrEqual(budget);
+    expect(euros(text), `price ${text} is below the named player's`).toBeLessThan(wanted);
   }
   await checkNoLongDecimals(page);
-  await expect(page.locator('.dossier.picked')).toHaveCount(1);
-  await expect(page.getByText('Model’s pick')).toHaveCount(1);
 }
 
 /** The four rating steps of the card reconcile: step 1 divided by the league factor (from step 2's tip) gives step 3. */

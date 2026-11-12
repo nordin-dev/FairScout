@@ -35,7 +35,7 @@ describe('header account chips', () => {
   it('shows My picks with the count and the scout name when signed in', async () => {
     await register('Ana', 'secret');
     addPick({ sport: 'football', id: 'f1', name: 'Kick', line: 'Club', tier: 'A', from: 'blind' });
-    renderAt('/blind');
+    renderAt('/similar');
     expect(within(header()).getByRole('link', { name: 'My picks 1' })).toHaveAttribute('href', '/my-picks');
     const name = within(header()).getByRole('link', { name: 'Ana' });
     expect(name).toHaveAttribute('href', '/account');

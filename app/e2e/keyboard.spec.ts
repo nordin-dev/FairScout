@@ -1,19 +1,21 @@
-import { checkBars, checkRadarRatings, checkBrief, checkCovered, checkDetailsOn, checkRatingReconciles, checkRevealed, checkTimeRevealed, checkTimeThen, radarCount } from './checks';
+import { checkAsk, checkBars, checkRadarRatings, checkDetailsOn, checkRatingReconciles, checkSimilar, checkTimeRevealed, checkTimeThen, radarCount } from './checks';
 import { expect, test } from './fixtures';
 
 test('demo walkthrough with the keyboard only', async ({ page, walk }) => {
   const key = (k: string) => page.keyboard.press(k);
 
-  await walk.open('/#/blind', async () => {
-    await expect(page.locator('.b-count b')).toBeVisible();
+  await walk.open('/#/similar', async () => {
+    await expect(page.locator('.sim-pick').first()).toBeVisible();
   });
-  await checkBrief(page);
+  await checkAsk(page);
 
+  // The test puts the focus in the search box; the name, the move to the result and the choice are keys.
+  await page.locator('#sim-search').focus();
+  await page.keyboard.type('demirovic');
+  await expect(page.locator('.sim-pick')).toHaveCount(1);
+  await key('Tab');
   await key('Enter');
-  const covered = await checkCovered(page);
-
-  await key('r');
-  await checkRevealed(page, covered);
+  await checkSimilar(page);
 
   await key('ArrowRight');
   await checkRatingReconciles(page);

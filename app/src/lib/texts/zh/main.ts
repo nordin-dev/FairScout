@@ -8,7 +8,7 @@ export const frame: Loose<typeof en.frame> = {
   brand: 'FAIR SCOUT',
   sectionsLabel: '栏目',
   sections: [
-    { number: '01', name: '盲选', path: '/blind' },
+    { number: '01', name: '相似', path: '/similar' },
     { number: '02', name: '雷达', path: '/radar' },
     { number: '03', name: '时光机', path: '/time-machine' },
     { number: '04', name: '证据', path: '/evidence' },
@@ -17,7 +17,6 @@ export const frame: Loose<typeof en.frame> = {
   detailsOn: '开',
   detailsOff: '关',
   detailsTip: '显示每个数字背后的方法。快捷键：D',
-  budgetChip: (budget: string) => `预算 ≤ ${budget}`,
   picks: {
     add: '+ 加入我的选择',
     saved: '✓ 已在我的选择',
@@ -34,10 +33,10 @@ export const frame: Loose<typeof en.frame> = {
   basketballSource: (source: string, season: string) => `数据：${source} · ${season} 赛季`,
   tennisSource: (source: string, date: string) => `数据：${source} · ATP 排名截至 ${date}`,
   notFoundTitle: '这个页面不存在。',
-  notFoundLink: '前往盲选',
+  notFoundLink: '前往相似',
   screenErrorTitle: '这个页面无法显示。',
   screenErrorBody: '其他页面仍可正常使用。',
-  screenErrorLink: '回到盲选并重新加载',
+  screenErrorLink: '回到相似并重新加载',
   sourceLabel: '数据',
   leagues: (n: number) => `${n} 个联赛`,
   seasons: (range: string) => `赛季 ${range}`,
@@ -53,115 +52,12 @@ export const states: Loose<typeof en.states> = {
   loading: '正在加载数据…',
 };
 
-export const blind: Loose<typeof en.blind> = {
-  kicker: '01 — 盲选',
-  question: '你在找什么样的球员？',
-  positionLabel: '位置',
-  positions: [
-    { value: 'winger', label: '边锋' },
-    { value: 'striker', label: '前锋' },
-    { value: 'midfielder', label: '中场' },
-    { value: 'defender', label: '后卫' },
-    { value: 'goalkeeper', label: '门将' },
-  ],
-  ageLabel: '年龄',
-  ages: (bornFrom: number | null) => [
-    { value: '19', label: '19 岁及以下' },
-    { value: '21', label: bornFrom === null ? 'U21' : `U21 · ${bornFrom} 年及以后出生` },
-  ],
-  ageWords: (maxAge: number) => (maxAge === 21 ? 'U21' : `${maxAge} 岁及以下`),
-  budgetLabel: '预算',
-  budgets: [
-    { value: '250000', label: '最高 €250k' },
-    { value: '500000', label: '最高 €500k' },
-    { value: '1000000', label: '最高 €1M' },
-  ],
-  mattersLabel: '最看重',
-  mattersHint: '选两项',
-  matters: [
-    { value: 'creates', label: '创造机会' },
-    { value: 'scores', label: '进球能力' },
-    { value: 'plays', label: '出场时间稳定' },
-  ],
-  countPlural: '名球员符合',
-  tooFew: (n: number) => `${n} 名球员符合。需要三名：请提高预算或放宽年龄上限。`,
-  loadingPlayers: '正在加载球员…',
-  showThree: '给我三名，不看名字 →',
-  title: (plural: string) => `三名${plural}。没有名字。选一个。`,
-  plurals: {
-    winger: '边锋',
-    striker: '前锋',
-    midfielder: '中场',
-    defender: '后卫',
-    goalkeeper: '门将',
-  },
-  summary: (position: string, ageWords: string, budget: string, matters: string[]) =>
-    `${position} · ${ageWords} · 最高 ${budget} · ${matters.join('、')}`,
-  matterWords: { creates: '创造机会', scores: '进球能力', plays: '出场时间稳定' },
-  change: '修改',
-  dimLabels: { creates: '创造', scores: '进球', plays: '出场时间' },
-  caption: '满分 100，与同位置、同年龄的球员相比。粗体 = 你的要求。',
-  detailCaption:
-    '分数是联赛修正后的进球、联赛修正后的助攻以及占球队出场时间比例的百分位。三名候选分别是模型的最佳匹配、原始进球榜的第一名，以及最符合需求的其余球员，按固定顺序展示。选定之前，身价、俱乐部、联赛和模型的判断都会隐藏。',
-  candidate: (letter: string) => `球员 ${letter}`,
-  hiddenLabel: '选定后显示',
-  facts: (position: string, age: number) => `${position} · ${age} 岁`,
-  pick: '选这名球员',
-  pickLabel: (letter: string) => `选球员 ${letter}`,
-  labelPrice: '身价',
-  labelGoals: '进球',
-  labelOutlook: '前景',
-  tierLabel: (tier: string) => `${tier} 级`,
-  noTier: '—',
-  yourPick: '你的选择',
-  tagModel: '模型之选',
-  tagGoals: '进球最多',
-  verdictAgree: (letter: string) => `你和模型的选择一致：${letter}。`,
-  verdictAgreeSub: '看的是他做了什么，而不是他是谁。他已在你的名单上。',
-  verdictDisagree: (you: string, model: string) => `你选了 ${you}，模型选了 ${model}。`,
-  verdictDisagreeSub: '两人都会进入你的名单。分歧所在，值得亲自去看一趟。',
-  seeWhy: '查看原因 →',
-  reasonLabel: (model: string, scout: string) => `${model} 与 ${scout} 对比`,
-  reasonCandidate: (letter: string, name: string) => `${letter} · ${name}`,
-  reasonRows: {
-    tier: '前景',
-    rating: '评分（满分 100）',
-    price: '身价',
-    age: '年龄',
-    minutes: '出场时间',
-  },
-  reasonAheadMark: '✓',
-  reasonAheadWord: '领先',
-  reasonAheadNote: '✓ = 该项领先',
-  reasonTiers: (model: string, modelTier: string, scout: string, scoutTier: string) =>
-    modelTier === scoutTier
-      ? `${model} 和 ${scout} 的前景都是 ${modelTier} 级。`
-      : `${model} 的前景是 ${modelTier} 级，${scout} 的前景是 ${scoutTier} 级。`,
-  reasonTiersBetter: (model: string, modelTier: string, scout: string, scoutTier: string) =>
-    `模型更看好 ${model} 的前景：${modelTier} 级，而 ${scout} 是 ${scoutTier} 级。`,
-  reasonDrivers: (model: string, items: string[]) => `模型在 ${model} 身上看到的：${items.join(' · ')}。`,
-  reasonScoreHigher: (model: string) => `在同一级别内，模型给 ${model} 的评分更高。`,
-  reasonTierUnknown: (model: string, scout: string) => `${model} 或 ${scout} 的前景未知。`,
-  reasonAhead: {
-    rating: '评分更高',
-    price: '身价更低',
-    age: '年龄更小',
-    minutes: '出场时间更多',
-  },
-  reasonBehind: {
-    rating: '评分更低',
-    price: '身价更高',
-    age: '年龄更大',
-    minutes: '出场时间更少',
-  },
-  reasonRowsAhead: (model: string, ahead: string, behind: string) =>
-    ahead && behind ? `${model} ${ahead}，但${behind}。` : ahead ? `${model} ${ahead}。` : behind ? `${model} ${behind}。` : '',
-  reasonList: (items: string[]) =>
-    items.length < 2 ? items.join('') : `${items.slice(0, -1).join('、')}和${items[items.length - 1]}`,
+export const tier: Loose<typeof en.tier> = {
+  label: (tier: string) => `${tier} 级`,
 };
 
 export const player: Loose<typeof en.player> = {
-  backToBlind: '← 返回盲选',
+  backToSimilar: '← 返回相似',
   similarLabel: '预算内的相似球员',
   similarNone: '这个预算内没有相似球员。',
   similarMeta: (league: string, price: string) => `${league} · ${price}`,

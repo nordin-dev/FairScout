@@ -2,7 +2,7 @@ import type { Loose } from '../../i18n';
 import type * as en from '../en/tennisCard';
 
 export const tennisCard: Loose<typeof en.tennisCard> = {
-  backToBlind: '← 返回盲选',
+  backToSimilar: '← 返回相似',
   backToRadar: '← 返回雷达',
   headline: (age: number, country: string, hand: 'Right' | 'Left' | null): string =>
     ['网球', `${age} 岁`, country, hand ? `${hand === 'Left' ? '左' : '右'}手持拍` : ''].filter(Boolean).join(' · '),

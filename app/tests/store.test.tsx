@@ -31,7 +31,7 @@ function renderAt(path: string) {
         children: [
           { path: 'player/:id', element: <p>card</p> },
           { path: 'radar', element: <p>radar</p> },
-          { path: 'blind', element: <DetailBlock>method</DetailBlock> },
+          { path: 'similar', element: <DetailBlock>method</DetailBlock> },
         ],
       },
     ],
@@ -41,14 +41,13 @@ function renderAt(path: string) {
   return router;
 }
 
-const st = (origin: 'blind' | 'radar' = 'blind', modelPickId: string | null = null) => ({ origin, modelPickId });
+const st = (origin: 'similar' | 'radar' = 'similar', modelPickId: string | null = null) => ({ origin, modelPickId });
 const to = (path: string, key: string, s = st()) => decideKey(path, key, s);
 
 describe('budget', () => {
-  it('takes its default from the meta sample and shows it in the top bar', async () => {
+  it('takes its default from the meta sample', async () => {
     const meta = sample('meta') as { default_brief: { budget_eur: number } };
-    renderAt('/blind');
-    expect(await screen.findByText('Budget ≤ €500k')).toBeInTheDocument();
+    renderAt('/similar');
     await waitFor(() => expect(getState().budget).toBe(meta.default_brief.budget_eur));
   });
 
@@ -64,17 +63,17 @@ describe('budget', () => {
   });
 
   it('survives a route change', async () => {
-    const router = renderAt('/blind');
-    await screen.findByText('Budget ≤ €500k');
+    const router = renderAt('/similar');
+    await screen.findByRole('button', { name: /Details/ });
     act(() => setBudget(250_000));
     await act(() => router.navigate('/radar'));
-    expect(screen.getByText('Budget ≤ €250k')).toBeInTheDocument();
+    expect(getState().budget).toBe(250_000);
   });
 });
 
 describe('details', () => {
   it('toggles on click and on D, and DetailBlock follows', async () => {
-    renderAt('/blind');
+    renderAt('/similar');
     const sw = await screen.findByRole('button', { name: /Details/ });
     expect(sw).toHaveAttribute('aria-pressed', 'false');
     expect(screen.queryByText('method')).not.toBeInTheDocument();
@@ -90,7 +89,7 @@ describe('details', () => {
 describe('keys', () => {
   it('opens the four sections with 1 to 4', () => {
     expect(['1', '2', '3', '4'].map((k) => to('/evidence', k))).toEqual([
-      { type: 'go', to: '/blind' },
+      { type: 'go', to: '/similar' },
       { type: 'go', to: '/radar' },
       { type: 'go', to: '/time-machine' },
       { type: 'go', to: '/evidence' },
@@ -98,20 +97,20 @@ describe('keys', () => {
   });
 
   it('follows the demo order with the arrows, with and without a revealed model pick', () => {
-    expect(to('/blind', 'ArrowRight')).toEqual({ type: 'go', to: '/radar' });
-    expect(to('/blind', 'ArrowRight', st('blind', 'p9'))).toEqual({ type: 'go', to: '/player/p9' });
+    expect(to('/similar', 'ArrowRight')).toEqual({ type: 'go', to: '/radar' });
+    expect(to('/similar', 'ArrowRight', st('similar', 'p9'))).toEqual({ type: 'go', to: '/player/p9' });
     expect(to('/player/p9', 'ArrowRight')).toEqual({ type: 'go', to: '/radar' });
     expect(to('/radar', 'ArrowRight')).toEqual({ type: 'go', to: '/time-machine' });
     expect(to('/time-machine', 'ArrowRight')).toEqual({ type: 'go', to: '/evidence' });
     expect(to('/evidence', 'ArrowRight')).toBeNull();
-    expect(to('/radar', 'ArrowLeft')).toEqual({ type: 'go', to: '/blind' });
+    expect(to('/radar', 'ArrowLeft')).toEqual({ type: 'go', to: '/similar' });
     expect(to('/time-machine', 'ArrowLeft')).toEqual({ type: 'go', to: '/radar' });
     expect(to('/evidence', 'ArrowLeft')).toEqual({ type: 'go', to: '/time-machine' });
   });
 
   it('returns from a player card to its origin with the left arrow', async () => {
     expect(to('/player/p9', 'ArrowLeft', st('radar'))).toEqual({ type: 'go', to: '/radar' });
-    expect(to('/player/p9', 'ArrowLeft', st('blind'))).toEqual({ type: 'go', to: '/blind' });
+    expect(to('/player/p9', 'ArrowLeft', st('similar'))).toEqual({ type: 'go', to: '/similar' });
     setOrigin('radar');
     setModelPick('p9');
     const router = renderAt('/player/p9');
@@ -121,7 +120,7 @@ describe('keys', () => {
   });
 
   it('calls the registered reveal on R and does nothing without one', async () => {
-    renderAt('/blind');
+    renderAt('/similar');
     await screen.findByRole('button', { name: /Details/ });
     await userEvent.keyboard('r');
     const fn = vi.fn();
@@ -134,10 +133,10 @@ describe('keys', () => {
   });
 
   it('ignores keys pressed with Ctrl, Alt or Cmd', async () => {
-    expect(decideKey('/blind', '2', st(), { ctrlKey: true })).toBeNull();
-    expect(decideKey('/blind', 'd', st(), { altKey: true })).toBeNull();
-    expect(decideKey('/blind', 'r', st(), { metaKey: true })).toBeNull();
-    renderAt('/blind');
+    expect(decideKey('/similar', '2', st(), { ctrlKey: true })).toBeNull();
+    expect(decideKey('/similar', 'd', st(), { altKey: true })).toBeNull();
+    expect(decideKey('/similar', 'r', st(), { metaKey: true })).toBeNull();
+    renderAt('/similar');
     await screen.findByRole('button', { name: /Details/ });
     await userEvent.keyboard('{Control>}d{/Control}');
     expect(getState().details).toBe(false);

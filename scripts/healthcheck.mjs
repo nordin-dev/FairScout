@@ -202,7 +202,7 @@ export async function withProfileFolder(work) {
  */
 export function buildScreens(players, timemachine) {
   const screens = [
-    { route: '/blind', expected: null },
+    { route: '/similar', expected: null },
     { route: '/radar', expected: null },
   ];
   const problems = [];

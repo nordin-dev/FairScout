@@ -1,6 +1,6 @@
 import type { Origin } from './store';
 
-const SECTION_PATH: Record<Origin, string> = { blind: '/blind', radar: '/radar' };
+const SECTION_PATH: Record<Origin, string> = { similar: '/similar', radar: '/radar' };
 
 /**
  * The top-bar section that is marked for the open address. On a player card it is the section the

@@ -23,7 +23,7 @@ import { ProjectionPanel } from './ProjectionPanel';
 import './PlayerCard.css';
 
 const BACK: Record<Origin, { to: string; text: () => string }> = {
-  blind: { to: '/blind', text: () => t.backToBlind },
+  similar: { to: '/similar', text: () => t.backToSimilar },
   radar: { to: '/radar', text: () => t.backToRadar },
 };
 

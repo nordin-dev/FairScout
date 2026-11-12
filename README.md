@@ -1,6 +1,6 @@
 # Fair Scout
 
-Fair Scout helps a football scout find young players whose market value is likely to rise, using open Transfermarkt data. It is for a scout with a small budget who cannot watch every league. It has five screens: a blind pick, a radar, a player card, a time machine and an evidence page.
+Fair Scout helps a football scout find young players whose market value is likely to rise, using open Transfermarkt data. It is for a scout with a small budget who cannot watch every league. It has five screens: similar players within reach, a radar, a player card, a time machine and an evidence page.
 
 ## Where the data comes from
 
@@ -90,9 +90,19 @@ Product model, top 10% at 1,000,000 EUR, season by season:
 
 The notes are written during data preparation by the Claude command-line program, installed and signed in on the team's machine. No API key is used, and a key variable set in the shell is not passed on to the program. Without it, or when a note fails its checks, a template sentence built from the player's own numbers is used and labelled "Summary". The app itself never calls a model. Their one setting is the environment variable `FAIRSCOUT_NOTES`, with the values `model` (the default) and `template`.
 
+## Similar, within reach (section 01)
+
+The scout names a player he cannot have and sees up to three players most like him that he can. It took the place of the blind pick; an old link to `#/blind` opens it.
+
+- **Football:** any player of the data file can be named, also the older and dearer players with a Bosnian passport. The matches come from the pool of young players, play the same position, cost at most the budget and less than the named player.
+- **Tennis:** the matches are ranked lower than the named player and outside the chosen limit (top 300, 500 or 700).
+- **Basketball:** the matches play the same position and fewer minutes per game than the named player, at most the chosen limit (15, 10 or 6).
+- **Similarity** is 100 minus the mean gap of the compared scores, each a percentile from 0 to 100: creating, scoring and playing time in football (from league-adjusted assists and goals, and the share of team minutes); winning, level of play and climbing in tennis; scoring and impact per 40 minutes in basketball. Name, club, league, country and price are not compared. It is a display scale, not a probability, and it is computed in the app (`app/src/lib/lookalike.ts`), not in the data preparation.
+- **Limits:** three scores describe output, not playing style; in football a defender or goalkeeper is compared mostly on playing time, because goals and assists say little about him.
+
 ## Tennis, the second sport
 
-Every screen starts with a choice of sport: football, tennis or basketball. Tennis uses the same idea with its own data and its own model, on all four screens: blind pick, radar, time machine and evidence.
+Every screen starts with a choice of sport: football, tennis or basketball. Tennis uses the same idea with its own data and its own model, on all four screens: similar players, radar, time machine and evidence.
 
 - **Data:** the open ATP tables of Jeff Sackmann / Tennis Abstract (`tennis_atp`: players, weekly rankings, matches at tour, Challenger and entry level), licence CC BY-NC-SA 4.0: attribution required, non-commercial use only. The author's own repository was not reachable on 12 November 2026, so `scripts/tennis_data.py` downloads the tables from an unchanged public fork of it; the last ranking date in the data is shown in the app's footer.
 - **Pool:** men under 21 on the ranking date, ranked 101 to 1000.
@@ -118,7 +128,7 @@ Basketball follows the same four screens with its own data and model.
 
 ## Accounts and My picks
 
-A scout can create an account (a name and a password) and log in. Signed in, every revealed blind pick, every radar row and every player card of the three sports has an "Add to my picks" button, and the My picks screen lists the saved players by sport with a link back to each card.
+A scout can create an account (a name and a password) and log in. Signed in, every similar player of section 01, every radar row and every player card of the three sports has an "Add to my picks" button, and the My picks screen lists the saved players by sport with a link back to each card.
 
 The app has no server, so accounts and lists are kept in the local storage of the browser they were made in: an account made on one computer does not exist on another, also when the app is served from a hosting service. A password is stored as a salted SHA-256 hash, which keeps it out of plain sight and is not protection against someone with access to that computer.
 
@@ -132,7 +142,7 @@ No environment setting is required: there is no key or account to set up. Two se
 2. `make data` rebuilds all data: it runs `python -m fairscout all` from the raw tables in `data/raw/` to the five files in `app/public/data/` and prints the pool size. A source table that is missing from `data/raw/` is downloaded first from the open dataset; tables that are present are not downloaded again. It takes about five minutes on a laptop, about one of them for the scout notes. Without the Claude program the run still finishes, with template sentences as notes.
 3. `make verify` checks types, style, build and tests for the pipeline and the app; it stops at the first failure.
 4. `make dev` starts the app for development in the browser.
-5. `make health` builds the app, serves it and checks that the start page and every data file answer with status 200. It also opens all five screens (`#/blind`, `#/radar`, one player card, `#/time-machine`, `#/evidence`) in headless Chrome with a temporary profile, so it needs Chrome or Chromium installed. At the end it opens the radar once more from a copy of the build in a nested folder, which proves that the build runs from any folder of a web server.
+5. `make health` builds the app, serves it and checks that the start page and every data file answer with status 200. It also opens all five screens (`#/similar`, `#/radar`, one player card, `#/time-machine`, `#/evidence`) in headless Chrome with a temporary profile, so it needs Chrome or Chromium installed. At the end it opens the radar once more from a copy of the build in a nested folder, which proves that the build runs from any folder of a web server.
 
 Every other command: `make typecheck`, `make lint`, `make build` and `make test` (the four parts of `make verify`, one by one), `make preview` (serves the built app with the development tool), `make readme` (refills the results block of this file from the data files), and `make demo`, `make demo-check` and `make demo-record`, which are described under Demo.
 
@@ -141,7 +151,7 @@ Every other command: `make typecheck`, `make lint`, `make build` and `make test`
 The demo runs from the built app as plain static files, so it needs no network and no development server.
 
 1. `make build` builds the app into `app/dist`; run it first, `make demo` stops with a message if the build is missing.
-2. `make demo` serves `app/dist` on 127.0.0.1 and prints the address to open, `http://127.0.0.1:4173/`, which opens on the blind pick. After the first load the whole demo works with the network switched off. A direct address such as `/radar` also works. Another port: `node scripts/serve.mjs --port 5000`. Ctrl+C stops it.
+2. `make demo` serves `app/dist` on 127.0.0.1 and prints the address to open, `http://127.0.0.1:4173/`, which opens on section 01, the similar players. After the first load the whole demo works with the network switched off. A direct address such as `/radar` also works. Another port: `node scripts/serve.mjs --port 5000`. Ctrl+C stops it.
 
 On a hosting service the same server is used: `npm run build` at the root installs and builds the app, `npm start` serves it. When the service sets `PORT`, the server listens on that port on every interface instead of 127.0.0.1 only; `HOST` or `--host` sets the interface outright.
 3. `make demo-check` runs the walkthrough in Chrome three times in a row on the production build, served by the same demo server: with the mouse, with the keyboard (the test itself puts the focus on the budget slider, every other step is a key), from the start address, with a direct `/radar` address, and once with every request blocked and the browser offline after the first load. It fails on any console error or network request after the first load.

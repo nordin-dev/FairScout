@@ -142,7 +142,7 @@ test('the missing-browser message names the places it looked', () => {
 test('the list of screens holds the five addresses', () => {
   const { screens, problems } = buildScreens([{ id: 'p-1', name: 'Ana Test' }], JSON.parse(TIMEMACHINE));
   assert.deepEqual(problems, []);
-  assert.deepEqual(screens.map((screen) => screen.route), ['/blind', '/radar', '/player/p-1', '/time-machine', '/evidence']);
+  assert.deepEqual(screens.map((screen) => screen.route), ['/similar', '/radar', '/player/p-1', '/time-machine', '/evidence']);
   assert.equal(screens[3].expected, 'Ana Test');
 });
 
@@ -175,7 +175,7 @@ test('the profile folder is removed also when the render throws', async () => {
   };
   const { code, text } = await run(site(), render);
   assert.equal(code, 1);
-  assert.match(text, /FAIL #\/blind: browser crashed/);
+  assert.match(text, /FAIL #\/similar: browser crashed/);
   assert.equal(fs.existsSync(seen), false);
   let kept = null;
   await assert.rejects(withProfileFolder(async (dir) => { kept = dir; throw new Error('stop'); }), /stop/);

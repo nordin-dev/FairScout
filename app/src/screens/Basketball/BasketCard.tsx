@@ -17,8 +17,8 @@ import './BasketCard.css';
 function BackLink() {
   const origin = useOrigin();
   return (
-    <Link className="back" to={origin === 'blind' ? '/blind' : '/radar'}>
-      {origin === 'blind' ? t.backToBlind : t.backToRadar}
+    <Link className="back" to={origin === 'similar' ? '/similar' : '/radar'}>
+      {origin === 'similar' ? t.backToSimilar : t.backToRadar}
     </Link>
   );
 }

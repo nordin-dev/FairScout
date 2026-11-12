@@ -6,7 +6,7 @@ export const frame = {
   brand: 'FAIR SCOUT',
   sectionsLabel: 'Sections',
   sections: [
-    { number: '01', name: 'Blind pick', path: '/blind' },
+    { number: '01', name: 'Similar', path: '/similar' },
     { number: '02', name: 'Radar', path: '/radar' },
     { number: '03', name: 'Time machine', path: '/time-machine' },
     { number: '04', name: 'Evidence', path: '/evidence' },
@@ -15,7 +15,6 @@ export const frame = {
   detailsOn: 'on',
   detailsOff: 'off',
   detailsTip: 'Shows the method behind each number. Key: D',
-  budgetChip: (budget: string) => `Budget ≤ ${budget}`,
   picks: {
     add: '+ Add to my picks',
     saved: '✓ In my picks',
@@ -32,10 +31,10 @@ export const frame = {
   basketballSource: (source: string, season: string) => `Data: ${source} · season ${season}`,
   tennisSource: (source: string, date: string) => `Data: ${source} · ATP ranking of ${date}`,
   notFoundTitle: 'This page does not exist.',
-  notFoundLink: 'Go to the blind pick',
+  notFoundLink: 'Go to the similar players',
   screenErrorTitle: 'This screen could not be drawn.',
   screenErrorBody: 'The other screens still work.',
-  screenErrorLink: 'Reload at the blind pick',
+  screenErrorLink: 'Reload at the similar players',
   sourceLabel: 'Data',
   leagues: (n: number) => `${n} ${n === 1 ? 'league' : 'leagues'}`,
   seasons: (range: string) => `seasons ${range}`,
@@ -51,116 +50,12 @@ export const states = {
   loading: 'Loading data…',
 };
 
-export const blind = {
-  kicker: '01 — Blind pick',
-  question: 'What are you looking for?',
-  positionLabel: 'Position',
-  positions: [
-    { value: 'winger', label: 'Winger' },
-    { value: 'striker', label: 'Striker' },
-    { value: 'midfielder', label: 'Midfielder' },
-    { value: 'defender', label: 'Defender' },
-    { value: 'goalkeeper', label: 'Goalkeeper' },
-  ],
-  ageLabel: 'Age',
-  ages: (bornFrom: number | null) => [
-    { value: '19', label: '19 or under' },
-    { value: '21', label: bornFrom === null ? 'U21' : `U21 · born ${bornFrom}+` },
-  ],
-  ageWords: (maxAge: number) => (maxAge === 21 ? 'U21' : `${maxAge} or under`),
-  budgetLabel: 'Budget',
-  budgets: [
-    { value: '250000', label: 'Up to €250k' },
-    { value: '500000', label: 'Up to €500k' },
-    { value: '1000000', label: 'Up to €1M' },
-  ],
-  mattersLabel: 'Most important',
-  mattersHint: 'pick two',
-  matters: [
-    { value: 'creates', label: 'Creates chances' },
-    { value: 'scores', label: 'Scores goals' },
-    { value: 'plays', label: 'Plays regularly' },
-  ],
-  countPlural: 'players match',
-  tooFew: (n: number) =>
-    `${n === 1 ? 'player matches' : 'players match'}. Three are needed: raise the budget or the age limit.`,
-  loadingPlayers: 'Loading players…',
-  showThree: 'Show me three, no names →',
-  title: (plural: string) => `Three ${plural}. No names. Pick one.`,
-  plurals: {
-    winger: 'wingers',
-    striker: 'strikers',
-    midfielder: 'midfielders',
-    defender: 'defenders',
-    goalkeeper: 'goalkeepers',
-  },
-  summary: (position: string, ageWords: string, budget: string, matters: string[]) =>
-    `${position} · ${ageWords} · up to ${budget} · ${matters.join(', ')}`,
-  matterWords: { creates: 'creates chances', scores: 'scores goals', plays: 'plays regularly' },
-  change: 'Change',
-  dimLabels: { creates: 'Creating', scores: 'Scoring', plays: 'Playing time' },
-  caption: 'Scores out of 100, against players of the same position and age. Bold = what you asked for.',
-  detailCaption:
-    'Scores are percentiles of league-adjusted goals, league-adjusted assists and share of team minutes. The three candidates are the model’s top match, the top of the raw scorers’ list and the best remaining match for the brief, shown in a fixed order for this brief. Price, club, league and the model’s view stay hidden until the pick.',
-  candidate: (letter: string) => `Player ${letter}`,
-  hiddenLabel: 'hidden until you pick',
-  facts: (position: string, age: number) => `${position} · age ${age}`,
-  pick: 'Pick this player',
-  pickLabel: (letter: string) => `Pick player ${letter}`,
-  labelPrice: 'Price',
-  labelGoals: 'Goals',
-  labelOutlook: 'Outlook',
-  tierLabel: (tier: string) => `Tier ${tier}`,
-  noTier: '—',
-  yourPick: 'Your pick',
-  tagModel: 'Model’s pick',
-  tagGoals: 'Most goals',
-  verdictAgree: (letter: string) => `You and the model agree: ${letter}.`,
-  verdictAgreeSub: 'Chosen on what he does, not on who he is. He is on your list.',
-  verdictDisagree: (you: string, model: string) => `You picked ${you}. The model picks ${model}.`,
-  verdictDisagreeSub: 'Both go on your list. Where you disagree is worth a trip.',
-  seeWhy: 'See why →',
-  reasonLabel: (model: string, scout: string) => `${model} and ${scout} side by side`,
-  reasonCandidate: (letter: string, name: string) => `${letter} · ${name}`,
-  reasonRows: {
-    tier: 'Outlook',
-    rating: 'Rating, of 100',
-    price: 'Price',
-    age: 'Age',
-    minutes: 'Minutes',
-  },
-  reasonAheadMark: '✓',
-  reasonAheadWord: 'ahead',
-  reasonAheadNote: '✓ = ahead on this row',
-  reasonTiers: (model: string, modelTier: string, scout: string, scoutTier: string) =>
-    modelTier === scoutTier
-      ? `${model} and ${scout} are both outlook ${modelTier}.`
-      : `${model} is outlook ${modelTier}, ${scout} is outlook ${scoutTier}.`,
-  reasonTiersBetter: (model: string, modelTier: string, scout: string, scoutTier: string) =>
-    `The model prefers ${model} for his outlook: tier ${modelTier}, against tier ${scoutTier} for ${scout}.`,
-  reasonDrivers: (model: string, items: string[]) => `What the model sees in ${model}: ${items.join(' · ')}.`,
-  reasonScoreHigher: (model: string) => `Inside that tier the model scores ${model} higher.`,
-  reasonTierUnknown: (model: string, scout: string) => `The outlook of ${model} or ${scout} is not known.`,
-  reasonAhead: {
-    rating: 'a higher rating',
-    price: 'a lower price',
-    age: 'a younger age',
-    minutes: 'more minutes',
-  },
-  reasonBehind: {
-    rating: 'a lower rating',
-    price: 'a higher price',
-    age: 'an older age',
-    minutes: 'fewer minutes',
-  },
-  reasonRowsAhead: (model: string, ahead: string, behind: string) =>
-    ahead && behind ? `${model} has ${ahead}, but ${behind}.` : ahead ? `${model} has ${ahead}.` : behind ? `${model} has ${behind}.` : '',
-  reasonList: (items: string[]) =>
-    items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`,
+export const tier = {
+  label: (tier: string) => `Tier ${tier}`,
 };
 
 export const player = {
-  backToBlind: '← Back to blind pick',
+  backToSimilar: '← Back to similar',
   similarLabel: 'Similar, in your budget',
   similarNone: 'No similar player inside this budget.',
   similarMeta: (league: string, price: string) => `${league} · ${price}`,
