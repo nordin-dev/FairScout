@@ -7,7 +7,8 @@ import { Tag } from '../../components/Tag';
 import { TierBadge } from '../../components/TierBadge';
 import { useNavigate } from 'react-router-dom';
 import { MATTERS, type Matter } from '../../lib/brief';
-import { money } from '../../lib/format';
+import { money, thousands } from '../../lib/format';
+import { pickReason, positiveDrivers, reasonSentence, type ReasonRow } from '../../lib/pickreason';
 import { useReveal } from '../../lib/keys';
 import {
   addBlindPick,
@@ -22,7 +23,7 @@ import {
 } from '../../lib/store';
 import { blind } from '../../lib/text.en';
 import type { Trio } from '../../lib/trio';
-import type { Player } from '../../lib/types';
+import type { Player, Tier } from '../../lib/types';
 import './Compare.css';
 
 const LETTERS = ['A', 'B', 'C'] as const;
@@ -111,6 +112,60 @@ function Dossier({ player, index, trio, order, matters, position, revealed, pick
   );
 }
 
+function cell(row: ReasonRow, value: ReasonRow['model']): string {
+  if (value === null) return blind.noTier;
+  if (row.key === 'price') return money(value as number);
+  if (row.key === 'minutes') return thousands(value as number);
+  return String(value);
+}
+
+type ReasonProps = { model: Player; scout: Player; modelLetter: string; scoutLetter: string };
+
+function Reason({ model, scout, modelLetter, scoutLetter }: ReasonProps) {
+  const reason = pickReason(model, scout);
+  const drivers = positiveDrivers(model);
+  return (
+    <div className="reason">
+      <table className="reason-table">
+        <caption className="sr-only">{blind.reasonLabel(model.name, scout.name)}</caption>
+        <thead>
+          <tr>
+            <td />
+            <th scope="col">{blind.reasonCandidate(modelLetter, model.name)}</th>
+            <th scope="col">{blind.reasonCandidate(scoutLetter, scout.name)}</th>
+          </tr>
+        </thead>
+        <tbody>
+          {reason.rows.map((row) => (
+            <tr key={row.key}>
+              <th scope="row">{blind.reasonRows[row.key]}</th>
+              {(['model', 'scout'] as const).map((side) => (
+                <td key={side} className={row.ahead === side ? 'lead' : undefined}>
+                  {row.key === 'tier' && row[side] ? (
+                    <TierBadge tier={row[side] as Tier} />
+                  ) : (
+                    <span>{cell(row, row[side])}</span>
+                  )}
+                  {row.ahead === side && (
+                    <>
+                      {' '}
+                      <span aria-hidden="true">{blind.reasonAheadMark}</span>
+                      <span className="sr-only"> {blind.reasonAheadWord}</span>
+                    </>
+                  )}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      <p className="reason-why">{reasonSentence(reason, model.name, scout.name)}</p>
+      {drivers.length > 0 && <p className="reason-drivers">{blind.reasonDrivers(model.name, drivers)}</p>}
+      <p className="caption">{blind.reasonAheadNote}</p>
+    </div>
+  );
+}
+
 /** Step two of the blind pick: three dossiers without names, then the reveal and the verdict. */
 export function Compare({ trio }: { trio: Trio }) {
   const brief = useBrief();
@@ -168,6 +223,14 @@ export function Compare({ trio }: { trio: Trio }) {
               {agree ? blind.verdictAgree(LETTERS[modelIndex]) : blind.verdictDisagree(LETTERS[scoutIndex], LETTERS[modelIndex])}
             </p>
             <p className="verdict-sub">{agree ? blind.verdictAgreeSub : blind.verdictDisagreeSub}</p>
+            {!agree && (
+              <Reason
+                model={trio.modelTop}
+                scout={trio.order[scoutIndex]}
+                modelLetter={LETTERS[modelIndex]}
+                scoutLetter={LETTERS[scoutIndex]}
+              />
+            )}
           </div>
           <Button
             onClick={() => {

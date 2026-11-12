@@ -52,10 +52,14 @@ describe('budget', () => {
     await waitFor(() => expect(getState().budget).toBe(meta.default_brief.budget_eur));
   });
 
-  it('falls back to the default for a value that is not offered', () => {
+  it('falls back to the default for a value off the range or the step', () => {
     setDefaultBudget(1_000_000);
     setBudget(250_000);
     setBudget(777);
+    expect(getState().budget).toBe(1_000_000);
+    setBudget(350_000);
+    expect(getState().budget).toBe(350_000);
+    setBudget(1_050_000);
     expect(getState().budget).toBe(1_000_000);
   });
 

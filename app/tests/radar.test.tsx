@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { MemoryRouter, Route, Routes, useLocation } from 'react-router-dom';
-import { render, screen, waitFor, within } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { DataProvider } from '../src/lib/data';
@@ -10,11 +10,13 @@ import {
   applyFilters,
   availabilityCounts,
   defaultFilters,
+  defaultView,
+  selectedLeagueCount,
   leagueCounts,
   sortRows,
   titleCounts,
 } from '../src/lib/radar';
-import { addBlindPick, getState, reset, setBudget } from '../src/lib/store';
+import { BUDGET_MAX, BUDGET_MIN, BUDGET_STEP, getState, reset, setBudget, setDefaultBudget } from '../src/lib/store';
 import { radar as t } from '../src/lib/text.en';
 import type { Player, Tier } from '../src/lib/types';
 import { Radar } from '../src/screens/Radar/Radar';
@@ -51,6 +53,7 @@ const FIXTURE: Player[] = [
   make('s2', { league_id: 'SER1', league_name: 'Serbia', tier: 'B', rating: 60 }),
   make('p1', { league_id: 'PL1', league_name: 'Poland', tier: 'B', rating: 65, flags: { contract_ending: true } }),
   make('g1', { league_id: 'GB1', league_name: 'England', tier: 'A', rating: 99 }),
+  make('e1', { league_id: 'ES1', league_name: 'Spain', tier: 'B', rating: 40, flags: { under18: true }, age: 16.9 }),
   make('x1', { in_pool: false, tier: 'A', rating: 99 }),
 ];
 
@@ -98,7 +101,7 @@ describe('radar logic', () => {
     const f = defaultFilters(500_000);
     expect(f.leagues).toEqual(['KR1', 'SER1', 'PL1', 'TS1', 'RO1']);
     expect(f.leagues).toEqual(REGIONAL_LEAGUES);
-    expect(f).toMatchObject({ budget: 500_000, adultOnly: false, others: false, position: 'all', contractEnding: false });
+    expect(f).toMatchObject({ budget: 500_000, adultOnly: false, under18Only: false, otherLeagues: [], position: 'all', contractEnding: false });
     const rows = applyFilters(FIXTURE, f);
     expect(rows.map((p) => p.id).sort()).toEqual(['a1', 'a2', 'c1', 'p1', 's1', 's2']);
     expect(rows.find((p) => p.id === 'c1')?.flags.under18).toBe(true);
@@ -106,29 +109,57 @@ describe('radar logic', () => {
 
   it('narrows the list with each filter', () => {
     const f = defaultFilters(500_000);
-    const ids = (x: Partial<typeof f>, picks: string[] = []) =>
-      applyFilters(FIXTURE, { ...f, ...x }, new Set(picks)).map((p) => p.id).sort();
+    const ids = (x: Partial<typeof f>) => applyFilters(FIXTURE, { ...f, ...x }).map((p) => p.id).sort();
     expect(ids({ budget: 1_000_000 })).toContain('b1');
     expect(ids({ position: 'Midfield' })).toEqual(['a2']);
     expect(ids({ leagues: ['PL1'] })).toEqual(['p1']);
-    expect(ids({ others: true })).toContain('g1');
+    expect(ids({ otherLeagues: ['GB1'] })).toContain('g1');
+    expect(ids({ otherLeagues: ['GB1'] })).not.toContain('e1');
     expect(ids({ contractEnding: true })).toEqual(['a1', 'p1']);
     expect(ids({ adultOnly: true })).not.toContain('c1');
-    expect(ids({ mine: true }, ['s2', 'a1', 'g1'])).toEqual(['a1', 's2']);
+    expect(ids({ under18Only: true })).toEqual(['c1']);
+    expect(ids({ under18Only: true, otherLeagues: ['ES1'] })).toEqual(['c1', 'e1']);
   });
 
   it('counts the players each league would add under the other filters', () => {
     const f = { ...defaultFilters(500_000), leagues: ['PL1'], position: 'Attack' as const };
-    const c = leagueCounts(FIXTURE, f);
-    expect(c.byLeague).toEqual({ KR1: 2, SER1: 1, PL1: 1 });
-    expect(c.others).toBe(1);
-    expect(availabilityCounts(FIXTURE, defaultFilters(500_000))).toEqual({ contract: 2, adult: 5 });
+    expect(leagueCounts(FIXTURE, f)).toEqual({ KR1: 2, SER1: 1, PL1: 1, GB1: 1, ES1: 1 });
+    expect(leagueCounts(FIXTURE, { ...f, under18Only: true })).toEqual({ KR1: 1, ES1: 1 });
+    expect(availabilityCounts(FIXTURE, defaultFilters(500_000))).toEqual({ contract: 2, adult: 5, under18: 1 });
+    expect(availabilityCounts(FIXTURE, { ...defaultFilters(500_000), under18Only: true })).toEqual({ contract: 0, adult: 5, under18: 1 });
+  });
+
+  it('counts the selected leagues, single ones included', () => {
+    const all = [...REGIONAL_LEAGUES, 'GB1', 'ES1', 'IT1'];
+    expect(selectedLeagueCount(defaultFilters(500_000), all)).toBe(5);
+    expect(selectedLeagueCount({ ...defaultFilters(500_000), otherLeagues: ['ES1', 'IT1'] }, all)).toBe(7);
+    expect(selectedLeagueCount({ ...defaultFilters(500_000), leagues: [], otherLeagues: ['GB1'] }, all)).toBe(1);
+  });
+
+  it('keeps the budget between 50k and 1M in steps of 50k', () => {
+    expect([BUDGET_MIN, BUDGET_MAX, BUDGET_STEP]).toEqual([50_000, 1_000_000, 50_000]);
+    for (const ok of [50_000, 350_000, 950_000, 1_000_000]) {
+      setBudget(ok);
+      expect(getState().budget).toBe(ok);
+    }
+    for (const bad of [0, 49_999, 75_000, 1_050_000, -50_000, NaN, 500_000.5]) {
+      setBudget(350_000);
+      setBudget(bad);
+      expect(getState().budget).toBe(500_000);
+    }
+    reset();
+    setDefaultBudget(150_000);
+    setBudget(120_000);
+    expect(getState().budget).toBe(150_000);
+    reset();
+    setDefaultBudget(123);
+    expect(getState().budget).toBe(500_000);
   });
 
   it('sorts by tier, then rating, then id', () => {
-    const order = sortRows(applyFilters(FIXTURE, { ...defaultFilters(1_000_000), others: true })).map((p) => p.id);
-    expect(order).toEqual(['g1', 'a1', 'a2', 's1', 'b1', 'p1', 's2', 'c1']);
-    expect(titleCounts(sortRows(FIXTURE.filter((p) => p.in_pool)))).toEqual({ total: 8, tierA: 4 });
+    const order = sortRows(applyFilters(FIXTURE, { ...defaultFilters(1_000_000), otherLeagues: ['GB1', 'ES1'] })).map((p) => p.id);
+    expect(order).toEqual(['g1', 'a1', 'a2', 's1', 'b1', 'p1', 's2', 'e1', 'c1']);
+    expect(titleCounts(sortRows(FIXTURE.filter((p) => p.in_pool)))).toEqual({ total: 9, tierA: 4 });
   });
 
   it('filters and sorts 2,000 players in under 100 ms (median of five)', () => {
@@ -143,7 +174,7 @@ describe('radar logic', () => {
         flags: { contract_ending: i % 5 === 0 },
       }),
     );
-    const f = { ...defaultFilters(1_000_000), others: true };
+    const f = { ...defaultFilters(1_000_000), otherLeagues: ['GB1', 'ES1'] };
     const times = Array.from({ length: 5 }, () => {
       const t0 = performance.now();
       sortRows(applyFilters(many, f));
@@ -185,8 +216,8 @@ describe('radar screen', () => {
     expect(box(/Serbia/)).toBeChecked();
     expect(box(/Czech Republic/)).toBeChecked();
     expect(box(/Aged 18 or older/)).not.toBeChecked();
-    expect(box(/more leagues/)).not.toBeChecked();
-    expect(screen.getByRole('slider')).toHaveValue('1');
+    expect(screen.getByRole('button', { name: '18 more leagues' })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByRole('slider')).toHaveValue('500000');
     expect(screen.getByText('≤ €500k')).toBeInTheDocument();
     expect(rowCount()).toBe(6);
     expect(screen.getByText('Under 18')).toBeInTheDocument();
@@ -201,14 +232,152 @@ describe('radar screen', () => {
     expect(rowCount()).toBe(1);
   });
 
-  it('keeps only blind picks when asked', async () => {
-    addBlindPick({ scoutId: 's2', modelId: 'a1' });
+  it('moves the budget from 50k to 1M in steps of 50k and follows every step', async () => {
     renderRadar();
     await heading();
-    expect(box(/My blind picks/)).toHaveTextContent('1');
-    await userEvent.click(box(/My blind picks/));
+    const slider = screen.getByRole('slider');
+    expect(slider).toHaveAttribute('min', '50000');
+    expect(slider).toHaveAttribute('max', '1000000');
+    expect(slider).toHaveAttribute('step', '50000');
+    fireEvent.change(slider, { target: { value: '850000' } });
+    expect(getState().budget).toBe(850_000);
+    expect(screen.getByText('≤ €850k', { selector: '.now' })).toBeInTheDocument();
+    expect(await heading()).toHaveTextContent('7 young players fit your budget.');
+    expect(screen.getByTestId('plot-budget-line')).toHaveTextContent('€850k');
+    expect(rowCount()).toBe(7);
+    fireEvent.change(slider, { target: { value: '300000' } });
+    expect(screen.getByText('≤ €300k', { selector: '.now' })).toBeInTheDocument();
+    expect(await heading()).toHaveTextContent('6 young players fit your budget.');
+    expect(screen.getByTestId('plot-budget-line')).toHaveTextContent('€300k');
+    expect(rowCount()).toBe(6);
+    fireEvent.change(slider, { target: { value: '50000' } });
+    expect(screen.queryByRole('table')).toBeNull();
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(t.emptyTitle);
+    expect(screen.getByRole('slider')).toHaveValue('50000');
+  });
+
+  it('opens and closes a list of the other leagues, closed at first', async () => {
+    renderRadar();
+    await heading();
+    const toggle = screen.getByRole('button', { name: '18 more leagues' });
+    const list = document.getElementById('radar-more-leagues') as HTMLElement;
+    expect(toggle).toHaveAttribute('aria-controls', 'radar-more-leagues');
+    expect(list).toBeInTheDocument();
+    expect(list.hidden).toBe(true);
+    await userEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(list.hidden).toBe(false);
+    expect(within(list).getAllByRole('checkbox')).toHaveLength(18);
+    expect(within(list).getByRole('checkbox', { name: /England/ })).toHaveTextContent('1');
+    expect(within(list).getByRole('checkbox', { name: /Italy/ })).toHaveTextContent('0');
+    await userEvent.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(list.hidden).toBe(true);
+  });
+
+  it('ticks a single other league and says how many are selected', async () => {
+    renderRadar();
+    await heading();
+    await userEvent.click(screen.getByRole('button', { name: '18 more leagues' }));
+    await userEvent.click(box(/England/));
+    expect(box(/England/)).toBeChecked();
+    expect(box(/Spain/)).not.toBeChecked();
+    expect(rowCount()).toBe(7);
+    expect(screen.getByText('Name g1')).toBeInTheDocument();
+    expect(screen.queryByText('Name e1')).toBeNull();
+    expect(screen.getByRole('button', { name: '18 more leagues · 1 selected' })).toBeInTheDocument();
+    expect(screen.getByText(/^6 leagues, season 2025\/26/)).toBeInTheDocument();
+    await userEvent.click(box(/Spain/));
+    expect(screen.getByRole('button', { name: '18 more leagues · 2 selected' })).toBeInTheDocument();
+    expect(screen.getByText(/^7 leagues, season/)).toBeInTheDocument();
+  });
+
+  it('selects all other leagues and clears them again', async () => {
+    renderRadar();
+    await heading();
+    await userEvent.click(screen.getByRole('button', { name: '18 more leagues' }));
+    await userEvent.click(screen.getByRole('button', { name: 'Select all' }));
+    expect(screen.getByRole('button', { name: '18 more leagues · 18 selected' })).toBeInTheDocument();
+    expect(screen.getByText(/^All 23 leagues, season/)).toBeInTheDocument();
+    expect(rowCount()).toBe(8);
+    await userEvent.click(screen.getByRole('button', { name: 'Clear' }));
+    expect(screen.getByRole('button', { name: '18 more leagues' })).toBeInTheDocument();
+    expect(screen.getByText(/^Five regional leagues, season/)).toBeInTheDocument();
+    expect(rowCount()).toBe(6);
+  });
+
+  it('shows under-18s alone and excludes the 18-or-older filter', async () => {
+    renderRadar();
+    await heading();
+    expect(box(/Under 18 only/)).toHaveTextContent('1');
+    await userEvent.click(box(/Aged 18 or older/));
+    expect(box(/Aged 18 or older/)).toBeChecked();
+    await userEvent.click(box(/Under 18 only/));
+    expect(box(/Under 18 only/)).toBeChecked();
+    expect(box(/Aged 18 or older/)).not.toBeChecked();
     expect(rowCount()).toBe(1);
-    expect(screen.getByText('Name s2')).toBeInTheDocument();
+    expect(screen.getByText('Name c1')).toBeInTheDocument();
+    expect(await heading()).toHaveTextContent('1 young player fits your budget.');
+    expect(screen.getByText(/aged under 18\./)).toBeInTheDocument();
+    await userEvent.click(box(/Aged 18 or older/));
+    expect(box(/Under 18 only/)).not.toBeChecked();
+    expect(screen.getByText(/aged 18 to 21\./)).toBeInTheDocument();
+  });
+
+  it('has no View block, no hide names and no blind picks filter', async () => {
+    renderRadar();
+    await heading();
+    expect(screen.queryByText('View', { selector: '.label' })).toBeNull();
+    expect(screen.queryByRole('checkbox', { name: /Hide names/ })).toBeNull();
+    expect(screen.queryByRole('checkbox', { name: /blind picks/ })).toBeNull();
+    expect(screen.getByText('Name a1')).toBeInTheDocument();
+  });
+
+  it('lets the keyboard reach the league list and its checkboxes', async () => {
+    renderRadar();
+    await heading();
+    const toggle = screen.getByRole('button', { name: '18 more leagues' });
+    toggle.focus();
+    await userEvent.keyboard('{Enter}');
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    await userEvent.tab();
+    expect(screen.getByRole('button', { name: 'Select all' })).toHaveFocus();
+    await userEvent.tab();
+    expect(screen.getByRole('button', { name: 'Clear' })).toHaveFocus();
+    await userEvent.tab();
+    expect(box(/Austria/)).toHaveFocus();
+    await userEvent.keyboard(' ');
+    expect(box(/Austria/)).toBeChecked();
+  });
+
+  it('resets every filter of the rail but not the budget', async () => {
+    renderRadar();
+    await heading();
+    fireEvent.change(screen.getByRole('slider'), { target: { value: '900000' } });
+    await userEvent.click(screen.getByRole('button', { name: '18 more leagues' }));
+    await userEvent.click(box(/England/));
+    await userEvent.click(box(/Croatia/));
+    await userEvent.click(box(/Under 18 only/));
+    await userEvent.click(box(/Contract ends by/));
+    await userEvent.click(screen.getByRole('button', { name: 'Midfield' }));
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent(t.emptyTitle);
+    await userEvent.click(screen.getByRole('button', { name: 'Reset filters' }));
+    expect(await heading()).toHaveTextContent('7 young players');
+    expect(getState().budget).toBe(900_000);
+    expect(box(/Croatia/)).toBeChecked();
+    expect(box(/Under 18 only/)).not.toBeChecked();
+    expect(box(/Contract ends by/)).not.toBeChecked();
+    expect(screen.getByRole('button', { name: '18 more leagues' })).toHaveAttribute('aria-expanded', 'false');
+    expect(defaultView().otherLeagues).toEqual([]);
+  });
+
+  it('switches the new controls off in the passport view', async () => {
+    renderRadar();
+    await heading();
+    await userEvent.click(screen.getByRole('button', { name: /Bosnian passport/ }));
+    expect(screen.getByRole('button', { name: '18 more leagues' })).toBeDisabled();
+    expect(box(/Under 18 only/)).toBeDisabled();
+    expect(screen.getByRole('slider')).toBeEnabled();
   });
 
   it('has column headers and rows in order', async () => {
@@ -237,16 +406,6 @@ describe('radar screen', () => {
     await userEvent.click(screen.getByText('Name s1'));
     expect(screen.getByTestId('where')).toHaveTextContent('/player/s1');
     expect(getState().origin).toBe('radar');
-  });
-
-  it('hides name and club with black bars but keeps the league', async () => {
-    renderRadar();
-    await heading();
-    await userEvent.click(box(/Hide names/));
-    expect(screen.queryByText('Name a1')).toBeNull();
-    expect(screen.queryByText(/Club a1/)).toBeNull();
-    expect(within(screen.getByRole('table')).getAllByRole('img', { name: /hidden/i }).length).toBeGreaterThanOrEqual(12);
-    expect(screen.getAllByText(/Croatia/).length).toBeGreaterThan(1);
   });
 
   it('shows the first 20 with a caption and Show all', async () => {

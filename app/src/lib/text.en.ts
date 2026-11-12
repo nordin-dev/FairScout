@@ -105,6 +105,43 @@ export const blind = {
   verdictDisagree: (you: string, model: string) => `You picked ${you}. The model picks ${model}.`,
   verdictDisagreeSub: 'Both go on your list. Where you disagree is worth a trip.',
   seeWhy: 'See why →',
+  reasonLabel: (model: string, scout: string) => `${model} and ${scout} side by side`,
+  reasonCandidate: (letter: string, name: string) => `${letter} · ${name}`,
+  reasonRows: {
+    tier: 'Outlook',
+    rating: 'Rating, of 100',
+    price: 'Price',
+    age: 'Age',
+    minutes: 'Minutes',
+  },
+  reasonAheadMark: '✓',
+  reasonAheadWord: 'ahead',
+  reasonAheadNote: '✓ = ahead on this row',
+  reasonTiers: (model: string, modelTier: string, scout: string, scoutTier: string) =>
+    modelTier === scoutTier
+      ? `${model} and ${scout} are both outlook ${modelTier}.`
+      : `${model} is outlook ${modelTier}, ${scout} is outlook ${scoutTier}.`,
+  reasonTiersBetter: (model: string, modelTier: string, scout: string, scoutTier: string) =>
+    `The model prefers ${model} for his outlook: tier ${modelTier}, against tier ${scoutTier} for ${scout}.`,
+  reasonDrivers: (model: string, items: string[]) => `What the model sees in ${model}: ${items.join(' · ')}.`,
+  reasonScoreHigher: (model: string) => `Inside that tier the model scores ${model} higher.`,
+  reasonTierUnknown: (model: string, scout: string) => `The outlook of ${model} or ${scout} is not known.`,
+  reasonAhead: {
+    rating: 'a higher rating',
+    price: 'a lower price',
+    age: 'a younger age',
+    minutes: 'more minutes',
+  },
+  reasonBehind: {
+    rating: 'a lower rating',
+    price: 'a higher price',
+    age: 'an older age',
+    minutes: 'fewer minutes',
+  },
+  reasonRowsAhead: (model: string, ahead: string, behind: string) =>
+    ahead && behind ? `${model} has ${ahead}, but ${behind}.` : ahead ? `${model} has ${ahead}.` : behind ? `${model} has ${behind}.` : '',
+  reasonList: (items: string[]) =>
+    items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`,
 };
 
 export const player = {
@@ -220,6 +257,7 @@ export const radar = {
   lede: (leagues: string, season: string, ages: string) => `${leagues}, season ${season}, ${ages}.`,
   agesAll: (bornFrom: number | null) => (bornFrom === null ? 'aged 21 or younger' : `born ${bornFrom} or later`),
   agesAdult: 'aged 18 to 21',
+  agesUnder18: 'aged under 18',
   railLabel: 'Filters',
   budget: 'Budget',
   budgetSlider: 'Budget',
@@ -233,13 +271,14 @@ export const radar = {
     { value: 'Goalkeeper', label: 'GK' },
   ] as const,
   league: 'League',
-  moreLeagues: (n: number) => `${n} more ${n === 1 ? 'league' : 'leagues'}`,
+  moreLeagues: (n: number, picked: number) => `${n} more ${n === 1 ? 'league' : 'leagues'}${picked > 0 ? ` · ${picked} selected` : ''}`,
+  moreLeaguesList: 'More leagues',
+  selectAll: 'Select all',
+  clearAll: 'Clear',
   availability: 'Availability',
   contractEnds: (when: string) => `Contract ends by ${when}`,
   adult: 'Aged 18 or older',
-  view: 'View',
-  hideNames: 'Hide names (blind)',
-  myPicks: 'My blind picks',
+  under18Only: 'Under 18 only',
   headers: { rank: '#', player: 'Player', pos: 'Pos', age: 'Age', price: 'Price', min: 'Min', rating: 'Rating', outlook: 'Outlook', notes: 'Notes' },
   tableLabel: 'Players on the radar',
   ratingLabel: 'Rating',
@@ -281,7 +320,6 @@ export const plot = {
   title: 'Cheap and promising is the top-left corner',
   sub: 'Each dot is one player. Left = cheaper. Up = better outlook.',
   tooFew: 'Too few players for a chart.',
-  hidden: 'Hidden',
   priceAxis: 'Price (log scale)',
   outlookAxis: 'Outlook',
   tierA: 'Tier A',

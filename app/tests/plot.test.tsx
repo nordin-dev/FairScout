@@ -132,18 +132,6 @@ describe('value and outlook plot', () => {
     await waitFor(() => expect(screen.getByTestId('where').textContent).toBe('/player/a2'));
   });
 
-  it('replaces the names with "Hidden" when names are hidden', async () => {
-    renderRadar();
-    await dots();
-    await userEvent.click(screen.getByRole('checkbox', { name: /Hide names/ }));
-    const found = await dots();
-    expect(found.map((d) => d.getAttribute('aria-label'))).toContain('Hidden, €150k, Tier A');
-    for (const d of found) {
-      expect(d.getAttribute('aria-label')).not.toMatch(/Name /);
-      expect(d.getAttribute('data-tip')).not.toMatch(/Name /);
-    }
-  });
-
   it('states how many players and how many tier A in the text alternative', async () => {
     renderRadar();
     await dots();

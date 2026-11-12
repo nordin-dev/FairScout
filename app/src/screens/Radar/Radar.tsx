@@ -5,7 +5,6 @@ import { ChoiceChips } from '../../components/ChoiceChips';
 import { DataTable, type Column } from '../../components/DataTable';
 import { Flag } from '../../components/Flag';
 import { Meter } from '../../components/Meter';
-import { RedactionBar } from '../../components/RedactionBar';
 import { EmptyState, ErrorState, LoadingNote, Skeleton } from '../../components/ScreenState';
 import { SegmentSwitch } from '../../components/SegmentSwitch';
 import { Sheet } from '../../components/Sheet';
@@ -31,7 +30,7 @@ import {
   type ViewFilters,
   PASSPORT_YOUNG_AGE,
 } from '../../lib/radar';
-import { BUDGETS, setBudget, setOrigin, useBlindPicks, useBudget } from '../../lib/store';
+import { BUDGET_MAX, BUDGET_MIN, BUDGET_STEP, setBudget, setOrigin, useBudget } from '../../lib/store';
 import { poolBornFrom } from '../../lib/brief';
 import { ratingOf } from '../../lib/rating';
 import { radar as t } from '../../lib/text.en';
@@ -40,8 +39,6 @@ import { PassportView } from './PassportView';
 import './Radar.css';
 
 const PAGE = 20;
-const NAME_WIDTHS = [11, 13, 15, 12, 14, 16, 10];
-const CLUB_WIDTHS = [14, 12, 16, 11, 13];
 
 function Check({ on, label, count, onToggle, disabled = false }: { on: boolean; label: string; count?: number; onToggle: () => void; disabled?: boolean }) {
   return (
@@ -109,37 +106,43 @@ function RadarLoading() {
 function RadarScreen({ data }: { data: AppData }) {
   const navigate = useNavigate();
   const sharedBudget = useBudget();
-  const picks = useBlindPicks();
   const [view, setView] = useState<ViewFilters>(defaultView);
   const [showAll, setShowAll] = useState(false);
+  const [listOpen, setListOpen] = useState(false);
   const [which, setWhich] = useState<'budget' | 'passport'>('budget');
   const filters: Filters = useMemo(() => ({ ...view, budget: sharedBudget }), [view, sharedBudget]);
-  const pickIds = useMemo(() => new Set(picks.map((p) => p.scoutId)), [picks]);
   const players = data.players;
 
-  const rows = useMemo(() => sortRows(applyFilters(players, filters, pickIds)), [players, filters, pickIds]);
+  const rows = useMemo(() => sortRows(applyFilters(players, filters)), [players, filters]);
   const plotRows = useMemo(
-    () => sortRows(applyFilters(players, { ...filters, budget: Infinity }, pickIds)),
-    [players, filters, pickIds],
+    () => sortRows(applyFilters(players, { ...filters, budget: Infinity })),
+    [players, filters],
   );
   const { total, tierA } = titleCounts(rows);
   const bosnians = useMemo(() => bosnianPlayers(players), [players]);
   const passport = passportCounts(bosnians, sharedBudget);
   const isPassport = which === 'passport';
   const off = isPassport;
-  const counts = useMemo(() => leagueCounts(players, filters, pickIds), [players, filters, pickIds]);
-  const avail = useMemo(() => availabilityCounts(players, filters, pickIds), [players, filters, pickIds]);
+  const counts = useMemo(() => leagueCounts(players, filters), [players, filters]);
+  const avail = useMemo(() => availabilityCounts(players, filters), [players, filters]);
 
   const regional = useMemo(() => {
     const names = new Map(data.leagues.leagues.map((l) => [l.id, l.name]));
     return [...REGIONAL_LEAGUES]
-      .map((id) => ({ id, name: names.get(id) ?? id, count: counts.byLeague[id] ?? 0 }))
+      .map((id) => ({ id, name: names.get(id) ?? id, count: counts[id] ?? 0 }))
       .sort((a, b) => b.count - a.count || a.name.localeCompare(b.name));
   }, [data.leagues, counts]);
+  const others = useMemo(
+    () =>
+      data.leagues.leagues
+        .filter((l) => !REGIONAL_LEAGUES.includes(l.id))
+        .map((l) => ({ id: l.id, name: l.name, count: counts[l.id] ?? 0 }))
+        .sort((a, b) => a.name.localeCompare(b.name)),
+    [data.leagues, counts],
+  );
   const allIds = data.leagues.leagues.map((l) => l.id);
-  const otherLeagueCount = allIds.filter((id) => !REGIONAL_LEAGUES.includes(id)).length;
   const selected = selectedLeagueCount(filters, allIds);
-  const isDefault = filters.leagues.length === REGIONAL_LEAGUES.length && !filters.others;
+  const isDefault = filters.leagues.length === REGIONAL_LEAGUES.length && filters.otherLeagues.length === 0;
   const leagueWords = isDefault
     ? t.regionalLeagues
     : selected >= allIds.length
@@ -147,7 +150,8 @@ function RadarScreen({ data }: { data: AppData }) {
       : t.someLeagues(selected);
   const bornFrom = poolBornFrom(data.meta.radar_season);
   const cutoff = contractCutoff(data.meta.source_last_date);
-  const lede = t.lede(leagueWords, data.meta.radar_season, view.adultOnly ? t.agesAdult : t.agesAll(bornFrom));
+  const ages = view.under18Only ? t.agesUnder18 : view.adultOnly ? t.agesAdult : t.agesAll(bornFrom);
+  const lede = t.lede(leagueWords, data.meta.radar_season, ages);
 
   const set = (patch: Partial<ViewFilters>) => {
     setView((v) => ({ ...v, ...patch }));
@@ -155,8 +159,11 @@ function RadarScreen({ data }: { data: AppData }) {
   };
   const toggleLeague = (id: string) =>
     set({ leagues: view.leagues.includes(id) ? view.leagues.filter((x) => x !== id) : [...view.leagues, id] });
+  const toggleOther = (id: string) =>
+    set({ otherLeagues: view.otherLeagues.includes(id) ? view.otherLeagues.filter((x) => x !== id) : [...view.otherLeagues, id] });
   const reset = () => {
     setView(defaultView());
+    setListOpen(false);
     setShowAll(false);
   };
   const open = (p: Player) => {
@@ -164,8 +171,7 @@ function RadarScreen({ data }: { data: AppData }) {
     navigate(`/player/${p.id}`);
   };
 
-  const budgetIndex = Math.max(0, BUDGETS.findIndex((b) => b === sharedBudget));
-  const fill = `${(budgetIndex / (BUDGETS.length - 1)) * 100}%`;
+  const fill = `${((sharedBudget - BUDGET_MIN) / (BUDGET_MAX - BUDGET_MIN)) * 100}%`;
 
   const rail = (
     <aside className="rail" aria-label={t.railLabel}>
@@ -177,21 +183,21 @@ function RadarScreen({ data }: { data: AppData }) {
           <input
             id="radar-budget"
             type="range"
-            min={0}
-            max={BUDGETS.length - 1}
-            step={1}
-            value={budgetIndex}
+            min={BUDGET_MIN}
+            max={BUDGET_MAX}
+            step={BUDGET_STEP}
+            value={sharedBudget}
             aria-valuetext={t.budgetValue(money(sharedBudget))}
             onChange={(e) => {
-              setBudget(BUDGETS[Number(e.target.value)] ?? sharedBudget);
+              setBudget(Number(e.target.value));
               setShowAll(false);
             }}
           />
         </div>
         <div className="row">
-          <span>{money(BUDGETS[0])}</span>
+          <span>{money(BUDGET_MIN)}</span>
           <span className="now">{t.budgetValue(money(sharedBudget))}</span>
-          <span>{money(BUDGETS[BUDGETS.length - 1])}</span>
+          <span>{money(BUDGET_MAX)}</span>
         </div>
       </div>
       <div>
@@ -209,13 +215,30 @@ function RadarScreen({ data }: { data: AppData }) {
         {regional.map((l) => (
           <Check key={l.id} on={view.leagues.includes(l.id)} label={l.name} count={l.count} onToggle={() => toggleLeague(l.id)} disabled={off} />
         ))}
-        <Check
-          on={view.others}
-          label={t.moreLeagues(otherLeagueCount)}
-          count={counts.others}
-          onToggle={() => set({ others: !view.others })}
+        <button
+          type="button"
+          className={listOpen ? 'more-toggle open' : 'more-toggle'}
+          aria-expanded={listOpen}
+          aria-controls="radar-more-leagues"
           disabled={off}
-        />
+          onClick={() => setListOpen((o) => !o)}
+        >
+          <i aria-hidden="true" />
+          <span>{t.moreLeagues(others.length, view.otherLeagues.length)}</span>
+        </button>
+        <div id="radar-more-leagues" className="more-list" role="group" aria-label={t.moreLeaguesList} hidden={!listOpen}>
+          <div className="more-actions">
+            <button type="button" disabled={off} onClick={() => set({ otherLeagues: others.map((l) => l.id) })}>
+              {t.selectAll}
+            </button>
+            <button type="button" disabled={off} onClick={() => set({ otherLeagues: [] })}>
+              {t.clearAll}
+            </button>
+          </div>
+          {others.map((l) => (
+            <Check key={l.id} on={view.otherLeagues.includes(l.id)} label={l.name} count={l.count} onToggle={() => toggleOther(l.id)} disabled={off} />
+          ))}
+        </div>
       </div>
       <div>
         <span className="label">{t.availability}</span>
@@ -228,29 +251,34 @@ function RadarScreen({ data }: { data: AppData }) {
             disabled={off}
           />
         ) : null}
-        <Check on={view.adultOnly} label={t.adult} count={avail.adult} onToggle={() => set({ adultOnly: !view.adultOnly })} disabled={off} />
-      </div>
-      <div>
-        <span className="label">{t.view}</span>
-        <Check on={view.hideNames} label={t.hideNames} onToggle={() => set({ hideNames: !view.hideNames })} disabled={off} />
-        <Check on={view.mine} label={t.myPicks} count={picks.length} onToggle={() => set({ mine: !view.mine })} disabled={off} />
+        <Check
+          on={view.adultOnly}
+          label={t.adult}
+          count={avail.adult}
+          onToggle={() => set({ adultOnly: !view.adultOnly, under18Only: false })}
+          disabled={off}
+        />
+        <Check
+          on={view.under18Only}
+          label={t.under18Only}
+          count={avail.under18}
+          onToggle={() => set({ under18Only: !view.under18Only, adultOnly: false })}
+          disabled={off}
+        />
       </div>
     </aside>
   );
 
-  const hide = view.hideNames;
   const columns: Column<Player>[] = [
     { key: 'rank', header: t.headers.rank, align: 'right', cell: (_p, i) => <span className="num">{i + 1}</span> },
     {
       key: 'player',
       header: t.headers.player,
-      cell: (p, i) => (
+      cell: (p) => (
         <>
-          <span className="name">
-            {hide ? <RedactionBar text={p.name} width={NAME_WIDTHS[i % NAME_WIDTHS.length] ?? 12} revealed={false} /> : p.name}
-          </span>
+          <span className="name">{p.name}</span>
           <span className="sub">
-            {hide ? <RedactionBar text={p.club} width={CLUB_WIDTHS[i % CLUB_WIDTHS.length] ?? 12} revealed={false} /> : p.club}
+            {p.club}
             {' · '}
             {p.league_name}
           </span>
@@ -298,7 +326,7 @@ function RadarScreen({ data }: { data: AppData }) {
             <EmptyState title={t.emptyBlockTitle} text={t.emptyText} action={<Button onClick={reset}>{t.reset}</Button>} />
           ) : (
             <>
-              <ValueOutlookPlot players={plotRows} pool={players} budget={sharedBudget} hideNames={view.hideNames} onOpen={open} />
+              <ValueOutlookPlot players={plotRows} pool={players} budget={sharedBudget} onOpen={open} />
               <Sheet className="r-table">
               <DataTable columns={columns} rows={shown} rowKey={(p) => p.id} label={t.tableLabel} onRowAction={open} />
               <div className="r-foot">

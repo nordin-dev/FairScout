@@ -17,7 +17,6 @@ type Props = {
   /** The whole pool; the tier A line sits at its lowest tier A outlook. */
   pool: readonly Player[];
   budget: number;
-  hideNames: boolean;
   /** A click or Enter on a dot. */
   onOpen: (player: Player) => void;
 };
@@ -36,7 +35,6 @@ export function ValueOutlookPlot({
   players,
   pool,
   budget,
-  hideNames,
   onOpen,
 }: Props) {
   const dots = players.filter(drawable);
@@ -139,7 +137,7 @@ export function ValueOutlookPlot({
           </text>
         </g>
         {dots.map((p) => {
-          const label = `${hideNames ? t.hidden : p.name}, ${money(p.value_eur)}, ${t.tier(p.tier)}`;
+          const label = `${p.name}, ${money(p.value_eur)}, ${t.tier(p.tier)}`;
           const cls = [
             "dot",
             p.tier === "A" ? "dot-a" : "",

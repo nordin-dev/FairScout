@@ -1,13 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { RouterProvider, createMemoryRouter } from 'react-router-dom';
-import { fireEvent, render, screen, waitFor } from '@testing-library/react';
+import { act, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { frameRoutes } from '../src/App';
 import { Compare } from '../src/screens/BlindPick/Compare';
 import { canShowThree, countMatches, positionOf, readDefaultBrief, toggleMatter, type BriefCriteria } from '../src/lib/brief';
-import { getState, reset } from '../src/lib/store';
+import { ratingOf } from '../src/lib/rating';
+import { addBlindPick, getState, reset, setBlindStep, setBudget } from '../src/lib/store';
 import type { Player } from '../src/lib/types';
 
 const sample = (name: string): unknown =>
@@ -93,6 +94,19 @@ describe('brief screen', () => {
     expect(button()).toBeEnabled();
   });
 
+  it('marks no budget button when the shared budget is between the three', async () => {
+    renderBlind();
+    await screen.findByText('players match');
+    act(() => setBudget(350_000));
+    const group = screen.getByRole('group', { name: 'Budget' });
+    expect(within(group).getAllByRole('button')).toHaveLength(3);
+    expect(group.querySelectorAll('[aria-pressed="true"]')).toHaveLength(0);
+    expect(screen.getByText('Budget ≤ €350k')).toBeInTheDocument();
+    await userEvent.click(screen.getByRole('button', { name: 'Up to €500k' }));
+    expect(getState().budget).toBe(500_000);
+    expect(group.querySelectorAll('[aria-pressed="true"]')).toHaveLength(1);
+  });
+
   it('a budget choice changes the shared budget and the count; a third priority drops the oldest', async () => {
     renderBlind();
     await screen.findByText('players match');
@@ -164,5 +178,39 @@ describe('comparison scores', () => {
     render(<RouterProvider router={router} />);
     const first = screen.getByLabelText('Player A');
     expect(Array.from(first.querySelectorAll('.score b')).map((b) => b.textContent).sort()).toEqual(['16', '85', '87']);
+  });
+});
+
+describe('why the model differs', () => {
+  const players = sample('players') as Player[];
+  const [a, b, c] = players;
+  const trio = { modelTop: b, rawTop: a, bestFit: c, order: [a, b, c] as [Player, Player, Player] };
+
+  function reveal(scoutId: string) {
+    setBlindStep('revealed');
+    addBlindPick({ scoutId, modelId: b.id });
+    const router = createMemoryRouter([{ path: '/', element: <Compare trio={trio} /> }]);
+    render(<RouterProvider router={router} />);
+  }
+
+  it('shows both names and the five rows inside the verdict when the scout and the model differ', () => {
+    reveal(a.id);
+    const verdict = document.querySelector('.verdict') as HTMLElement;
+    expect(verdict).toHaveAttribute('aria-live', 'polite');
+    const table = within(verdict).getByRole('table');
+    expect(table).toHaveTextContent(`A · ${a.name}`);
+    expect(table).toHaveTextContent(`B · ${b.name}`);
+    const rows = within(table).getAllByRole('row').slice(1);
+    expect(rows.map((r) => within(r).getByRole('rowheader').textContent)).toEqual(['Outlook', 'Rating, of 100', 'Price', 'Age', 'Minutes']);
+    expect(rows[1]).toHaveTextContent(String(ratingOf(b)));
+    expect(rows[1]).toHaveTextContent(String(ratingOf(a)));
+    expect(within(verdict).getByText(/is outlook/)).toBeInTheDocument();
+    expect(within(verdict).getByRole('button', { name: 'See why →' })).toBeInTheDocument();
+  });
+
+  it('shows no comparison when the scout and the model agree', () => {
+    reveal(b.id);
+    expect(screen.queryByRole('table')).not.toBeInTheDocument();
+    expect(screen.getByText('You and the model agree: B.')).toBeInTheDocument();
   });
 });

@@ -6,7 +6,7 @@ import { Sheet } from '../../components/Sheet';
 import { MATTERS, MAX_AGES, POSITIONS, poolBornFrom, canShowThree, countMatches } from '../../lib/brief';
 import { useData } from '../../lib/data';
 import {
-  BUDGETS,
+  BRIEF_BUDGETS,
   setBlindStep,
   setBudget,
   setMaxAge,
@@ -77,7 +77,7 @@ export function Brief() {
             label={blind.budgetLabel}
             options={blind.budgets}
             selected={String(budget)}
-            onChange={(v) => setBudget(BUDGETS.find((b) => String(b) === v) ?? budget)}
+            onChange={(v) => setBudget(BRIEF_BUDGETS.find((b) => String(b) === v) ?? budget)}
           />
         </div>
         <div className="b-row">

@@ -27,7 +27,10 @@ test('demo walkthrough with the keyboard only', async ({ page, walk }) => {
   const slider = page.locator('#radar-budget');
   await slider.focus();
   const now = Number(await slider.inputValue());
-  await key(now === 0 ? 'ArrowRight' : 'Home');
+  const step = now === 1_000_000 ? -50_000 : 50_000;
+  await key(step > 0 ? 'ArrowRight' : 'ArrowLeft');
+  expect(Number(await slider.inputValue()), 'one arrow press moves the budget by one step').toBe(now + step);
+  await key(now === 1_000_000 ? 'Home' : 'End');
   await expect(page.getByRole('heading', { level: 1 })).not.toHaveText(new RegExp(`^${before} young`));
   expect(await radarCount(page), 'radar title number after the budget change').not.toBe(before);
   await key('Tab');

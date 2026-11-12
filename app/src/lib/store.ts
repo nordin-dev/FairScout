@@ -1,16 +1,19 @@
 import { useSyncExternalStore } from 'react';
 import { toggleMatter as toggled, type DefaultBrief, type MaxAge, type Matter, type Position } from './brief';
 
-/** The three budgets the app offers, in euros. */
-export const BUDGETS = [250_000, 500_000, 1_000_000] as const;
-export type Budget = (typeof BUDGETS)[number];
+/** The budget runs from 50k to 1M euros in steps of 50k. */
+export const BUDGET_MIN = 50_000;
+export const BUDGET_MAX = 1_000_000;
+export const BUDGET_STEP = 50_000;
+/** The three budgets the brief offers as buttons. */
+export const BRIEF_BUDGETS: readonly number[] = [250_000, 500_000, 1_000_000];
 export type Origin = 'blind' | 'radar';
 export type BlindStep = 'brief' | 'compare' | 'revealed';
 export type Brief = { position: Position; maxAge: MaxAge; matters: Matter[] };
 export type BlindPick = { scoutId: string; modelId: string };
 
 export type StoreState = {
-  budget: Budget;
+  budget: number;
   details: boolean;
   origin: Origin;
   brief: Brief;
@@ -19,11 +22,12 @@ export type StoreState = {
   modelPickId: string | null;
 };
 
-const FALLBACK_BUDGET: Budget = 500_000;
+const FALLBACK_BUDGET = 500_000;
 
-const isBudget = (v: unknown): v is Budget => BUDGETS.some((b) => b === v);
+const isBudget = (v: unknown): v is number =>
+  typeof v === 'number' && Number.isInteger(v) && v >= BUDGET_MIN && v <= BUDGET_MAX && v % BUDGET_STEP === 0;
 
-let defaultBudget: Budget = FALLBACK_BUDGET;
+let defaultBudget = FALLBACK_BUDGET;
 const initial = (): StoreState => ({
   budget: defaultBudget,
   details: false,
@@ -53,7 +57,7 @@ const subscribe = (l: () => void) => {
 
 export const getState = (): StoreState => state;
 
-/** Sets the budget. A value that is not one of the offered ones sets the default. */
+/** Sets the budget. A value outside the range or off the step sets the default. */
 export function setBudget(value: number): void {
   budgetChosen = true;
   update({ budget: isBudget(value) ? value : defaultBudget });

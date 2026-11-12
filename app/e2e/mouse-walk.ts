@@ -46,7 +46,7 @@ export async function mouseWalk(page: Page, walk: Walk, { afterLoad, station }: 
 
   const slider = page.locator('#radar-budget');
   const now = Number(await slider.inputValue());
-  await slider.fill(now === 0 ? '2' : '0');
+  await slider.fill(now === 100_000 ? '1000000' : '100000');
   await expect(page.getByRole('heading', { level: 1 })).not.toHaveText(new RegExp(`^${before} young`));
   const after = await radarCount(page);
   expect(after, 'radar title number after the budget change').not.toBe(before);

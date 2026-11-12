@@ -12,12 +12,11 @@ export type Filters = {
   position: PositionFilter;
   /** The regional leagues that are switched on. */
   leagues: readonly string[];
-  /** Switches every league outside the five on or off together. */
-  others: boolean;
+  /** The ids of the leagues outside the five that are switched on. */
+  otherLeagues: readonly string[];
   contractEnding: boolean;
   adultOnly: boolean;
-  mine: boolean;
-  hideNames: boolean;
+  under18Only: boolean;
 };
 
 export type ViewFilters = Omit<Filters, 'budget'>;
@@ -26,11 +25,10 @@ export type ViewFilters = Omit<Filters, 'budget'>;
 export const defaultView = (): ViewFilters => ({
   position: 'all',
   leagues: REGIONAL_LEAGUES,
-  others: false,
+  otherLeagues: [],
   contractEnding: false,
   adultOnly: false,
-  mine: false,
-  hideNames: false,
+  under18Only: false,
 });
 
 export const defaultFilters = (budget: number): Filters => ({ budget, ...defaultView() });
@@ -39,19 +37,21 @@ const isRegional = (id: string) => REGIONAL_LEAGUES.includes(id);
 
 type Skip = 'league' | null;
 
-function passes(p: Player, f: Filters, picks: ReadonlySet<string>, skip: Skip): boolean {
+const leagueOn = (id: string, f: Filters) => (isRegional(id) ? f.leagues : f.otherLeagues).includes(id);
+
+function passes(p: Player, f: Filters, skip: Skip): boolean {
   if (!p.in_pool || p.value_eur > f.budget) return false;
   if (f.position !== 'all' && p.position_group !== f.position) return false;
-  if (skip !== 'league' && !(isRegional(p.league_id) ? f.leagues.includes(p.league_id) : f.others)) return false;
+  if (skip !== 'league' && !leagueOn(p.league_id, f)) return false;
   if (f.contractEnding && !p.flags.contract_ending) return false;
   if (f.adultOnly && p.flags.under18) return false;
-  if (f.mine && !picks.has(p.id)) return false;
+  if (f.under18Only && !p.flags.under18) return false;
   return true;
 }
 
-/** The pool players that fit every filter. `picks` are the ids the scout chose in the blind pick. */
-export function applyFilters(players: readonly Player[], f: Filters, picks: ReadonlySet<string> = new Set()): Player[] {
-  return players.filter((p) => passes(p, f, picks, null));
+/** The pool players that fit every filter. */
+export function applyFilters(players: readonly Player[], f: Filters): Player[] {
+  return players.filter((p) => passes(p, f, null));
 }
 
 const TIER_ORDER: Record<string, number> = { A: 0, B: 1, C: 2 };
@@ -64,25 +64,22 @@ export function sortRows(players: readonly Player[]): Player[] {
   );
 }
 
-export type LeagueCounts = { byLeague: Record<string, number>; others: number };
-
 /** For each league, the players it would add under every other current filter. */
-export function leagueCounts(players: readonly Player[], f: Filters, picks: ReadonlySet<string> = new Set()): LeagueCounts {
+export function leagueCounts(players: readonly Player[], f: Filters): Record<string, number> {
   const byLeague: Record<string, number> = {};
-  let others = 0;
   for (const p of players) {
-    if (!passes(p, f, picks, 'league')) continue;
-    if (isRegional(p.league_id)) byLeague[p.league_id] = (byLeague[p.league_id] ?? 0) + 1;
-    else others += 1;
+    if (passes(p, f, 'league')) byLeague[p.league_id] = (byLeague[p.league_id] ?? 0) + 1;
   }
-  return { byLeague, others };
+  return byLeague;
 }
 
 /** How many players an availability filter would leave under the other current filters. */
-export function availabilityCounts(players: readonly Player[], f: Filters, picks: ReadonlySet<string> = new Set()) {
+export function availabilityCounts(players: readonly Player[], f: Filters) {
+  const none = { ...f, adultOnly: false, under18Only: false };
   return {
-    contract: applyFilters(players, { ...f, contractEnding: true }, picks).length,
-    adult: applyFilters(players, { ...f, adultOnly: true }, picks).length,
+    contract: applyFilters(players, { ...f, contractEnding: true }).length,
+    adult: applyFilters(players, { ...none, adultOnly: true }).length,
+    under18: applyFilters(players, { ...none, under18Only: true }).length,
   };
 }
 
@@ -121,7 +118,7 @@ export function positionCode(p: Pick<Player, 'position' | 'position_group'>): st
 
 /** How many leagues the selection covers, given the ids of all leagues. */
 export function selectedLeagueCount(f: Filters, allIds: readonly string[]): number {
-  return allIds.filter((id) => (isRegional(id) ? f.leagues.includes(id) : f.others)).length;
+  return allIds.filter((id) => leagueOn(id, f)).length;
 }
 
 /** The citizenship that the passport view lists. */
