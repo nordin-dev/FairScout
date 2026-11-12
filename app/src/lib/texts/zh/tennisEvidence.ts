@@ -4,7 +4,6 @@ import type * as en from '../en/tennisEvidence';
 
 const RULES: Record<string, string> = {
   Youngest: '最年轻',
-  'Most minutes': '出场时间最多',
   'Best index rating per game': '场均效率值最高',
   'Best ranking': '排名最高',
   'Most wins': '胜场最多',

@@ -164,9 +164,9 @@ function FootballSection({ picks }: { picks: SavedPick[] }) {
 }
 
 function tennisBlock(pick: SavedPick, p: TennisPlayer) {
+  // No "few minutes" flag here: tennis has no minutes.
   const flags: string[] = [];
   if (p.flags.under18) flags.push(t.flags.under18);
-  if (p.flags.low_sample) flags.push(t.flags.lowSample);
   return (
     <PlayerBlock
       key={pick.id}

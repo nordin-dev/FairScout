@@ -7,7 +7,10 @@ import { useTennisReferences, type TennisReference } from '../../lib/tennis/refe
 import type { TennisPlayer } from '../../lib/tennis/types';
 import { SimilarError, SimilarLoading, SimilarScreen } from './SimilarScreen';
 
-/** A tennis player as a row. The cost is the ranking turned round: a better ranking is further out of reach. */
+/**
+ * A tennis player as a row. The cost is the ranking turned round: a better ranking is further out of reach.
+ * A tennis row carries no warning: the shared one is about minutes, which tennis does not have.
+ */
 export function tennisRow(p: TennisPlayer): LookRow {
   const scores = [p.pct.wins, p.pct.level, p.pct.rise] as const;
   return {
@@ -23,7 +26,7 @@ export function tennisRow(p: TennisPlayer): LookRow {
     tier: p.tier,
     eligible: true,
     adjust: null,
-    flags: p.flags.low_sample ? [t.flagLowSample] : [],
+    flags: [],
   };
 }
 
@@ -43,7 +46,7 @@ export function tennisReferenceRow(p: TennisReference): LookRow {
     tier: null,
     eligible: false,
     adjust: null,
-    flags: p.low_sample ? [t.flagLowSample] : [],
+    flags: [],
     searchOnly: true,
   };
 }

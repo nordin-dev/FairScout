@@ -18,7 +18,7 @@ import { setTennisForTests } from '../src/lib/tennis/data';
 import { parseTennisReferences, setTennisReferencesForTests, type TennisReference } from '../src/lib/tennis/references';
 import { BasketSimilar, basketReferenceRow, basketRows } from '../src/screens/Similar/BasketSimilar';
 import { FootballSimilar, footballRows, referenceRow } from '../src/screens/Similar/FootballSimilar';
-import { TennisSimilar, tennisReferenceRow, tennisRows } from '../src/screens/Similar/TennisSimilar';
+import { TennisSimilar, tennisReferenceRow, tennisRow, tennisRows } from '../src/screens/Similar/TennisSimilar';
 import { FILE as BASKET_FILE, make as basket } from './basket-radar-fixture';
 import { FILE as TENNIS_FILE, make as tennis } from './tennis-radar-fixture';
 
@@ -185,6 +185,11 @@ describe('tennis references', () => {
     const rows = tennisRows([tennis('t1'), tennis('t2')], [ace, { ...ace, id: 't1', name: 'Double' }]);
     expect(rows.map((r) => r.id)).toEqual(['t1', 't2', 't900']);
     expect(suggestions(rows).map((r) => r.id)).toEqual(['t1', 't2']);
+  });
+
+  it('carries no warning, also for a player with few matches: tennis has no minutes', () => {
+    expect(tennisRow(tennis('t1', { flags: { low_sample: true } })).flags).toEqual([]);
+    expect(tennisReferenceRow({ ...ace, low_sample: true }).flags).toEqual([]);
   });
 
   it('finds a top player by name and shows pool players like him outside the limit', async () => {
