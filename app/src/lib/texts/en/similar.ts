@@ -49,6 +49,7 @@ export const similar = {
     facts: (age: number) => `age ${age}`,
     detail:
       'The three scores are percentiles inside the pool of players under 21 ranked 101 to 1000: win rate, share of matches at Challenger level or higher, and ranking places gained in a year. Similarity is 100 minus the mean gap of the three scores: a display scale, not a probability. Matches are ranked lower than the player you named.',
+    noneHint: 'Only players ranked inside the top 1000 can be named.',
     errorFile: 'tennis.json',
   },
   basketball: {
@@ -65,6 +66,7 @@ export const similar = {
     positions: { Guard: 'Guard', Forward: 'Forward', Center: 'Center' },
     detail:
       'Scoring and impact are percentiles of points and index rating per 40 minutes on the floor, so a player is not marked down for playing little; trust is the percentile of minutes per game and is shown, not compared. Only players of the same position are compared. Similarity is 100 minus the mean gap of scoring and impact: a display scale, not a probability. Matches play fewer minutes than the player you named.',
+    noneHint: 'Only players with at least five games this season in the EuroLeague or the EuroCup can be named.',
     errorFile: 'basketball.json',
   },
 };

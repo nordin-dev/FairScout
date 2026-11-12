@@ -51,6 +51,7 @@ export const similar: Loose<typeof en.similar> = {
     facts: (age: number) => `${age} god.`,
     detail:
       'Tri boda su percentili unutar grupe igrača mlađih od 21, rangiranih od 101. do 1000. mjesta: postotak pobjeda, udio mečeva na Challenger nivou ili višem i mjesta dobijena na rang-listi za godinu dana. Sličnost je 100 minus prosječna razlika ta tri boda: skala za prikaz, a ne vjerovatnoća. Slični igrači su rangirani niže od igrača kojeg si izabrao.',
+    noneHint: 'Mogu se imenovati samo igrači rangirani među prvih 1000.',
     errorFile: 'tennis.json',
   },
   basketball: {
@@ -67,6 +68,7 @@ export const similar: Loose<typeof en.similar> = {
     positions: { Guard: 'Bek', Forward: 'Krilo', Center: 'Centar' },
     detail:
       'Poeni i ukupan doprinos su percentili poena i indeksa korisnosti na 40 minuta na parketu, pa igrač nije kažnjen zato što malo igra; povjerenje trenera je percentil minuta po utakmici i prikazuje se, ali se ne poredi. Porede se samo igrači iste pozicije. Sličnost je 100 minus prosječna razlika poena i doprinosa: skala za prikaz, a ne vjerovatnoća. Slični igrači igraju manje minuta od igrača kojeg si izabrao.',
+    noneHint: 'Mogu se imenovati samo igrači s najmanje pet utakmica ove sezone u takmičenjima EuroLeague ili EuroCup.',
     errorFile: 'basketball.json',
   },
 };

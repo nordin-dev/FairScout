@@ -8,7 +8,12 @@ only pools whose three seasons had ended before it. Today's pool is the last fin
 
 A table that is missing from the data folder is downloaded first from the competitions' public API.
 
+It also writes basketball_references.json: everyone else of the last season with the pool's minimum
+of games, scored against the pool. They can be named on the "Similar" screen and are never offered
+as a match.
+
 Usage: python scripts/basketball_data.py [--data data/basketball] [--out app/public/data/basketball.json]
+       [--references-out app/public/data/basketball_references.json]
 """
 
 from __future__ import annotations
@@ -22,7 +27,7 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
-from tennis_data import new_model, percentile, tiers_of, top_count
+from tennis_data import new_model, percentile, percentile_against, tiers_of, top_count
 
 SOURCE = "EuroLeague Basketball, public statistics of EuroLeague and EuroCup"
 API = "https://api-live.euroleague.net"
@@ -119,12 +124,14 @@ def read_tables(folder: Path) -> tuple[pd.DataFrame, pd.DataFrame]:
     return seasons, persons
 
 
-def pool_of(season: int, seasons: pd.DataFrame, persons: pd.DataFrame) -> pd.DataFrame:
-    """Return the pool of one season with its features, one row per player."""
+def pool_of(season: int, seasons: pd.DataFrame, persons: pd.DataFrame, everyone: bool = False) -> pd.DataFrame:
+    """Return the pool of one season with its features, one row per player. With `everyone`, the same
+    for every player with the pool's minimum of games whose age is known, whatever his age and minutes."""
     rows = seasons.loc[seasons["season"] == season].join(persons, on="player")
     start = pd.Timestamp(year=season, month=10, day=1)
     rows = rows.assign(age=(start - rows["birth"]).dt.days / 365.25, mpg=rows["minutes"] / rows["games"].clip(lower=1))
-    pool = rows.loc[(rows["age"] < MAX_AGE) & (rows["age"] > 14) & (rows["games"] >= MIN_GAMES) & (rows["mpg"] < MAX_MINUTES)].copy()
+    played = (rows["age"] > 14) & (rows["games"] >= MIN_GAMES)
+    pool = rows.loc[played if everyone else played & (rows["age"] < MAX_AGE) & (rows["mpg"] < MAX_MINUTES)].copy()
     per40 = 40 / pool["minutes"].clip(lower=20)
     pool["pir40"] = pool["pir"] * per40
     pool["pts40"] = pool["points"] * per40
@@ -275,8 +282,43 @@ def history_of(player: str, seasons: pd.DataFrame, last: int) -> list[dict[str, 
     ]
 
 
-def build(folder: Path) -> dict[str, Any]:
-    seasons, persons = read_tables(folder)
+REFERENCE_COLUMNS = ["id", "name", "team", "competition", "position", "age", "mpg", "scoring", "impact", "trust", "low_sample"]
+
+
+def build_references(tables: tuple[pd.DataFrame, pd.DataFrame]) -> dict[str, Any]:
+    """The players a scout can name on the "Similar" screen who are not in the pool: everyone else of the
+    last season with the pool's minimum of games, the most minutes per game first. Their three scores
+    are the pool's scores, measured against the pool: the share of the pool at or below the player."""
+    seasons, persons = tables
+    last = int(seasons["season"].max())
+    pool = pool_of(last, seasons, persons)
+    others = pool_of(last, seasons, persons, everyone=True)
+    others = others.loc[~others["player"].isin(pool["player"])].sort_values(["mpg", "player"], ascending=[False, True])
+    scoring = percentile_against(pool["pts40"], others["pts40"])
+    impact = percentile_against(pool["pir40"], others["pir40"])
+    trust = percentile_against(pool["mpg"], others["mpg"])
+    rows = []
+    for row in others.itertuples():
+        rows.append(
+            [
+                f"b{row.player}",
+                row.name,
+                row.team,
+                row.competition,
+                row.position if isinstance(row.position, str) and row.position else None,
+                round(float(row.age), 1),
+                round(float(row.mpg), 1),
+                int(scoring[row.Index]),
+                int(impact[row.Index]),
+                int(trust[row.Index]),
+                int(row.games < LOW_SAMPLE_GAMES),
+            ]
+        )
+    return {"meta": {"sport": "basketball", "season": season_name(last)}, "columns": REFERENCE_COLUMNS, "rows": rows}
+
+
+def build(folder: Path, tables: tuple[pd.DataFrame, pd.DataFrame] | None = None) -> dict[str, Any]:
+    seasons, persons = tables or read_tables(folder)
     last = int(seasons["season"].max())
     pools = {s: add_outcome(pool_of(s, seasons, persons), seasons) for s in range(FIRST_SEASON, last - SEASONS_AHEAD + 1)}
     summary, past = backtest(pools)
@@ -345,10 +387,15 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=(__doc__ or "").splitlines()[0])
     parser.add_argument("--data", type=Path, default=Path("data/basketball"))
     parser.add_argument("--out", type=Path, default=Path("app/public/data/basketball.json"))
+    parser.add_argument("--references-out", type=Path, default=Path("app/public/data/basketball_references.json"))
     args = parser.parse_args()
     download_missing(args.data)
-    result = build(args.data)
+    tables = read_tables(args.data)
+    result = build(args.data, tables)
     args.out.write_text(json.dumps(result, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    references = build_references(tables)
+    args.references_out.write_text(json.dumps(references, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    print(f"basketball: {len(references['rows'])} players outside the pool can be named ({args.references_out.name})")
     meta, back = result["meta"], result["meta"]["backtest"]
     print(f"basketball: pool {meta['pool']} in {meta['season']}; trained on {meta['trained_on']['players']} past players")
     print(f"backtest {back['years'][0]}-{back['years'][-1]}: pool {back['pool']}, rate {back['pool_rate_pct']}%, picked {back['picked']}, margin ±{back['margin_pct']}")

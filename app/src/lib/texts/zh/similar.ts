@@ -51,6 +51,7 @@ export const similar: Loose<typeof en.similar> = {
     facts: (age: number) => `${age} 岁`,
     detail:
       '三项分数是候选池（21 岁以下、排名 101 至 1000）内的百分位：胜率、挑战赛及以上级别比赛的占比，以及一年内上升的名次。相似度是 100 减去三项分数的平均差距：这是展示用的刻度，不是概率。相似球员的排名低于你选的球员。',
+    noneHint: '只能选择排名前 1000 的球员。',
     errorFile: 'tennis.json',
   },
   basketball: {
@@ -67,6 +68,7 @@ export const similar: Loose<typeof en.similar> = {
     positions: { Guard: '后卫', Forward: '前锋', Center: '中锋' },
     detail:
       '得分和全面影响力是每 40 分钟得分和效率值的百分位，所以球员不会因为上场少而吃亏；教练的信任是场均分钟的百分位，只展示、不参与比较。只比较同位置的球员。相似度是 100 减去得分与影响力两项的平均差距：这是展示用的刻度，不是概率。相似球员的上场时间少于你选的球员。',
+    noneHint: '只能选择本赛季在 EuroLeague 或 EuroCup 至少出场五次的球员。',
     errorFile: 'basketball.json',
   },
 };

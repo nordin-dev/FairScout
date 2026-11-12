@@ -69,11 +69,11 @@ demo-record:
 readme:
 	python3 scripts/readme_numbers.py
 
-# Rebuilds the tennis data file of the app from the open ATP tables (downloads the ones that are missing).
+# Rebuilds the two tennis data files of the app (the pool, and the players who can only be named) from the open ATP tables (downloads the ones that are missing).
 tennis-data:
 	.venv/bin/python scripts/tennis_data.py
 
-# Rebuilds the basketball data file of the app from the public EuroLeague and EuroCup statistics (downloads the seasons that are missing).
+# Rebuilds the two basketball data files of the app (the pool, and the players who can only be named) from the public EuroLeague and EuroCup statistics (downloads the seasons that are missing).
 basketball-data:
 	.venv/bin/python scripts/basketball_data.py
 

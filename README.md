@@ -96,8 +96,9 @@ The scout names a player he cannot have and sees up to three players most like h
 
 - **Football:** any player of the 2025/26 season with at least 450 league minutes in one of the 23 leagues can be named, whatever his age or price. The pool and the players with a Bosnian passport come from `players.json`; everyone else comes from `references.json` and is found by typing his name (every typed word must be in it, accents ignored). The matches come from the pool of young players, play the same position, cost at most the budget and less than the named player. A player of a league outside the 23, the Saudi league for example, or with fewer minutes this season, cannot be named.
 - **`references.json`** is written by `make references-data` (`scripts/reference_players.py`) from the work tables of the pipeline, so run it after `make data`: it needs the steps up to `rating`. A player in it gets the same numbers as a player outside the pool in `players.json`: league-adjusted output as percentiles against every player of his position group, and the decision value of the season or, without one, his latest valuation. `make data` does not rewrite it. Without the file the screen works with the players of `players.json` alone.
-- **Tennis:** the matches are ranked lower than the named player and outside the chosen limit (top 300, 500 or 700).
-- **Basketball:** the matches play the same position and fewer minutes per game than the named player, at most the chosen limit (15, 10 or 6).
+- **Tennis:** any player ranked inside the top 1000 on the last ranking date can be named, whatever his age: the pool from `tennis.json`, everyone else from `tennis_references.json`, found by typing his name. The matches come from the pool, are ranked lower than the named player and outside the chosen limit (top 300, 500 or 700).
+- **Basketball:** any player with at least five games in the season's EuroLeague or EuroCup can be named, whatever his age and minutes: the pool from `basketball.json`, everyone else from `basketball_references.json`, found by typing his name. The matches come from the pool, play the same position and fewer minutes per game than the named player, at most the chosen limit (15, 10 or 6).
+- **A named player outside the pool** is scored on the pool's scale: each of his three scores is the share of the pool at or below him. The best players are off that scale, so many of them get 100 on the same scores and then the same matches. `make tennis-data` and `make basketball-data` write the two files next to the sport's own file. Without them the screens work with the pool alone.
 - **Similarity** is 100 minus the mean gap of the compared scores, each a percentile from 0 to 100: creating, scoring and playing time in football (from league-adjusted assists and goals, and the share of team minutes); winning, level of play and climbing in tennis; scoring and impact per 40 minutes in basketball. Name, club, league, country and price are not compared. It is a display scale, not a probability, and it is computed in the app (`app/src/lib/lookalike.ts`), not in the data preparation.
 - **Limits:** three scores describe output, not playing style; in football a defender or goalkeeper is compared mostly on playing time, because goals and assists say little about him.
 
@@ -112,7 +113,7 @@ Every screen starts with a choice of sport: football, tennis or basketball. Tenn
 - **Test:** walk-forward over past June pools: each year's pool is scored by a model that saw only pools whose three years had already ended. The script prints the result and the evidence screen shows it, next to three simple rules (best ranking, most wins, youngest), the margin of error and the result of each year. The time machine shows, for each tested year, the players the model ranked highest then and what happened to them, and the players it missed.
 - **Limits:** the pool is small (about a hundred players at a time); the outcome is a ranking, not money; picking by best ranking alone is already a strong rule and the model's edge over it is inside the margin of error; the data ends at the last ranking date and is not refreshed by `make data`.
 
-`make tennis-data` rebuilds `app/public/data/tennis.json` (a few seconds once the tables are in `data/tennis/`).
+`make tennis-data` rebuilds `app/public/data/tennis.json` and `app/public/data/tennis_references.json`, the players outside the pool who can be named on the "Similar" screen (a few seconds once the tables are in `data/tennis/`).
 
 ## Basketball, the third sport
 
@@ -125,7 +126,7 @@ Basketball follows the same four screens with its own data and model.
 - **Test:** walk-forward over ten past seasons; the script prints the result and the evidence screen shows it next to three simple rules (most minutes, best index rating per game, youngest), with the margin of error and each season's result.
 - **Limits:** the pools are small (a few dozen players a season); the outcome is playing time, not money; a player who leaves for the NBA or for a league outside these two competitions has no later season in the data and counts as not reached; domestic leagues, where most young players are, are not covered, so the pool holds only those who already sit on the bench of a EuroLeague or EuroCup club. The pool's limits of age and minutes were set after a look at how many players each choice leaves.
 
-`make basketball-data` rebuilds `app/public/data/basketball.json`.
+`make basketball-data` rebuilds `app/public/data/basketball.json` and `app/public/data/basketball_references.json`, the players outside the pool who can be named on the "Similar" screen.
 
 ## Accounts and My picks
 

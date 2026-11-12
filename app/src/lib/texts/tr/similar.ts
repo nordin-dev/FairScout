@@ -51,6 +51,7 @@ export const similar: Loose<typeof en.similar> = {
     facts: (age: number) => `${age} yaş`,
     detail:
       'Üç puan, 21 yaş altı ve 101–1000 arası sıralamadaki oyuncu havuzundaki yüzdelik dilimlerdir: kazanma oranı, Challenger ve üstü seviyedeki maçların payı ve bir yılda kazanılan sıra sayısı. Benzerlik, 100 eksi üç puanın ortalama farkıdır: bir gösterim ölçeğidir, olasılık değildir. Benzer oyuncular seçtiğin oyuncudan daha aşağıda sıralanır.',
+    noneHint: 'Yalnızca ilk 1000 içinde yer alan oyuncular seçilebilir.',
     errorFile: 'tennis.json',
   },
   basketball: {
@@ -67,6 +68,7 @@ export const similar: Loose<typeof en.similar> = {
     positions: { Guard: 'Guard', Forward: 'Forvet', Center: 'Pivot' },
     detail:
       'Sayı ve genel etki, sahada 40 dakika başına sayı ve verimlilik puanının yüzdelik dilimleridir; yani az oynayan oyuncu bu yüzden geri düşmez. Koçun güveni maç başına dakikanın yüzdelik dilimidir; gösterilir ama kıyaslanmaz. Yalnızca aynı mevkideki oyuncular kıyaslanır. Benzerlik, 100 eksi sayı ve etki puanlarının ortalama farkıdır: bir gösterim ölçeğidir, olasılık değildir. Benzer oyuncular seçtiğin oyuncudan daha az süre alır.',
+    noneHint: 'Yalnızca bu sezon EuroLeague veya EuroCup’ta en az beş maça çıkan oyuncular seçilebilir.',
     errorFile: 'basketball.json',
   },
 };

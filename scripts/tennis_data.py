@@ -8,7 +8,11 @@ whose three years had ended before June of Y. Today's pool is the last ranking d
 A table that is missing from the data folder is downloaded first. The author's own repository was
 not reachable on 12 November 2026, so the tables come from an unchanged public fork of it.
 
+It also writes tennis_references.json: everyone else ranked up to the pool's last ranking, scored
+against the pool. They can be named on the "Similar" screen and are never offered as a match.
+
 Usage: python scripts/tennis_data.py [--data data/tennis] [--out app/public/data/tennis.json]
+       [--references-out app/public/data/tennis_references.json]
 """
 
 from __future__ import annotations
@@ -109,15 +113,17 @@ def last_date_on_or_before(dates: np.ndarray, day: pd.Timestamp) -> pd.Timestamp
     return None if len(earlier) == 0 else pd.Timestamp(earlier[-1])
 
 
-def pool_at(day: pd.Timestamp, players: pd.DataFrame, rankings: pd.DataFrame, matches: pd.DataFrame) -> pd.DataFrame:
-    """Return the pool on a ranking date with its features, one row per player."""
+def pool_at(day: pd.Timestamp, players: pd.DataFrame, rankings: pd.DataFrame, matches: pd.DataFrame, everyone: bool = False) -> pd.DataFrame:
+    """Return the pool on a ranking date with its features, one row per player. With `everyone`, the
+    same for every player ranked up to the pool's last ranking whose age is known, whatever his age."""
     dates = np.sort(rankings["date"].unique())
     now = rankings.loc[rankings["date"] == day, ["player", "rank"]]
     year_ago = last_date_on_or_before(dates, day - pd.Timedelta(days=364))
     before = rankings.loc[rankings["date"] == year_ago, ["player", "rank"]].rename(columns={"rank": "rank_before"})
     pool = now.merge(players[["player_id", "dob"]], left_on="player", right_on="player_id").merge(before, on="player", how="left")
     pool["age"] = (day - pool["dob"]).dt.days / 365.25
-    pool = pool.loc[pool["rank"].between(RANK_FROM, RANK_TO) & (pool["age"] < MAX_AGE) & (pool["age"] > 14)].copy()
+    in_pool = pool["rank"].between(RANK_FROM, RANK_TO) & (pool["age"] < MAX_AGE) & (pool["age"] > 14)
+    pool = pool.loc[(pool["rank"] <= RANK_TO) & (pool["age"] > 14) if everyone else in_pool].copy()
 
     recent = matches.loc[(matches["date"] > day - pd.Timedelta(days=365)) & (matches["date"] <= day)]
     won = recent.groupby("winner_id").agg(
@@ -277,6 +283,49 @@ def percentile(values: pd.Series) -> pd.Series:
     return np.ceil(values.rank(pct=True, method="max") * 100).clip(1, 100).astype(int)
 
 
+def percentile_against(pool: pd.Series, values: pd.Series) -> pd.Series:
+    """Whole percentile, 1 to 100, of values from outside the pool: the share of the pool at or below
+    each value. A value equal to a pool player's gets that player's percentile."""
+    ordered = np.sort(pool.to_numpy(dtype=float))
+    share = np.searchsorted(ordered, values.to_numpy(dtype=float), side="right") / len(ordered)
+    return pd.Series(np.ceil(share * 100).clip(1, 100).astype(int), index=values.index)
+
+
+REFERENCE_COLUMNS = ["id", "name", "country", "age", "rank", "wins", "level", "rise", "low_sample"]
+
+
+def build_references(tables: tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]) -> dict[str, Any]:
+    """The players a scout can name on the "Similar" screen who are not in the pool: everyone else ranked
+    up to the pool's last ranking on the last ranking date, the best ranked first. Their three scores are
+    the pool's scores, measured against the pool: the share of the pool at or below the player."""
+    players, rankings, matches = tables
+    last = pd.Timestamp(np.sort(rankings["date"].unique())[-1])
+    pool = pool_at(last, players, rankings, matches)
+    others = pool_at(last, players, rankings, matches, everyone=True)
+    others = others.loc[~others["player"].isin(pool["player"])].sort_values(["rank", "player"])
+    wins = percentile_against(pool["win_pct"], others["win_pct"])
+    level = percentile_against(pool["upper_share"] + pool["upper_win_pct"], others["upper_share"] + others["upper_win_pct"])
+    rise = percentile_against(pool["climb"], others["climb"])
+    names = players.set_index("player_id")
+    rows = []
+    for row in others.itertuples():
+        person = names.loc[row.player]
+        rows.append(
+            [
+                f"t{row.player}",
+                f"{person['name_first']} {person['name_last']}".strip(),
+                COUNTRIES.get(str(person["ioc"]), str(person["ioc"])),
+                round(float(row.age), 1),
+                int(row.rank),
+                int(wins[row.Index]),
+                int(level[row.Index]),
+                int(rise[row.Index]),
+                int(row.matches < MIN_MATCHES),
+            ]
+        )
+    return {"meta": {"sport": "tennis", "source_last_date": last.strftime("%Y-%m-%d")}, "columns": REFERENCE_COLUMNS, "rows": rows}
+
+
 def drivers_of(row: pd.Series, model: Any) -> list[dict[str, str]]:
     """The three strongest reasons for and the strongest reason against, from the fitted weights."""
     scaler, regression = model.named_steps["standardscaler"], model.named_steps["logisticregression"]
@@ -295,8 +344,8 @@ def history_of(player: int, rankings: pd.DataFrame, day: pd.Timestamp) -> list[d
     return [{"date": d.strftime("%Y-%m-%d"), "rank": int(r)} for d, r in zip(monthly["date"], monthly["rank"], strict=True)]
 
 
-def build(folder: Path) -> dict[str, Any]:
-    players, rankings, matches = read_tables(folder)
+def build(folder: Path, tables: tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame] | None = None) -> dict[str, Any]:
+    players, rankings, matches = tables or read_tables(folder)
     dates = np.sort(rankings["date"].unique())
     last = pd.Timestamp(dates[-1])
     pools: dict[int, pd.DataFrame] = {}
@@ -374,10 +423,15 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--data", type=Path, default=Path("data/tennis"))
     parser.add_argument("--out", type=Path, default=Path("app/public/data/tennis.json"))
+    parser.add_argument("--references-out", type=Path, default=Path("app/public/data/tennis_references.json"))
     args = parser.parse_args()
     download_missing(args.data)
-    result = build(args.data)
+    tables = read_tables(args.data)
+    result = build(args.data, tables)
     args.out.write_text(json.dumps(result, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    references = build_references(tables)
+    args.references_out.write_text(json.dumps(references, ensure_ascii=False, separators=(",", ":")) + "\n", encoding="utf-8")
+    print(f"tennis: {len(references['rows'])} players outside the pool can be named ({args.references_out.name})")
     meta, back = result["meta"], result["meta"]["backtest"]
     print(f"tennis: pool {meta['pool']} on {meta['source_last_date']}; trained on {meta['trained_on']['players']} past players")
     print(f"backtest {back['years'][0]}-{back['years'][-1]}: pool {back['pool']}, rate {back['pool_rate_pct']}%, picked {back['picked']}, margin ±{back['margin_pct']}")

@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useBasket } from '../../lib/basketball/data';
+import { useBasketReferences, type BasketReference } from '../../lib/basketball/references';
 import type { BasketPlayer } from '../../lib/basketball/types';
 import type { LookRow } from '../../lib/lookalike';
 import { BASKET_LIMITS, setBasketLimit, useSimilarState } from '../../lib/similarStore';
@@ -26,12 +27,42 @@ export function basketRow(p: BasketPlayer): LookRow {
   };
 }
 
+/** A player of basketball_references.json as a row: he can be named, and is never offered as a match or as a player to start from. */
+export function basketReferenceRow(p: BasketReference): LookRow {
+  const w = t.basketball;
+  return {
+    id: p.id,
+    name: p.name,
+    line: `${p.team} · ${p.competition}`,
+    group: p.position ?? '',
+    scores: [p.scoring, p.impact, p.trust],
+    compare: [p.scoring, p.impact],
+    cost: p.mpg,
+    costText: w.cost(p.mpg.toFixed(1)),
+    facts: w.facts(p.position ? w.positions[p.position] : w.noPosition, Math.floor(p.age)),
+    tier: null,
+    eligible: false,
+    adjust: null,
+    flags: p.low_sample ? [t.flagLowSample] : [],
+    searchOnly: true,
+  };
+}
+
+/** The rows of the pool, then the players of basketball_references.json that are not among them. */
+export function basketRows(players: readonly BasketPlayer[], references: readonly BasketReference[]): LookRow[] {
+  const rows = players.map(basketRow);
+  const have = new Set(rows.map((r) => r.id));
+  for (const p of references) if (!have.has(p.id)) rows.push(basketReferenceRow(p));
+  return rows;
+}
+
 /** Section 01 for basketball: a player who already gets the minutes, and the three most like him who do not yet. */
 export function BasketSimilar() {
   const state = useBasket();
   const { basketLimit } = useSimilarState();
   const players = state.status === 'ready' ? state.data.players : null;
-  const rows = useMemo(() => (players ? players.map(basketRow) : []), [players]);
+  const references = useBasketReferences();
+  const rows = useMemo(() => (players ? basketRows(players, references) : []), [players, references]);
   const w = t.basketball;
 
   if (state.status === 'error') return <SimilarError question={w.question} file={w.errorFile} reason={state.reason} onRetry={state.retry} />;
