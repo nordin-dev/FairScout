@@ -188,7 +188,7 @@ describe('why the model differs', () => {
 
   function reveal(scoutId: string) {
     setBlindStep('revealed');
-    addBlindPick({ scoutId, modelId: b.id });
+    addBlindPick({ scoutId, modelId: b.id, shown: [a.id, b.id, c.id] });
     const router = createMemoryRouter([{ path: '/', element: <Compare trio={trio} /> }]);
     render(<RouterProvider router={router} />);
   }

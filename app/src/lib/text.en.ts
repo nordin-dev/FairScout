@@ -90,7 +90,7 @@ export const blind = {
   dimLabels: { creates: 'Creating', scores: 'Scoring', plays: 'Playing time' },
   caption: 'Scores out of 100, against players of the same position and age. Bold = what you asked for.',
   detailCaption:
-    'Scores are percentiles of league-adjusted goals, league-adjusted assists and share of team minutes. The three candidates are the model’s top match, the top of the raw scorers’ list and the best remaining match for the brief, shown in a fixed order for this brief. Price, club, league and the model’s view stay hidden until the pick.',
+    'Scores are percentiles of league-adjusted goals, league-adjusted assists and share of team minutes. The three candidates are the model’s top match, the top of the raw scorers’ list and the best remaining match for the brief, shown in a fixed order for this brief. Each later round draws three players not shown before, at random but fixed for the brief and the round. Price, club, league and the model’s view stay hidden until the pick.',
   candidate: (letter: string) => `Player ${letter}`,
   hiddenLabel: 'hidden until you pick',
   facts: (position: string, age: number) => `${position} · age ${age}`,
@@ -146,6 +146,47 @@ export const blind = {
     ahead && behind ? `${model} has ${ahead}, but ${behind}.` : ahead ? `${model} has ${ahead}.` : behind ? `${model} has ${behind}.` : '',
   reasonList: (items: string[]) =>
     items.length < 2 ? items.join('') : `${items.slice(0, -1).join(', ')} and ${items[items.length - 1]}`,
+  roundLine: (round: number, left: number) =>
+    `Round ${round} · ${left === 0 ? 'nobody else matches' : `${left} more ${left === 1 ? 'player matches' : 'players match'}, not shown yet`}`,
+  firstRoundNote: 'This first round puts the model’s top, the top scorer and the best fit side by side. Later rounds are drawn at random.',
+  laterRoundNote: 'Three players drawn at random from those not shown yet.',
+  nextThree: 'Next three, no names →',
+  noneLeft: 'You have seen every player that matches this brief.',
+  signalsLabel: 'Easy to overlook',
+  signals: {
+    young_for_year: 'Young for his year',
+    short_of_chances: 'Short of chances',
+  },
+  signalTips: {
+    young_for_year: 'Born October to December. Selection favours players born early in the year, who are older than their peers.',
+    short_of_chances: 'Strong scoring or creating in little playing time. Minutes measure the chances he was given.',
+  },
+  summaryTitle: 'What drives your picks',
+  summaryWaiting: (made: number, needed: number) =>
+    `Pick ${needed - made} more ${needed - made === 1 ? 'time' : 'times'} to see what drives your choices (${made} of ${needed}).`,
+  summaryHint: (n: number) => `${n} picks: read this as a hint, not a measurement.`,
+  summaryLead: {
+    output: 'You lean towards the biggest numbers.',
+    minutes: 'You lean towards players who already play a lot.',
+    early: 'Your picks lean towards players born early in the year.',
+    overlookedLow: 'You pass over players who are easy to overlook.',
+    balanced: 'No strong lean in your picks so far.',
+  },
+  summaryRows: {
+    model: 'Agreed with the model',
+    output: 'Picked the most goals and assists of the three',
+    minutes: 'Picked the most minutes of the three',
+    early: 'Born January to June',
+    overlooked: 'With an easy-to-overlook sign',
+  },
+  summaryLean: (hits: number, picks: number, chance: number) =>
+    `${hits} of ${picks} · by chance about ${Math.round(chance)}`,
+  summaryShare: (picked: number, shown: number) => `${picked}% of your picks · ${shown}% of everyone shown`,
+  summaryPassed: (n: number) =>
+    `${n === 1 ? 'One player' : `${n} players`} the model picked and you passed ${n === 1 ? 'has' : 'have'} an easy-to-overlook sign.`,
+  summaryWhy:
+    'Name, club, league and price were hidden, so these leans come from the numbers you saw. Output and minutes are partly the chances a player was given, and players born early in the year get more of them.',
+  summaryClear: 'Start over',
 };
 
 export const player = {

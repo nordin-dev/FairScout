@@ -168,7 +168,7 @@ describe('comparison screen', () => {
     await compare();
     await userEvent.click(screen.getAllByRole('button', { name: /Pick player/ })[2]);
     const order = trioOrder()?.order ?? [];
-    expect(getState().blindPicks).toEqual([{ scoutId: order[2]?.id, modelId: 'sample-a' }]);
+    expect(getState().blindPicks).toEqual([{ scoutId: order[2]?.id, modelId: 'sample-a', shown: order.map((p) => p.id) }]);
     expect(getState().modelPickId).toBe('sample-a');
     expect(getState().blindStep).toBe('revealed');
   });
@@ -208,7 +208,7 @@ describe('comparison screen', () => {
     await compare();
     fireEvent.keyDown(document.body, { key: 'r' });
     const order = trioOrder()?.order ?? [];
-    expect(getState().blindPicks).toEqual([{ scoutId: order[1]?.id, modelId: 'sample-a' }]);
+    expect(getState().blindPicks).toEqual([{ scoutId: order[1]?.id, modelId: 'sample-a', shown: order.map((p) => p.id) }]);
     fireEvent.keyDown(document.body, { key: 'R' });
     expect(getState().blindPicks).toHaveLength(1);
   });

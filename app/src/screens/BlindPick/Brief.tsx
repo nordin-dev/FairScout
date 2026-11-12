@@ -5,12 +5,13 @@ import { ErrorState, Skeleton } from '../../components/ScreenState';
 import { Sheet } from '../../components/Sheet';
 import { MATTERS, MAX_AGES, POSITIONS, poolBornFrom, canShowThree, countMatches } from '../../lib/brief';
 import { useData } from '../../lib/data';
+import { briefKey } from '../../lib/trio';
 import {
   BRIEF_BUDGETS,
-  setBlindStep,
   setBudget,
   setMaxAge,
   setPosition,
+  startBlindRounds,
   toggleMatter,
   useBlindStep,
   useBrief,
@@ -36,11 +37,11 @@ export function Brief() {
     if (step !== 'brief') return;
     const onKey = (e: KeyboardEvent) => {
       if (e.key !== 'Enter' || e.ctrlKey || e.altKey || e.metaKey || isInteractive(e.target)) return;
-      if (enabled) setBlindStep('compare');
+      if (enabled) startBlindRounds(briefKey({ ...brief, budget }));
     };
     document.addEventListener('keydown', onKey);
     return () => document.removeEventListener('keydown', onKey);
-  }, [step, enabled]);
+  }, [step, enabled, brief, budget]);
 
   const head = (
     <>
@@ -105,7 +106,7 @@ export function Brief() {
               <span>{count >= 3 ? blind.countPlural : blind.tooFew(count)}</span>
             </p>
           )}
-          <Button disabled={!enabled} onClick={() => setBlindStep('compare')}>
+          <Button disabled={!enabled} onClick={() => startBlindRounds(briefKey({ ...brief, budget }))}>
             {blind.showThree}
           </Button>
         </div>

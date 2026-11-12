@@ -94,3 +94,35 @@ export function pickTrio(players: readonly Player[], brief: TrioBrief): Trio | n
   const [a, b, c] = shuffled([modelTop, rawTop, bestFit], briefSeed(brief));
   return { modelTop, rawTop, bestFit, order: [a, b, c] };
 }
+
+/** A key that changes whenever the brief or the budget changes; rounds belong to one key. */
+export function briefKey(brief: TrioBrief): string {
+  return `${brief.position}|${brief.maxAge}|${brief.budget}|${brief.matters.join(',')}`;
+}
+
+/** How many players match the brief and have not been shown yet. */
+export function unseenCount(players: readonly Player[], brief: TrioBrief, seen: ReadonlySet<string>): number {
+  let n = 0;
+  for (const p of players) if (matches(p, brief) && !seen.has(p.id)) n += 1;
+  return n;
+}
+
+/**
+ * A later round: three players drawn at random (fixed by the brief and the round) from the matching
+ * players not shown yet. Unlike the first round they are not chosen to make a point, so the scout's
+ * picks over several rounds say something about the scout. The roles are given afterwards: the
+ * highest model score of the three, the most goals plus assists of the other two, and the last one.
+ * Returns null when fewer than three unseen players match.
+ */
+export function drawTrio(players: readonly Player[], brief: TrioBrief, seen: ReadonlySet<string>, round: number): Trio | null {
+  const pool = players.filter((p) => matches(p, brief) && !seen.has(p.id)).sort((x, y) => (x.id < y.id ? -1 : x.id > y.id ? 1 : 0));
+  if (pool.length < 3) return null;
+  const seed = (briefSeed(brief) + Math.imul(round, 0x9e3779b1)) >>> 0;
+  const three = shuffled(pool, seed).slice(0, 3);
+  const modelTop = best(three, (p) => p.score ?? -1) as Player;
+  const rest = three.filter((p) => p.id !== modelTop.id);
+  const rawTop = best(rest, (p) => p.goals + p.assists) as Player;
+  const bestFit = rest.find((p) => p.id !== rawTop.id) as Player;
+  const [a, b, c] = shuffled([modelTop, rawTop, bestFit], seed ^ 0x5bd1e995);
+  return { modelTop, rawTop, bestFit, order: [a, b, c] };
+}

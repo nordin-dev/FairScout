@@ -12,7 +12,10 @@ export type Sport = 'football' | 'tennis';
 export const SPORTS: readonly Sport[] = ['football', 'tennis'];
 export type BlindStep = 'brief' | 'compare' | 'revealed';
 export type Brief = { position: Position; maxAge: MaxAge; matters: Matter[] };
-export type BlindPick = { scoutId: string; modelId: string };
+/** One blind pick: the scout's choice, the model's choice and the three players shown. */
+export type BlindPick = { scoutId: string; modelId: string; shown: string[] };
+/** The rounds of one brief: which round is open and the players shown in the rounds before it. */
+export type BlindRounds = { key: string; round: number; seen: string[] };
 
 export type StoreState = {
   sport: Sport;
@@ -22,6 +25,7 @@ export type StoreState = {
   brief: Brief;
   blindStep: BlindStep;
   blindPicks: BlindPick[];
+  blindRounds: BlindRounds | null;
   modelPickId: string | null;
 };
 
@@ -39,6 +43,7 @@ const initial = (): StoreState => ({
   brief: { position: 'winger', maxAge: 21, matters: [] },
   blindStep: 'brief',
   blindPicks: [],
+  blindRounds: null,
   modelPickId: null,
 });
 
@@ -106,6 +111,22 @@ export const setSport = (sport: Sport): void => update({ sport });
 export const setOrigin = (section: Origin): void => update({ origin: section });
 export const addBlindPick = (pick: BlindPick): void => update({ blindPicks: [...state.blindPicks, pick] });
 export const setModelPick = (id: string | null): void => update({ modelPickId: id });
+/** Forgets every blind pick of this session; the bias summary starts again. */
+export const clearBlindPicks = (): void => update({ blindPicks: [] });
+
+/** Opens the first round of a brief: the comparison, with nobody shown before. */
+export const startBlindRounds = (key: string): void =>
+  update({ blindStep: 'compare', blindRounds: { key, round: 0, seen: [] }, modelPickId: null });
+
+/** Opens the next round of the same brief; the three just shown are not drawn again. */
+export function nextBlindRound(key: string, shown: readonly string[]): void {
+  const current = state.blindRounds?.key === key ? state.blindRounds : { key, round: 0, seen: [] };
+  update({
+    blindStep: 'compare',
+    blindRounds: { key, round: current.round + 1, seen: [...current.seen, ...shown] },
+    modelPickId: null,
+  });
+}
 
 /** Back to the start state. Used by tests. */
 export function reset(): void {
@@ -126,4 +147,5 @@ export const useOrigin = select((s) => s.origin);
 export const useBrief = select((s) => s.brief);
 export const useBlindStep = select((s) => s.blindStep);
 export const useBlindPicks = select((s) => s.blindPicks);
+export const useBlindRounds = select((s) => s.blindRounds);
 export const useModelPick = select((s) => s.modelPickId);
