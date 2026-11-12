@@ -1,3 +1,4 @@
+import { dayMonthYearWords, getLang } from '../i18n';
 import type { TennisMeta, TennisPlayer } from './types';
 
 /** The ranking range of the pool: players ranked 101 to 1000. */
@@ -75,15 +76,14 @@ export const titleCounts = (rows: readonly TennisPlayer[]): { total: number; tie
 });
 
 const WORDS = ['None', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
-/** The count as a word up to twelve, a number above. */
-export const countWord = (k: number): string => WORDS[k] ?? String(k);
+/** The count as a word up to twelve, a number above; always a number outside English. */
+export const countWord = (k: number): string => (getLang() === 'en' ? (WORDS[k] ?? String(k)) : String(k));
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 /** "2026-06-08" gives "8 Jun 2026"; anything else comes back unchanged. */
 export function dayMonthYear(iso: string): string {
   const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso);
-  const month = m ? MONTHS[Number(m[2]) - 1] : undefined;
-  return m && month ? `${Number(m[3])} ${month} ${m[1]}` : iso;
+  const month = m ? Number(m[2]) - 1 : -1;
+  return m && month >= 0 && month < 12 ? dayMonthYearWords(Number(m[3]), month, m[1]) : iso;
 }
 
 /** The lede inputs: the ranking date and the lowest rank shown. */

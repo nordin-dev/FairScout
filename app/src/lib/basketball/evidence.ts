@@ -1,3 +1,4 @@
+import { dataText } from '../dataText';
 import type { BasketBacktest, BasketMeta, BasketTier } from './types';
 
 export type Verdict = 'inside' | 'ahead' | 'behind' | 'none';
@@ -56,7 +57,7 @@ const TIERS: BasketTier[] = ['A', 'B', 'C'];
 
 /** Everything the evidence screen shows, computed from the backtest. */
 export function evidenceOf(b: BasketBacktest): Evidence {
-  const rules = b.rules.map((r) => ({ key: r.key, label: r.label, hits: r.hits, percent: percentOf(r.hits, b.picked) }));
+  const rules = b.rules.map((r) => ({ key: r.key, label: dataText(r.label), hits: r.hits, percent: percentOf(r.hits, b.picked) }));
   const model = b.rules.find((r) => r.key === 'model');
   const rivalRule = b.rules.filter((r) => r.key !== 'model').sort((a, c) => c.hits - a.hits)[0];
   const rival = rivalRule ? (rules.find((r) => r.key === rivalRule.key) ?? null) : null;

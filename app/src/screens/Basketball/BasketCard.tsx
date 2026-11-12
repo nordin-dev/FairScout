@@ -1,3 +1,4 @@
+import { dataText } from '../../lib/dataText';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AddPickButton } from '../../components/AddPickButton';
 import { Button } from '../../components/Button';
@@ -73,7 +74,7 @@ function Card({ p, file }: { p: BasketPlayer; file: BasketFile }) {
         <div>
           <BackLink />
           <h1>{p.name}</h1>
-          <p className="lede">{t.headline(p.position, Math.floor(p.age), p.team, p.competition, p.country)}</p>
+          <p className="lede">{t.headline(p.position === null ? null : dataText(p.position), Math.floor(p.age), p.team, p.competition, p.country)}</p>
         <AddPickButton sport="basketball" id={p.id} name={p.name} line={`${p.team} · ${p.competition}`} tier={p.tier} from="card" />
         </div>
       </div>
@@ -105,7 +106,7 @@ function Card({ p, file }: { p: BasketPlayer; file: BasketFile }) {
                 </span>
                 <span>
                   <span className="sr-only">{d.sign === '+' ? t.plusLabel : t.minusLabel}: </span>
-                  {d.text}
+                  {dataText(d.text)}
                 </span>
               </li>
             ))}

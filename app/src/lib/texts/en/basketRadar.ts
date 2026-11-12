@@ -1,0 +1,43 @@
+import { countWord } from '../../basketball/radar';
+
+export const basketRadar = {
+  kicker: '02 — Radar',
+  title: (n: number, max: number) => `${n} young ${n === 1 ? 'player averages' : 'players average'} under ${max} minutes.`,
+  tierLine: (k: number) => (k === 0 ? 'None are tier A.' : `${countWord(k)} ${k === 1 ? 'is' : 'are'} tier A.`),
+  emptyTitle: 'No players match these filters.',
+  lede: (season: string, competitions: string, under20: boolean) =>
+    `Season ${season}, ${competitions}, players ${under20 ? 'aged under 20' : 'under 23'} with at least five games.`,
+  railLabel: 'Filters',
+  minutesLabel: 'Minutes per game under',
+  minutesValue: (n: number) => `< ${n}`,
+  position: 'Position',
+  positions: [
+    { value: 'All', label: 'All' },
+    { value: 'Guard', label: 'Guard' },
+    { value: 'Forward', label: 'Forward' },
+    { value: 'Center', label: 'Center' },
+  ] as const,
+  competition: 'Competition',
+  country: 'Country',
+  countries: (n: number, selected: number) => `${n} ${n === 1 ? 'country' : 'countries'}${selected < n ? ` · ${selected} selected` : ''}`,
+  countriesList: 'Countries',
+  selectAll: 'Select all',
+  clearAll: 'Clear',
+  age: 'Age',
+  under20Only: 'Under 20 only',
+  headers: { rank: '#', player: 'Player', pos: 'Pos', age: 'Age', min: 'Min', pts: 'Pts', index: 'Index', rating: 'Rating', outlook: 'Outlook', notes: 'Notes' },
+  tableLabel: 'Young basketball players on the radar',
+  ratingLabel: 'Rating',
+  dash: '—',
+  showing: (shown: number, total: number) => (shown >= total ? `${total} ${total === 1 ? 'player' : 'players'}.` : `Showing ${shown} of ${total}.`),
+  showAll: 'Show all',
+  flags: { under20: 'Under 20', lowSample: 'Few games' },
+  emptyBlockTitle: 'Nothing fits yet.',
+  emptyText: 'Raise the minutes limit or tick more competitions and countries to see players again.',
+  reset: 'Reset filters',
+  loadingNote: 'Loading players…',
+  errorReason: 'The list of basketball players did not arrive.',
+  evidenceLine: (hits: number, picked: number, poolRate: number) =>
+    `In past pools, ${hits} of the model’s ${picked} top picks became rotation players; the pool average is ${poolRate}%.`,
+  evidenceLink: 'See the evidence →',
+};

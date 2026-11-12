@@ -1,42 +1,8 @@
-import { countWord } from './radar';
+import { localized } from '../i18n';
+import * as en from '../texts/en/tennisRadar';
+import * as bs from '../texts/bs/tennisRadar';
+import * as tr from '../texts/tr/tennisRadar';
+import * as zh from '../texts/zh/tennisRadar';
 
-export const tennisRadar = {
-  kicker: '02 — Radar',
-  title: (n: number, top: number) => `${n} young ${n === 1 ? 'player is' : 'players are'} ranked outside the top ${top}.`,
-  tierLine: (k: number) => (k === 0 ? 'None are tier A.' : `${countWord(k)} ${k === 1 ? 'is' : 'are'} tier A.`),
-  emptyTitle: 'No players match these filters.',
-  lede: (date: string, from: number, to: number, under18: boolean) =>
-    `ATP ranking of ${date}, men ${under18 ? 'aged under 18' : 'under 21'}, ranked ${from} to ${to}.`,
-  railLabel: 'Filters',
-  rankLabel: 'Ranked outside the top',
-  rankValue: (n: number) => `> ${n}`,
-  country: 'Country',
-  countries: (n: number, selected: number) => `${n} ${n === 1 ? 'country' : 'countries'}${selected < n ? ` · ${selected} selected` : ''}`,
-  countriesList: 'Countries',
-  selectAll: 'Select all',
-  clearAll: 'Clear',
-  age: 'Age',
-  under18Only: 'Under 18 only',
-  plays: 'Plays',
-  leftOnly: 'Left-handed only',
-  headers: { rank: '#', player: 'Player', age: 'Age', ranking: 'Rank', yearAgo: 'Year ago', record: 'W–L', rating: 'Rating', outlook: 'Outlook', notes: 'Notes' },
-  tableLabel: 'Young tennis players on the radar',
-  ratingLabel: 'Rating',
-  dash: '—',
-  record: (w: number, l: number) => `${w}–${l}`,
-  showing: (shown: number, total: number) => (shown >= total ? `${total} ${total === 1 ? 'player' : 'players'}.` : `Showing ${shown} of ${total}.`),
-  showAll: 'Show all',
-  flags: {
-    under18: 'Under 18',
-    lowSample: 'Few matches',
-    top200: (n: number) => `Top-200 wins: ${n}`,
-  },
-  emptyBlockTitle: 'Nothing fits yet.',
-  emptyText: 'Lower the ranking limit or tick more countries to see players again.',
-  reset: 'Reset filters',
-  loadingNote: 'Loading players…',
-  errorReason: 'The list of tennis players did not arrive.',
-  evidenceLine: (hits: number, picked: number, poolRate: number) =>
-    `In past pools, ${hits} of the model’s ${picked} top picks reached the top 100; the pool average is ${poolRate}%.`,
-  evidenceLink: 'See the evidence →',
-};
+/** The texts of this module in the chosen language; the English ones are in texts/en. */
+export const tennisRadar = localized({ en: en.tennisRadar, bs: bs.tennisRadar, tr: tr.tennisRadar, zh: zh.tennisRadar });

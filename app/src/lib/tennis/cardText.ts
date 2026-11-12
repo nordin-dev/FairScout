@@ -1,43 +1,8 @@
-export const tennisCard = {
-  backToBlind: '← Back to blind pick',
-  backToRadar: '← Back to radar',
-  headline: (age: number, country: string, hand: 'Right' | 'Left' | null): string =>
-    ['Tennis', `age ${age}`, country, hand ? `${hand === 'Left' ? 'left' : 'right'}-handed` : ''].filter(Boolean).join(' · '),
-  ranking: 'Ranking',
-  yearAgo: 'A year ago',
-  record: 'Win–loss last 52 weeks',
-  top200: 'Wins over top-200 players',
-  bestWin: 'Best win',
-  rankFigure: (n: number) => `No. ${n}`,
-  dash: '—',
-  captions: {
-    ranking: (date: string) => `ATP, ${date}`,
-    yearAgo: 'ATP ranking',
-    record: 'All levels',
-    top200: 'Last 52 weeks',
-    bestWin: 'By ranking of the loser',
-  },
-  recordFigure: (w: number, l: number) => `${w}–${l}`,
-  outlookLabel: 'Outlook',
-  gives: (percent: number) => `Model score ${percent} of 100 for a top-100 ranking within three years.`,
-  tierLine: (tier: string, n: number, hits: number) => `Of ${n} past tier ${tier} players, ${hits} reached the top 100 within three years.`,
-  caution: 'These are past outcomes of similar players, not a forecast for this one.',
-  whyLabel: 'What the model sees',
-  plusSign: '+',
-  minusSign: '−',
-  plusLabel: 'Helps',
-  minusLabel: 'Hurts',
-  flagUnder18: 'Under 18',
-  flagLow: 'Few matches',
-  chartLabel: 'Ranking over three years',
-  chartNote: 'Higher on the chart is a better ranking. The scale is logarithmic.',
-  chartEmpty: 'There is not enough ranking history for a chart.',
-  chartAlt: (first: string, firstDate: string, last: string, lastDate: string) =>
-    `Ranking from ${first} on ${firstDate} to ${last} on ${lastDate}.`,
-  topLine: 'Top 100',
-  notFoundTitle: 'This player is not in the pool.',
-  notFoundText: 'The link may be old. Go back to the radar to pick a player.',
-  notFoundButton: 'Back to radar',
-  errorReason: 'The list of tennis players did not arrive.',
-  loadingNote: 'Loading player…',
-};
+import { localized } from '../i18n';
+import * as en from '../texts/en/tennisCard';
+import * as bs from '../texts/bs/tennisCard';
+import * as tr from '../texts/tr/tennisCard';
+import * as zh from '../texts/zh/tennisCard';
+
+/** The texts of this module in the chosen language; the English ones are in texts/en. */
+export const tennisCard = localized({ en: en.tennisCard, bs: bs.tennisCard, tr: tr.tennisCard, zh: zh.tennisCard });

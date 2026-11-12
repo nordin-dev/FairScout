@@ -1,3 +1,4 @@
+import { dataText } from '../../lib/dataText';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AddPickButton } from '../../components/AddPickButton';
 import { Button } from '../../components/Button';
@@ -66,7 +67,7 @@ function Card({ p, file }: { p: TennisPlayer; file: TennisFile }) {
                 </span>
                 <span>
                   <span className="sr-only">{d.sign === '+' ? t.plusLabel : t.minusLabel}: </span>
-                  {d.text}
+                  {dataText(d.text)}
                 </span>
               </li>
             ))}

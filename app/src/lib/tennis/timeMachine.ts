@@ -1,3 +1,4 @@
+import { monthYearWords } from '../i18n';
 import { tennisTimeMachine as t } from './timeMachineText';
 import type { TennisPastYear } from './types';
 
@@ -29,8 +30,7 @@ export function dayMonthYear(iso: string): string {
 /** "Jul 2021": a short month and the year. */
 export function shortMonthYear(iso: string): string {
   const p = parts(iso);
-  const month = p ? t.months[p.m - 1] : undefined;
-  return p && month ? `${month.slice(0, 3)} ${p.y}` : iso;
+  return p ? monthYearWords(p.m - 1, p.y) : iso;
 }
 
 /** The date three years after an ISO date, as "June 2022". */

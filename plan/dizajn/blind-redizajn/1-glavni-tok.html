@@ -1,0 +1,173 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blind pick — one screen, staged reveal, duel</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><b>FAIR SCOUT</b><span>mockup · sample players</span></div>
+  <nav class="steps"><span class="on">01 Blind pick</span><span>02 Radar</span><span>03 Time machine</span><span>04 Evidence</span></nav>
+  <a href="index.html">← svi mockupi</a>
+</div></header>
+
+<main class="wrap">
+  <p class="kicker">01 — Blind pick</p>
+  <h1></h1>
+
+  <div class="under">
+    <div class="brief" id="brief">
+      <span>I need a</span>
+      <span class="pickbox"><select id="pos" aria-label="Position">
+        <option value="winger">winger</option><option value="striker">striker</option><option value="midfielder">midfielder</option><option value="defender">defender</option>
+      </select></span>
+      <span class="pickbox"><select id="age" aria-label="Age">
+        <option value="19">19 or under</option><option value="21" selected>21 or under</option>
+      </select></span>
+      <span>up to</span>
+      <span class="pickbox"><select id="budget" aria-label="Budget">
+        <option value="250000">€250k</option><option value="500000" selected>€500k</option><option value="1000000">€1M</option>
+      </select></span>
+      <span>who</span>
+      <button class="choice" type="button" data-m="creates">creates chances</button>
+      <button class="choice" type="button" data-m="scores">scores goals</button>
+      <button class="choice" type="button" data-m="plays">plays regularly</button>
+      <span class="count"><b id="count"></b>match</span>
+    </div>
+    <div class="verdict" id="verdict" hidden>
+      <p id="sub"></p>
+      <button class="chip" type="button" id="view" hidden>Show all three</button>
+      <button class="chip" type="button" id="again">Change the brief</button>
+      <button class="btn" type="button" id="why">See why →</button>
+    </div>
+  </div>
+
+  <div class="trio" id="trio"></div>
+  <p class="caption trio-cap" id="cap">Scores out of 100, against players of the same position and age. Bold = what you asked for. Keys: A, B, C pick.</p>
+</main>
+
+<script src="mock.js"></script>
+<script>
+const brief = { pos: 'winger', age: 21, budget: 500000, matters: ['creates', 'scores'] };
+const pools = {};
+const root = $('#trio');
+let trio = null;
+let state = 'pick';
+
+function render() {
+  state = 'pick';
+  pools[brief.pos] ??= makePool(brief.pos);
+  const pool = pools[brief.pos];
+  $('#count').textContent = pool.filter((p) => matches(p, brief)).length;
+  $$('.choice').forEach((c) => c.classList.toggle('on', brief.matters.includes(c.dataset.m)));
+  $('#brief').hidden = false;
+  $('#verdict').hidden = true;
+  $('#view').hidden = true;
+  root.classList.remove('duel');
+  trio = pickTrio(pool, brief);
+  $('h1').textContent = trio ? `Three ${POS[brief.pos][1]}. No names. Pick one.` : 'Too few players match.';
+  root.innerHTML = trio
+    ? trio.order.map((p, i) => cardHTML(p, i, brief)).join('') + '<div class="sheet tape" id="tape"></div>'
+    : '<div class="sheet empty">Fewer than three players match. Raise the budget or the age.</div>';
+}
+
+function pick(index) {
+  if (state !== 'pick' || !trio) return;
+  state = 'revealed';
+  const scout = trio.order[index];
+  const model = trio.model;
+  const agree = scout === model;
+  const sL = LETTERS[index];
+  const mL = LETTERS[trio.order.indexOf(model)];
+  const role = trio.roleOf(scout);
+  clearButtons(root);
+
+  const steps = [
+    // 1. your card opens
+    () => {
+      markPicked(root, scout);
+      openCard(root, scout);
+      setHead(`You picked ${sL}.`);
+    },
+    // 2. the other two open, every card gets its role
+    () => {
+      trio.order.forEach((p) => openCard(root, p));
+      stampRoles(root, trio);
+      setHead(agree ? `You picked ${sL}. So does the model.` : `You picked ${sL}. The model picks ${mL}.`);
+    },
+    // 3. price, goals, outlook; the line under the headline
+    () => {
+      showAfter(root, trio);
+      $('#sub').textContent = agree
+        ? 'You and the model see the same player.'
+        : role === 'goals'
+          ? 'You picked the goals. The model looks past them.'
+          : 'You picked your brief. The model looks further ahead.';
+      $('#brief').hidden = true;
+      $('#verdict').hidden = false;
+    },
+  ];
+  // 4. the duel: the third card steps back, the tape comes between the two
+  if (!agree) {
+    steps.push(() => {
+      cardOf(root, scout).classList.add('is-scout');
+      cardOf(root, model).classList.add('is-model');
+      $('#tape').innerHTML = tapeHTML(scout, model, sL, mL);
+      $('#view').hidden = false;
+      setDuel(true);
+    });
+  }
+  beats(steps);
+}
+
+function setDuel(on) {
+  const swap = () => {
+    root.classList.toggle('duel', on);
+    root.classList.remove('fade');
+    $('#view').textContent = on ? 'Show all three' : 'Show the duel';
+    if (on) {
+      $$('.bars i', root).forEach((b) => { b.style.width = '0'; });
+      requestAnimationFrame(() => growBars(root));
+    }
+  };
+  if (reducedMotion) return swap();
+  root.classList.add('fade');
+  setTimeout(swap, 200);
+}
+
+root.addEventListener('click', (e) => {
+  const btn = e.target.closest('.pick');
+  if (btn) pick($$('.dossier', root).indexOf(btn.closest('.dossier')));
+});
+$('#pos').addEventListener('change', (e) => { brief.pos = e.target.value; render(); });
+$('#age').addEventListener('change', (e) => { brief.age = Number(e.target.value); render(); });
+$('#budget').addEventListener('change', (e) => { brief.budget = Number(e.target.value); render(); });
+$$('.choice').forEach((c) => c.addEventListener('click', () => {
+  const m = c.dataset.m;
+  if (brief.matters.includes(m)) {
+    if (brief.matters.length === 1) return;
+    brief.matters = brief.matters.filter((x) => x !== m);
+  } else {
+    brief.matters = [...brief.matters, m].slice(-2);
+  }
+  render();
+}));
+$('#again').addEventListener('click', render);
+$('#view').addEventListener('click', () => setDuel(!root.classList.contains('duel')));
+$('#why').addEventListener('click', () => { $('#cap').textContent = 'In the app this opens the card of the model\'s pick.'; });
+document.addEventListener('keydown', (e) => {
+  if (e.target.matches('select, input') || e.metaKey || e.ctrlKey || e.altKey) return;
+  const i = ['a', 'b', 'c'].indexOf(e.key.toLowerCase());
+  if (i >= 0) pick(i);
+  if (e.key.toLowerCase() === 'r') pick(1);
+});
+
+render();
+</script>
+</body>
+</html>

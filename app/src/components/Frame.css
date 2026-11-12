@@ -20,3 +20,6 @@ a.chip b{color:var(--ink);font-weight:600}
 .chip-name{max-width:140px;overflow:hidden;text-overflow:ellipsis;display:inline-block}
 button.chip b{color:var(--ink);font-weight:600}
 .screen-error p{color:var(--ink-2,var(--ink));margin:0 0 16px}
+.langs{display:flex;gap:2px}
+.langs .chip{cursor:pointer;padding-left:7px;padding-right:7px}
+.langs .chip[aria-pressed="true"]{background:var(--ink);color:var(--on-ink);box-shadow:none}

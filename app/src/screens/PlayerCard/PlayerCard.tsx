@@ -1,3 +1,4 @@
+import { dataText } from '../../lib/dataText';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { AddPickButton } from '../../components/AddPickButton';
 import { Button } from '../../components/Button';
@@ -21,9 +22,9 @@ import type { EvidenceFile, Player } from '../../lib/types';
 import { ProjectionPanel } from './ProjectionPanel';
 import './PlayerCard.css';
 
-const BACK: Record<Origin, { to: string; text: string }> = {
-  blind: { to: '/blind', text: t.backToBlind },
-  radar: { to: '/radar', text: t.backToRadar },
+const BACK: Record<Origin, { to: string; text: () => string }> = {
+  blind: { to: '/blind', text: () => t.backToBlind },
+  radar: { to: '/radar', text: () => t.backToRadar },
 };
 
 const pct = (fraction: number): number => Math.round(fraction * 100);
@@ -32,7 +33,7 @@ function BackLink() {
   const origin = useOrigin();
   return (
     <Link className="back" to={BACK[origin].to}>
-      {BACK[origin].text}
+      {BACK[origin].text()}
     </Link>
   );
 }
@@ -45,7 +46,7 @@ function Header({ p }: { p: Player }) {
       <div>
         <BackLink />
         <h1>{p.name}</h1>
-        <p className="lede">{t.headline(p.position, Math.floor(p.age), p.club, p.league_name)}</p>
+        <p className="lede">{t.headline(dataText(p.position), Math.floor(p.age), p.club, p.league_name)}</p>
         <AddPickButton sport="football" id={p.id} name={p.name} line={`${p.club} · ${p.league_name}`} tier={p.tier} from="card" />
       </div>
       <div className="tiles">
@@ -169,7 +170,7 @@ function WhyPanel({ p, evidence }: { p: Player; evidence: EvidenceFile }) {
               </span>
               <span>
                 <span className="sr-only">{d.sign === '+' ? t.plusLabel : t.minusLabel}: </span>
-                {d.text}
+                {dataText(d.text)}
               </span>
             </li>
           ))}

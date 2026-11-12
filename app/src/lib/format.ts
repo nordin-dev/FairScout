@@ -1,3 +1,5 @@
+import { monthYearWords } from './i18n';
+
 /** Euro amount in the short form used on every screen: €250k, €500k, €1M, €1.1M, €40M. */
 export function money(eur: number): string {
   const abs = Math.abs(eur);
@@ -10,14 +12,12 @@ function trim(n: number): string {
   return String(Math.round(n * 10) / 10);
 }
 
-const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
 /** Month and year of an ISO date, for example "2027-06-30" gives "Jun 2027". Null for anything else. */
 export function monthYear(iso: string | null | undefined): string | null {
   const m = /^(\d{4})-(\d{2})-\d{2}/.exec(iso ?? '');
   if (!m) return null;
-  const month = MONTHS[Number(m[2]) - 1];
-  return month ? `${month} ${m[1]}` : null;
+  const month = Number(m[2]) - 1;
+  return month >= 0 && month < 12 ? monthYearWords(month, m[1]) : null;
 }
 
 /** A whole number with a thousands separator: 1180 gives "1,180". */

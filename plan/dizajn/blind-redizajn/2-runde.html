@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blind pick — five rounds with a scoreboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><b>FAIR SCOUT</b><span>mockup · sample players</span></div>
+  <nav class="steps"><span class="on">01 Blind pick</span><span>02 Radar</span><span>03 Time machine</span><span>04 Evidence</span></nav>
+  <a href="index.html">← svi mockupi</a>
+</div></header>
+
+<main class="wrap">
+  <div class="headrow">
+    <div>
+      <p class="kicker">01 — Blind pick · five rounds</p>
+      <h1></h1>
+    </div>
+    <div class="board">
+      <span class="label" id="roundLabel"></span>
+      <div class="pips" id="pips"></div>
+    </div>
+  </div>
+
+  <div class="under">
+    <div class="verdict">
+      <p id="sub"></p>
+      <button class="btn" type="button" id="next" hidden>Next three →</button>
+    </div>
+  </div>
+
+  <div class="trio" id="trio"></div>
+  <div class="summary" id="summary" hidden></div>
+  <p class="caption trio-cap" id="cap">= same pick as the model · ≠ a different pick. Keys: A, B, C pick, Enter goes on.</p>
+</main>
+
+<script src="mock.js"></script>
+<script>
+const ROUNDS = [
+  { pos: 'winger', age: 21, budget: 500000, matters: ['creates', 'scores'] },
+  { pos: 'striker', age: 21, budget: 500000, matters: ['scores', 'plays'] },
+  { pos: 'midfielder', age: 21, budget: 1000000, matters: ['creates', 'plays'] },
+  { pos: 'defender', age: 21, budget: 500000, matters: ['plays'] },
+  { pos: 'winger', age: 19, budget: 1000000, matters: ['creates'] },
+];
+const root = $('#trio');
+let round = 0;
+let results = [];
+let trio = null;
+let state = 'pick';
+
+const briefLine = (b) => `${POS[b.pos][0]} · ${b.age} or under · up to ${eur(b.budget)}`;
+
+function pips() {
+  $('#pips').innerHTML = ROUNDS.map((_, i) => {
+    const r = results[i];
+    if (r) return `<span class="pip ${r.same ? 'same' : 'diff'}" title="Round ${i + 1}">${r.same ? '=' : '≠'}</span>`;
+    return `<span class="pip${i === round ? ' now' : ''}">${i + 1}</span>`;
+  }).join('');
+  $('#roundLabel').textContent = round < ROUNDS.length ? `Round ${round + 1} of ${ROUNDS.length}` : 'Finished';
+}
+
+function render() {
+  state = 'pick';
+  const brief = ROUNDS[round];
+  trio = pickTrio(makePool(brief.pos, `round${round}`), brief);
+  $('h1').textContent = `Three ${POS[brief.pos][1]}. No names. Pick one.`;
+  $('#sub').textContent = briefLine(brief);
+  $('#next').hidden = true;
+  $('#summary').hidden = true;
+  root.hidden = false;
+  root.innerHTML = trio.order.map((p, i) => cardHTML(p, i, brief)).join('');
+  pips();
+}
+
+function pick(index) {
+  if (state !== 'pick') return;
+  state = 'revealed';
+  const scout = trio.order[index];
+  const same = scout === trio.model;
+  const sL = LETTERS[index];
+  const mL = LETTERS[trio.order.indexOf(trio.model)];
+  results[round] = { same, scout, model: trio.model, brief: ROUNDS[round] };
+  clearButtons(root);
+  markPicked(root, scout);
+  beats([
+    () => {
+      trio.order.forEach((p) => openCard(root, p));
+      stampRoles(root, trio);
+      setHead(same ? `${sL}. Same as the model.` : `You: ${sL}. Model: ${mL}.`);
+    },
+    () => {
+      showAfter(root, trio);
+      pips();
+      const btn = $('#next');
+      btn.textContent = round === ROUNDS.length - 1 ? 'See the result →' : 'Next three →';
+      btn.hidden = false;
+      btn.focus();
+    },
+  ], 500);
+}
+
+function next() {
+  if (state !== 'revealed') return;
+  round += 1;
+  if (round < ROUNDS.length) return render();
+  state = 'done';
+  const same = results.filter((r) => r.same).length;
+  const diff = ROUNDS.length - same;
+  pips();
+  $('h1').textContent = `You and the model agreed ${same} times out of ${ROUNDS.length}.`;
+  $('#sub').textContent = diff ? `The ${diff} where you differ go on the watch list.` : 'Nothing to argue about this time.';
+  const btn = $('#next');
+  btn.textContent = 'Play again';
+  root.hidden = true;
+  const rows = results.map((r, i) => `<tr class="${r.same ? '' : 'diff'}">
+      <td>${i + 1}</td>
+      <td>${POS[r.brief.pos][0]}</td>
+      <td>${tierBadge(r.scout.tier)}${r.scout.name}</td>
+      <td>${tierBadge(r.model.tier)}${r.model.name}</td>
+      <td class="mark">${r.same ? '=' : '≠'}</td>
+    </tr>`).join('');
+  $('#summary').innerHTML = `<div class="sheet bignum"><b>${same}<small> / ${ROUNDS.length}</small></b><span>same pick as the model</span></div>
+    <div class="sheet"><table class="rounds">
+      <thead><tr><th>Round</th><th>Position</th><th>Your pick</th><th>Model's pick</th><th></th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table></div>`;
+  $('#summary').hidden = false;
+  state = 'summary';
+}
+
+$('#next').addEventListener('click', () => {
+  if (state === 'summary') {
+    round = 0;
+    results = [];
+    return render();
+  }
+  next();
+});
+root.addEventListener('click', (e) => {
+  const btn = e.target.closest('.pick');
+  if (btn) pick($$('.dossier', root).indexOf(btn.closest('.dossier')));
+});
+document.addEventListener('keydown', (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const i = ['a', 'b', 'c'].indexOf(e.key.toLowerCase());
+  if (i >= 0) pick(i);
+  if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') next();
+});
+
+render();
+</script>
+</body>
+</html>

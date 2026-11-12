@@ -1,3 +1,4 @@
+import { dataText } from '../dataText';
 import { shuffled } from '../trio';
 import type { TennisPlayer, TennisTier } from './types';
 import { tennisBlind as t } from './blindText';
@@ -132,4 +133,4 @@ export function reasonSentence(reason: PickReason, modelName: string, scoutName:
 }
 
 export const positiveDrivers = (p: Pick<TennisPlayer, 'drivers'>): string[] =>
-  p.drivers.filter((d) => d.sign === '+').map((d) => d.text);
+  p.drivers.filter((d) => d.sign === '+').map((d) => dataText(d.text));

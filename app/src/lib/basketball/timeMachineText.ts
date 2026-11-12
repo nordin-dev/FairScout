@@ -1,36 +1,8 @@
-export const basketTimeMachine = {
-  kicker: '03 — Time machine',
-  seasonsLabel: 'Season',
-  loadingNote: 'Loading past seasons…',
-  errorReason: 'The basketball data did not load.',
-  emptyTitle: 'No past season can be checked yet.',
-  emptyLede: 'A season can be checked three seasons after it ends.',
-  emptyBlockTitle: 'No past seasons in the data.',
-  emptyBlockText: 'The model’s test on past seasons is on the evidence screen.',
-  openEvidence: 'Open the evidence →',
-  evidencePath: '/evidence',
-  thenTitle: (season: string, n: number) => `It is the end of season ${season}. These are the model’s top ${n}.`,
-  thenLede: (pool: number) =>
-    `${pool} players under 23 with a small role in EuroLeague or EuroCup. The model had seen only earlier seasons.`,
-  revealedTitle: (hits: number, n: number) => `${hits} of the ${n} became rotation players within three seasons.`,
-  revealedLede: (pool: number, poolHits: number) => `Of all ${pool} players in the pool, ${poolHits} did.`,
-  reveal: (season: string) => `Show what happened by ${season} →`,
-  hide: 'Hide again',
-  listLabel: 'The model’s top players then, best first',
-  head: { player: 'Player', age: 'Age', minutes: 'Minutes a game then', tier: 'Model tier', later: 'Best minutes a game since', outcome: 'Outcome' },
-  minutes: (n: number) => n.toFixed(1),
-  noLater: 'none',
-  reached: (season: string) => `Became a rotation player · ${season}`,
-  reachedNoSeason: 'Became a rotation player',
-  notReached: (target: number) => `Did not reach ${target} minutes a game`,
-  noLaterSeason: 'No later season in EuroLeague or EuroCup',
-  caption: 'A player who left for the NBA or another league has no later season here and counts as not reached.',
-  hiddenLabel: 'hidden until you show what happened',
-  missedTitle: 'Who the model missed',
-  missedLabel: 'Players outside the model’s top group who became rotation players',
-  missedLede: (n: number, top: number) =>
-    n === 0
-      ? `No player outside the model’s top ${top} became a rotation player.`
-      : `${n} ${n === 1 ? 'player' : 'players'} outside the model’s top ${top} also became ${n === 1 ? 'a rotation player' : 'rotation players'}.`,
-  tierThen: (tier: string) => `Tier ${tier} then`,
-};
+import { localized } from '../i18n';
+import * as en from '../texts/en/basketTimeMachine';
+import * as bs from '../texts/bs/basketTimeMachine';
+import * as tr from '../texts/tr/basketTimeMachine';
+import * as zh from '../texts/zh/basketTimeMachine';
+
+/** The texts of this module in the chosen language; the English ones are in texts/en. */
+export const basketTimeMachine = localized({ en: en.basketTimeMachine, bs: bs.basketTimeMachine, tr: tr.basketTimeMachine, zh: zh.basketTimeMachine });

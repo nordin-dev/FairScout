@@ -1,3 +1,4 @@
+import { dataText } from '../../lib/dataText';
 import { BarRanking, type BarRankingRow } from '../../components/BarRanking';
 import { DataTable, type Column } from '../../components/DataTable';
 import { DetailBlock } from '../../components/DetailBlock';
@@ -89,7 +90,7 @@ function Method({ e, file }: { e: Evidence; file: TennisFile }) {
       <Sheet>
         <p className="chart-title" style={{ fontSize: 16 }}>{t.methodTitle}</p>
         <ul className="plain">
-          {t.method(e, meta.trained_on.players, meta.pool_rule, meta.outcome).map((s) => (
+          {t.method(e, meta.trained_on.players, dataText(meta.pool_rule), dataText(meta.outcome)).map((s) => (
             <li key={s}>{s}</li>
           ))}
         </ul>

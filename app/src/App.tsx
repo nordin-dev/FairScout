@@ -6,6 +6,7 @@ import { Tooltip } from './components/Tooltip';
 import './components/Frame.css';
 import { DataProvider, useData } from './lib/data';
 import { money } from './lib/format';
+import { LANGS, LANG_NAMES, LANG_SHORT, setLang, useLang } from './lib/i18n';
 import { useKeys } from './lib/keys';
 import { reloadAt } from './lib/reload';
 import { readDefaultBrief } from './lib/brief';
@@ -18,6 +19,7 @@ import type { MetaFile } from './lib/types';
 import { screenRoutes } from './routes';
 
 function TopBar() {
+  const lang = useLang();
   const details = useDetails();
   const budget = useBudget();
   const { pathname } = useLocation();
@@ -40,6 +42,13 @@ function TopBar() {
           ))}
         </nav>
         <div className="tools">
+          <div className="langs" role="group" aria-label={frame.languageLabel}>
+            {LANGS.map((l) => (
+              <button key={l} type="button" className="chip" lang={l} aria-pressed={l === lang} title={LANG_NAMES[l]} onClick={() => setLang(l)}>
+                {LANG_SHORT[l]}
+              </button>
+            ))}
+          </div>
           <button className="chip" type="button" aria-pressed={details} data-tip={frame.detailsTip} onClick={toggleDetails}>
             {frame.detailsLabel} <b>{details ? frame.detailsOn : frame.detailsOff}</b>
           </button>
@@ -129,12 +138,13 @@ export function ScrollToTop() {
 }
 
 function Frame() {
+  const lang = useLang();
   return (
     <DataProvider>
       <FrameEffects />
       <ScrollToTop />
       <TopBar />
-      <main className="wrap">
+      <main className="wrap" key={lang}>
         <Outlet />
       </main>
       <Footer />

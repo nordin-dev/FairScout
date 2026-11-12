@@ -1,0 +1,46 @@
+import type { Loose } from '../../i18n';
+import type * as en from '../en/tennisCard';
+
+export const tennisCard: Loose<typeof en.tennisCard> = {
+  backToBlind: '← Kör seçime dön',
+  backToRadar: '← Radara dön',
+  headline: (age: number, country: string, hand: 'Right' | 'Left' | null): string =>
+    ['Tenis', `${age} yaşında`, country, hand ? (hand === 'Left' ? 'solak' : 'sağlak') : ''].filter(Boolean).join(' · '),
+  ranking: 'Sıralama',
+  yearAgo: 'Bir yıl önce',
+  record: 'Son 52 haftada galibiyet–mağlubiyet',
+  top200: 'İlk 200’deki oyunculara karşı galibiyetler',
+  bestWin: 'En iyi galibiyet',
+  rankFigure: (n: number) => `${n}. sıra`,
+  dash: '—',
+  captions: {
+    ranking: (date: string) => `ATP, ${date}`,
+    yearAgo: 'ATP sıralaması',
+    record: 'Tüm seviyeler',
+    top200: 'Son 52 hafta',
+    bestWin: 'Yenilen oyuncunun sıralamasına göre',
+  },
+  recordFigure: (w: number, l: number) => `${w}–${l}`,
+  outlookLabel: 'Görünüm',
+  gives: (percent: number) => `Üç yıl içinde ilk 100 sıralaması için model puanı: 100 üzerinden ${percent}.`,
+  tierLine: (tier: string, n: number, hits: number) => `Geçmişteki ${n} adet ${tier} seviyesi oyuncudan ${hits} tanesi üç yıl içinde ilk 100’e girdi.`,
+  caution: 'Bunlar benzer oyuncuların geçmiş sonuçlarıdır; bu oyuncu için bir tahmin değildir.',
+  whyLabel: 'Modelin gördükleri',
+  plusSign: '+',
+  minusSign: '−',
+  plusLabel: 'Yardım eder',
+  minusLabel: 'Zarar verir',
+  flagUnder18: '18 yaş altı',
+  flagLow: 'Az maç',
+  chartLabel: 'Üç yıllık sıralama',
+  chartNote: 'Grafikte yukarısı daha iyi sıralamadır. Ölçek logaritmiktir.',
+  chartEmpty: 'Grafik için yeterli sıralama geçmişi yok.',
+  chartAlt: (first: string, firstDate: string, last: string, lastDate: string) =>
+    `Sıralama: ${firstDate} tarihinde ${first}, ${lastDate} tarihinde ${last}.`,
+  topLine: 'İlk 100',
+  notFoundTitle: 'Bu oyuncu havuzda yok.',
+  notFoundText: 'Bağlantı eski olabilir. Oyuncu seçmek için radara dön.',
+  notFoundButton: 'Radara dön',
+  errorReason: 'Tenisçi listesi gelmedi.',
+  loadingNote: 'Oyuncu yükleniyor…',
+};

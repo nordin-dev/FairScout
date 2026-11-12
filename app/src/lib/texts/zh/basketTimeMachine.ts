@@ -1,0 +1,36 @@
+import type { Loose } from '../../i18n';
+import type * as en from '../en/basketTimeMachine';
+
+export const basketTimeMachine: Loose<typeof en.basketTimeMachine> = {
+  kicker: '03 — 时光机',
+  seasonsLabel: '赛季',
+  loadingNote: '正在加载往期赛季…',
+  errorReason: '篮球数据没有加载出来。',
+  emptyTitle: '目前还没有可以检验的往期赛季。',
+  emptyLede: '一个赛季结束三个赛季后，才能检验。',
+  emptyBlockTitle: '数据中没有往期赛季。',
+  emptyBlockText: '模型在往期赛季上的检验在“证据”页。',
+  openEvidence: '打开证据 →',
+  evidencePath: '/evidence',
+  thenTitle: (season: string, n: number) => `现在是 ${season} 赛季末。这是模型选出的前 ${n} 名。`,
+  thenLede: (pool: number) => `${pool} 名 23 岁以下、在 EuroLeague 或 EuroCup 中角色较小的球员。模型只见过更早的赛季。`,
+  revealedTitle: (hits: number, n: number) => `${n} 人中有 ${hits} 人在三个赛季内成为轮换球员。`,
+  revealedLede: (pool: number, poolHits: number) => `候选池全部 ${pool} 名球员中，有 ${poolHits} 人做到了。`,
+  reveal: (season: string) => `看看到 ${season} 发生了什么 →`,
+  hide: '再次隐藏',
+  listLabel: '当时模型选出的头部球员，最好的在前',
+  head: { player: '球员', age: '年龄', minutes: '当时场均分钟', tier: '模型级别', later: '此后最高场均分钟', outcome: '结果' },
+  minutes: (n: number) => n.toFixed(1),
+  noLater: '无',
+  reached: (season: string) => `成为轮换球员 · ${season}`,
+  reachedNoSeason: '成为轮换球员',
+  notReached: (target: number) => `场均未达到 ${target} 分钟`,
+  noLaterSeason: '之后没有 EuroLeague 或 EuroCup 的赛季',
+  caption: '转投 NBA 或其他联赛的球员，在这里没有之后的赛季，按“未达到”计算。',
+  hiddenLabel: '点击“看看发生了什么”后显示',
+  missedTitle: '模型漏掉了谁',
+  missedLabel: '不在模型头部名单中、却成为轮换球员的球员',
+  missedLede: (n: number, top: number) =>
+    n === 0 ? `模型前 ${top} 名之外，没有球员成为轮换球员。` : `模型前 ${top} 名之外，还有 ${n} 名球员也成为了轮换球员。`,
+  tierThen: (tier: string) => `当时 ${tier} 级`,
+};

@@ -5,10 +5,10 @@ const num = (s: string): number => Number(/[−-]?\d+(?:\.\d+)?/.exec(s)?.[0].re
 /** The brief is filled in from the default and at least three players match. Returns the count. */
 export async function checkBrief(page: Page): Promise<number> {
   await expect(page.getByRole('heading', { level: 1 })).toHaveText('What are you looking for?');
-  await expect(page.getByRole('group', { name: 'Position' }).locator('[aria-pressed="true"]')).toHaveCount(1);
-  await expect(page.getByRole('group', { name: 'Age' }).locator('[aria-pressed="true"]')).toHaveCount(1);
-  await expect(page.getByRole('group', { name: 'Budget' }).locator('[aria-pressed="true"]')).toHaveCount(1);
-  await expect(page.getByRole('group', { name: 'Most important' }).locator('[aria-pressed="true"]')).toHaveCount(2);
+  await expect(page.getByRole('group', { name: 'Position', exact: true }).locator('[aria-pressed="true"]')).toHaveCount(1);
+  await expect(page.getByRole('group', { name: 'Age', exact: true }).locator('[aria-pressed="true"]')).toHaveCount(1);
+  await expect(page.getByRole('group', { name: 'Budget', exact: true }).locator('[aria-pressed="true"]')).toHaveCount(1);
+  await expect(page.getByRole('group', { name: 'Most important', exact: true }).locator('[aria-pressed="true"]')).toHaveCount(2);
   const count = num(await page.locator('.b-count b').innerText());
   expect(count, 'players matching the default brief').toBeGreaterThanOrEqual(3);
   await expect(page.getByRole('button', { name: /Show me three/ })).toBeEnabled();

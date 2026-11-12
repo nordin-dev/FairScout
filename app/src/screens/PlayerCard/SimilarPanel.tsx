@@ -1,3 +1,4 @@
+import { dataText } from '../../lib/dataText';
 import { Link } from 'react-router-dom';
 import { DetailBlock } from '../../components/DetailBlock';
 import { Sheet } from '../../components/Sheet';
@@ -23,7 +24,7 @@ export function SimilarPanel({ p, players }: { p: Player; players: Player[] }) {
               <span>
                 <span className="sim-name">{r.player.name}</span>
                 <span className="sim-meta">{t.similarMeta(r.player.league_name, money(r.player.value_eur))}</span>
-                <span className="sim-meta">{r.diff}</span>
+                <span className="sim-meta">{dataText(r.diff)}</span>
               </span>
               <span className="pct">{t.similarPercent(Math.round(r.similarity))}</span>
             </Link>

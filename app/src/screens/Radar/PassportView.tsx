@@ -9,7 +9,7 @@ import { Tag } from '../../components/Tag';
 import { money, thousands } from '../../lib/format';
 import { inBudget, positionCode, showsRating } from '../../lib/radar';
 import { ratingOf } from '../../lib/rating';
-import { radar as t } from '../../lib/text.en';
+import { radar as t, frame } from '../../lib/text.en';
 import type { Player } from '../../lib/types';
 
 const PAGE = 20;
@@ -69,7 +69,7 @@ export function PassportView({ players, budget, onOpen }: Props) {
     },
     {
       key: 'pick',
-      header: 'My picks',
+      header: frame.picks.column,
       hideHeader: true,
       cell: (p) => <AddPickButton compact sport="football" id={p.id} name={p.name} line={`${p.club} · ${p.league_name}`} tier={p.tier} from="radar" />,
     },

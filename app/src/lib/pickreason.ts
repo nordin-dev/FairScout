@@ -1,3 +1,4 @@
+import { dataText } from './dataText';
 import { ratingOf } from './rating';
 import { blind } from './text.en';
 import type { Player, Tier } from './types';
@@ -69,5 +70,5 @@ export function reasonSentence(reason: PickReason, modelName: string, scoutName:
 
 /** What the model counts in a player's favour, in the words of the data file. */
 export function positiveDrivers(player: Pick<Player, 'drivers'>): string[] {
-  return player.drivers.filter((d) => d.sign === '+').map((d) => d.text);
+  return player.drivers.filter((d) => d.sign === '+').map((d) => dataText(d.text));
 }

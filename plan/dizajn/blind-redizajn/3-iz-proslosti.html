@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Blind pick — from the past, with the outcome</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <div class="brand"><b>FAIR SCOUT</b><span>mockup · invented players and outcomes</span></div>
+  <nav class="steps"><span class="on">01 Blind pick</span><span>02 Radar</span><span>03 Time machine</span><span>04 Evidence</span></nav>
+  <a href="index.html">← svi mockupi</a>
+</div></header>
+
+<main class="wrap">
+  <div class="headrow">
+    <div>
+      <p class="kicker" id="kicker"></p>
+      <h1></h1>
+    </div>
+    <div class="board">
+      <span class="label">Better pick</span>
+      <div class="pips" id="pips"></div>
+    </div>
+  </div>
+
+  <div class="under">
+    <div class="verdict">
+      <p id="sub"></p>
+      <button class="btn" type="button" id="next" hidden>Next season →</button>
+    </div>
+  </div>
+
+  <div class="trio" id="trio"></div>
+  <p class="caption trio-cap">Y = your pick rose more · M = the model's pick rose more · = the same player. Keys: A, B, C pick, Enter goes on.</p>
+</main>
+
+<script src="mock.js"></script>
+<script>
+/* Value three years later as a multiple of the value then, by role. The model misses once, in 2021/22. */
+const SEASONS = [
+  { season: '2019/20', later: '2022/23', pos: 'winger', times: { model: 15, goals: 0.9, fit: 2 } },
+  { season: '2020/21', later: '2023/24', pos: 'striker', times: { model: 6, goals: 1.5, fit: 0.7 } },
+  { season: '2021/22', later: '2024/25', pos: 'midfielder', times: { model: 0.8, goals: 4, fit: 1.5 } },
+  { season: '2022/23', later: '2025/26', pos: 'defender', times: { model: 9, goals: 1.2, fit: 3 } },
+];
+const BRIEF = { age: 21, budget: 500000, matters: ['creates', 'scores'] };
+const root = $('#trio');
+let round = 0;
+let results = [];
+let trio = null;
+let state = 'pick';
+
+const brief = () => ({ ...BRIEF, pos: SEASONS[round].pos });
+const timesText = (t) => `×${t >= 10 ? Math.round(t) : t.toFixed(1).replace('.0', '')}`;
+
+function pips() {
+  $('#pips').innerHTML = SEASONS.map((s, i) => {
+    const r = results[i];
+    if (r === 'you') return '<span class="pip same" title="Your pick rose more">Y</span>';
+    if (r === 'model') return '<span class="pip win" title="The model\'s pick rose more">M</span>';
+    if (r === 'same') return '<span class="pip diff" title="The same player">=</span>';
+    return `<span class="pip${i === round ? ' now' : ''}">${s.season.slice(2, 4)}</span>`;
+  }).join('');
+}
+
+function render() {
+  state = 'pick';
+  const s = SEASONS[round];
+  trio = pickTrio(makePool(s.pos, s.season), brief());
+  $('#kicker').textContent = `01 — Blind pick · season ${s.season}`;
+  $('h1').textContent = `${s.season.slice(0, 4)}. Three ${POS[s.pos][1]}. No names. Pick one.`;
+  $('#sub').textContent = `As a scout saw them then: ${POS[s.pos][0].toLowerCase()} · 21 or under · up to €500k`;
+  $('#next').hidden = true;
+  root.innerHTML = trio.order.map((p, i) => cardHTML(p, i, brief(), 'tall')).join('');
+  pips();
+}
+
+/** Four yearly values from then to three years later, as a line. */
+function spark(times) {
+  const steps = [1, 1 + (times - 1) * 0.2, 1 + (times - 1) * 0.65, times];
+  const max = Math.max(...steps, 1.2);
+  const pts = steps.map((v, i) => [6 + i * 62.6, 43 - (v / max) * 38]);
+  const [ex, ey] = pts[3];
+  return `<svg viewBox="0 0 200 48" preserveAspectRatio="xMinYMid meet" role="img" aria-label="Value over three years">
+    <line x1="0" y1="${43 - (1 / max) * 38}" x2="200" y2="${43 - (1 / max) * 38}" stroke="var(--hair-strong)" stroke-dasharray="3 3"/>
+    <polyline points="${pts.map((p) => p.join(',')).join(' ')}" fill="none" stroke="var(--accent)" stroke-width="2"/>
+    <circle cx="${ex}" cy="${ey}" r="4" fill="var(--accent)"/>
+  </svg>`;
+}
+
+function showOutcome() {
+  const s = SEASONS[round];
+  trio.order.forEach((p) => {
+    const t = s.times[trio.roleOf(p)];
+    $('.slot', cardOf(root, p)).innerHTML = `<div class="outcome">
+      <b class="times">${timesText(t)}</b>${spark(t)}
+      <span class="path">${eur(p.value)} then → ${eur(p.value * t)} in ${s.later}</span>
+    </div>`;
+  });
+}
+
+function pick(index) {
+  if (state !== 'pick') return;
+  state = 'revealed';
+  const s = SEASONS[round];
+  const scout = trio.order[index];
+  const sT = s.times[trio.roleOf(scout)];
+  const mT = s.times.model;
+  const result = scout === trio.model ? 'same' : sT > mT ? 'you' : 'model';
+  results[round] = result;
+  clearButtons(root);
+  beats([
+    () => {
+      markPicked(root, scout);
+      openCard(root, scout);
+      setHead(`You picked ${LETTERS[index]}.`);
+    },
+    () => {
+      trio.order.forEach((p) => openCard(root, p));
+      stampRoles(root, trio);
+      setHead(result === 'same' ? `You and the model picked ${LETTERS[index]}.` : `You: ${LETTERS[index]}. Model: ${LETTERS[trio.order.indexOf(trio.model)]}.`);
+    },
+    () => {
+      showOutcome();
+      setHead(result === 'same' ? `Same pick: ${timesText(sT)} in three years.` : `Yours: ${timesText(sT)}. The model's: ${timesText(mT)}.`);
+      $('#sub').textContent = result === 'you' ? 'You beat the model this time.' : result === 'model' ? 'The model saw it better this time.' : 'You saw what the model saw.';
+      pips();
+      const btn = $('#next');
+      btn.textContent = round === SEASONS.length - 1 ? 'Start again' : 'Next season →';
+      btn.hidden = false;
+      btn.focus();
+    },
+  ]);
+}
+
+function next() {
+  if (state !== 'revealed') return;
+  round += 1;
+  if (round === SEASONS.length) {
+    round = 0;
+    results = [];
+  }
+  render();
+}
+
+$('#next').addEventListener('click', next);
+root.addEventListener('click', (e) => {
+  const btn = e.target.closest('.pick');
+  if (btn) pick($$('.dossier', root).indexOf(btn.closest('.dossier')));
+});
+document.addEventListener('keydown', (e) => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  const i = ['a', 'b', 'c'].indexOf(e.key.toLowerCase());
+  if (i >= 0) pick(i);
+  if (e.key === 'Enter' && e.target.tagName !== 'BUTTON') next();
+});
+
+render();
+</script>
+</body>
+</html>

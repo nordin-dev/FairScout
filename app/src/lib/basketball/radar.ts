@@ -1,3 +1,5 @@
+import { dataText } from '../dataText';
+import { getLang } from '../i18n';
 import type { BasketMeta, BasketPlayer } from './types';
 
 /** The minutes-per-game slider: players averaging below the value stay. */
@@ -91,13 +93,13 @@ export const titleCounts = (rows: readonly BasketPlayer[]): { total: number; tie
 });
 
 const WORDS = ['None', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten', 'Eleven', 'Twelve'];
-/** The count as a word up to twelve, a number above. */
-export const countWord = (k: number): string => WORDS[k] ?? String(k);
+/** The count as a word up to twelve, a number above; always a number outside English. */
+export const countWord = (k: number): string => (getLang() === 'en' ? (WORDS[k] ?? String(k)) : String(k));
 
 /** The lede inputs: the season and the competitions that are ticked. */
 export const ledeParts = (meta: Pick<BasketMeta, 'season'>, f: BasketFilters) => ({
   season: meta.season,
-  competitions: f.competitions.length === 1 ? (f.competitions[0] as string) : COMPETITIONS.join(' and '),
+  competitions: f.competitions.length === 1 ? (f.competitions[0] as string) : COMPETITIONS.join(` ${dataText('and')} `),
 });
 
 /** The short position letter of a table row; "—" is the caller's. */

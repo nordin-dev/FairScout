@@ -1,3 +1,4 @@
+import { frame } from '../../lib/text.en';
 import { useMemo, useState, type CSSProperties } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AddPickButton } from '../../components/AddPickButton';
@@ -196,7 +197,7 @@ function RadarScreen({ file }: { file: TennisFile }) {
     { key: 'notes', header: t.headers.notes, cell: flagChips },
     {
       key: 'pick',
-      header: 'My picks',
+      header: frame.picks.column,
       hideHeader: true,
       cell: (p) => <AddPickButton compact sport="tennis" id={p.id} name={p.name} line={p.country} tier={p.tier} from="radar" />,
     },

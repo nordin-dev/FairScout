@@ -1,0 +1,46 @@
+import type { Loose } from '../../i18n';
+import type * as en from '../en/tennisCard';
+
+export const tennisCard: Loose<typeof en.tennisCard> = {
+  backToBlind: '← 返回盲选',
+  backToRadar: '← 返回雷达',
+  headline: (age: number, country: string, hand: 'Right' | 'Left' | null): string =>
+    ['网球', `${age} 岁`, country, hand ? `${hand === 'Left' ? '左' : '右'}手持拍` : ''].filter(Boolean).join(' · '),
+  ranking: '排名',
+  yearAgo: '一年前',
+  record: '近 52 周胜负',
+  top200: '战胜前 200 名球员的场次',
+  bestWin: '最佳胜绩',
+  rankFigure: (n: number) => `第 ${n} 位`,
+  dash: '—',
+  captions: {
+    ranking: (date: string) => `ATP，${date}`,
+    yearAgo: 'ATP 排名',
+    record: '所有级别',
+    top200: '近 52 周',
+    bestWin: '按对手排名计',
+  },
+  recordFigure: (w: number, l: number) => `${w}–${l}`,
+  outlookLabel: '前景',
+  gives: (percent: number) => `模型对三年内进入前 100 的评分：${percent}（满分 100）。`,
+  tierLine: (tier: string, n: number, hits: number) => `过往 ${n} 名 ${tier} 级球员中，有 ${hits} 人在三年内进入前 100。`,
+  caution: '这是相似球员的过往结果，不是对这名球员的预测。',
+  whyLabel: '模型看到了什么',
+  plusSign: '+',
+  minusSign: '−',
+  plusLabel: '加分',
+  minusLabel: '减分',
+  flagUnder18: '未满 18 岁',
+  flagLow: '比赛场次少',
+  chartLabel: '三年排名走势',
+  chartNote: '图中越高，排名越靠前。刻度为对数刻度。',
+  chartEmpty: '排名历史不足，无法绘制图表。',
+  chartAlt: (first: string, firstDate: string, last: string, lastDate: string) =>
+    `排名从 ${firstDate} 的 ${first} 变化到 ${lastDate} 的 ${last}。`,
+  topLine: '前 100',
+  notFoundTitle: '候选池中没有这名球员。',
+  notFoundText: '链接可能已过期。请回到雷达重新选择球员。',
+  notFoundButton: '返回雷达',
+  errorReason: '网球球员名单没有送达。',
+  loadingNote: '正在加载球员…',
+};

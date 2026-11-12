@@ -34,7 +34,7 @@ import {
 import { BUDGET_MAX, BUDGET_MIN, BUDGET_STEP, setBudget, setOrigin, useBudget } from '../../lib/store';
 import { poolBornFrom } from '../../lib/brief';
 import { ratingOf } from '../../lib/rating';
-import { radar as t } from '../../lib/text.en';
+import { radar as t, frame } from '../../lib/text.en';
 import type { AppData, Player } from '../../lib/types';
 import { PassportView } from './PassportView';
 import './Radar.css';
@@ -295,7 +295,7 @@ function RadarScreen({ data }: { data: AppData }) {
     { key: 'notes', header: t.headers.notes, cell: (p) => flagChips(p) },
     {
       key: 'pick',
-      header: 'My picks',
+      header: frame.picks.column,
       hideHeader: true,
       cell: (p) => <AddPickButton compact sport="football" id={p.id} name={p.name} line={`${p.club} · ${p.league_name}`} tier={p.tier} from="radar" />,
     },
