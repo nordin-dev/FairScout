@@ -15,5 +15,8 @@ main.wrap{padding-top:48px;padding-bottom:40px;min-height:calc(100vh - 140px)}
 .not-found a:hover{color:var(--ink)}
 .chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--hair-strong);border-radius:2px;padding:4px 8px;font:500 12px var(--mono);color:var(--ink-2);background:var(--sheet);white-space:nowrap}
 button.chip{cursor:pointer}
+a.chip{text-decoration:none;cursor:pointer}
+a.chip b{color:var(--ink);font-weight:600}
+.chip-name{max-width:140px;overflow:hidden;text-overflow:ellipsis;display:inline-block}
 button.chip b{color:var(--ink);font-weight:600}
 .screen-error p{color:var(--ink-2,var(--ink));margin:0 0 16px}

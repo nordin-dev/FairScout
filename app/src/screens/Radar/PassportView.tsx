@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AddPickButton } from '../../components/AddPickButton';
 import { Button } from '../../components/Button';
 import { DataTable, type Column } from '../../components/DataTable';
 import { Flag } from '../../components/Flag';
@@ -65,6 +66,12 @@ export function PassportView({ players, budget, onOpen }: Props) {
       key: 'forYou',
       header: t.headersPassport.forYou,
       cell: (p) => (inBudget(p, budget) ? <Tag variant="model">{t.inBudget}</Tag> : <span className="caption">{t.aboveBudget}</span>),
+    },
+    {
+      key: 'pick',
+      header: 'My picks',
+      hideHeader: true,
+      cell: (p) => <AddPickButton compact sport="football" id={p.id} name={p.name} line={`${p.club} · ${p.league_name}`} tier={p.tier} from="radar" />,
     },
   ];
   const shown = showAll ? players : players.slice(0, PAGE);

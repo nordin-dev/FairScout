@@ -1,5 +1,6 @@
 import { useMemo, useState, type CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { AddPickButton } from '../../components/AddPickButton';
 import { Button } from '../../components/Button';
 import { ChoiceChips } from '../../components/ChoiceChips';
 import { DataTable, type Column } from '../../components/DataTable';
@@ -292,6 +293,12 @@ function RadarScreen({ data }: { data: AppData }) {
     { key: 'rating', header: t.headers.rating, cell: (p) => <Meter label={t.ratingLabel} value={ratingOf(p)} /> },
     { key: 'outlook', header: t.headers.outlook, cell: (p) => (p.tier ? <TierBadge tier={p.tier} /> : null) },
     { key: 'notes', header: t.headers.notes, cell: (p) => flagChips(p) },
+    {
+      key: 'pick',
+      header: 'My picks',
+      hideHeader: true,
+      cell: (p) => <AddPickButton compact sport="football" id={p.id} name={p.name} line={`${p.club} · ${p.league_name}`} tier={p.tier} from="radar" />,
+    },
   ];
   const shown = showAll ? rows : rows.slice(0, PAGE);
 

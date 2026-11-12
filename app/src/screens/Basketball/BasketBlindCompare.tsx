@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { AddPickButton } from '../../components/AddPickButton';
 import { BigStatRow } from '../../components/BigStatRow';
 import { Button } from '../../components/Button';
 import { RedactionBar } from '../../components/RedactionBar';
@@ -56,6 +57,7 @@ function Dossier({ player, index, trio, order, matters, revealed, picked }: Doss
       </div>
       <p className="facts">{t.facts(player.position, Math.floor(player.age), player.height_cm)}</p>
       {revealed ? (
+        <>
         <div className="after">
           <div>
             <span className="label">{t.labelMinutes}</span>
@@ -70,6 +72,8 @@ function Dossier({ player, index, trio, order, matters, revealed, picked }: Doss
             <TierBadge tier={player.tier} size="xl" />
           </div>
         </div>
+        <AddPickButton sport="basketball" id={player.id} name={player.name} line={`${player.team} · ${player.competition}`} tier={player.tier} from="blind" />
+        </>
       ) : (
         <Button aria-label={t.pickLabel(letter)} onClick={() => pick(trio, player.id)}>
           {t.pick}

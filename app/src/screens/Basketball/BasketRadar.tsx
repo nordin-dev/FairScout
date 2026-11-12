@@ -1,5 +1,6 @@
 import { useMemo, useState, type CSSProperties } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { AddPickButton } from '../../components/AddPickButton';
 import { Button } from '../../components/Button';
 import { ChoiceChips } from '../../components/ChoiceChips';
 import { DataTable, type Column } from '../../components/DataTable';
@@ -210,6 +211,12 @@ function RadarScreen({ file }: { file: BasketFile }) {
     { key: 'rating', header: t.headers.rating, cell: (p) => <Meter label={t.ratingLabel} value={p.rating} /> },
     { key: 'outlook', header: t.headers.outlook, cell: (p) => <TierBadge tier={p.tier} /> },
     { key: 'notes', header: t.headers.notes, cell: flagChips },
+    {
+      key: 'pick',
+      header: 'My picks',
+      hideHeader: true,
+      cell: (p) => <AddPickButton compact sport="basketball" id={p.id} name={p.name} line={`${p.team} · ${p.competition}`} tier={p.tier} from="radar" />,
+    },
   ];
   const shown = showAll ? rows : rows.slice(0, PAGE);
 

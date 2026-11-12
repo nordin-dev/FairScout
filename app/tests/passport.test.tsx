@@ -127,7 +127,7 @@ describe('passport view', () => {
     expect(rows[3]).toHaveTextContent('Club o2 · England');
     expect(rows[4]).toHaveTextContent('Name h1');
     expect(screen.getAllByRole('columnheader').map((h) => h.textContent)).toEqual([
-      'Player', 'Pos', 'Age', 'Price', 'Min', 'Goals + assists', 'Rating', 'For you',
+      'Player', 'Pos', 'Age', 'Price', 'Min', 'Goals + assists', 'Rating', 'For you', 'My picks',
     ]);
     expect(screen.getByText('6 players.')).toBeInTheDocument();
   });

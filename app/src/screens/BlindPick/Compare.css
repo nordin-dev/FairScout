@@ -29,3 +29,4 @@
 .reason-why{font-size:19px;line-height:1.4}
 .reason-drivers{font-size:17px;color:var(--ink-2)}
 @media (max-width:720px){.verdict{grid-template-columns:1fr}.reason-table{font-size:15px}.reason-table th,.reason-table td{padding-right:8px}}
+.dossier .add-pick{align-self:flex-start}

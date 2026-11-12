@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
 import { Link, Outlet, useLocation, createHashRouter, redirect, RouterProvider, type RouteObject } from 'react-router-dom';
+import { useAccount } from './lib/account';
+import { account as accountText } from './lib/accountText';
 import { Tooltip } from './components/Tooltip';
 import './components/Frame.css';
 import { DataProvider, useData } from './lib/data';
@@ -20,6 +22,7 @@ function TopBar() {
   const budget = useBudget();
   const { pathname } = useLocation();
   const sport = useSport();
+  const who = useAccount();
   const sections = frame.sections;
   const active = activeSection(pathname, useOrigin(), sections.map((s) => s.path));
   return (
@@ -41,6 +44,20 @@ function TopBar() {
             {frame.detailsLabel} <b>{details ? frame.detailsOn : frame.detailsOff}</b>
           </button>
           <span className="chip">{sport === 'football' ? frame.budgetChip(money(budget)) : frame.sports[sport]}</span>
+          {who ? (
+            <>
+              <Link className="chip" to="/my-picks">
+                {accountText.header.picks} <b>{who.picks.length}</b>
+              </Link>
+              <Link className="chip chip-name" to="/account">
+                {who.name}
+              </Link>
+            </>
+          ) : (
+            <Link className="chip" to="/account" data-tip={accountText.header.loginTip}>
+              {accountText.header.login}
+            </Link>
+          )}
         </div>
       </div>
     </header>

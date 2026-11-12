@@ -1,3 +1,4 @@
+import { AddPickButton } from '../../components/AddPickButton';
 import { BigStatRow } from '../../components/BigStatRow';
 import { Button } from '../../components/Button';
 import { DetailBlock } from '../../components/DetailBlock';
@@ -89,6 +90,7 @@ function Dossier({ player, index, trio, order, matters, position, revealed, pick
       </div>
       <p className="facts">{blind.facts(position, Math.floor(player.age))}</p>
       {revealed ? (
+        <>
         <div className="after">
           <div>
             <span className="label">{blind.labelPrice}</span>
@@ -103,6 +105,8 @@ function Dossier({ player, index, trio, order, matters, position, revealed, pick
             {player.tier ? <TierBadge tier={player.tier} size="xl" /> : <b>{blind.noTier}</b>}
           </div>
         </div>
+        <AddPickButton sport="football" id={player.id} name={player.name} line={`${player.club} · ${player.league_name}`} tier={player.tier} from="blind" />
+        </>
       ) : (
         <Button aria-label={blind.pickLabel(letter)} onClick={() => pick(trio, player.id)}>
           {blind.pick}

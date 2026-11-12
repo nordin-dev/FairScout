@@ -1,4 +1,5 @@
 import { Link, useNavigate, useParams } from 'react-router-dom';
+import { AddPickButton } from '../../components/AddPickButton';
 import { Button } from '../../components/Button';
 import { FactTile } from '../../components/FactTile';
 import { Flag } from '../../components/Flag';
@@ -73,6 +74,7 @@ function Card({ p, file }: { p: BasketPlayer; file: BasketFile }) {
           <BackLink />
           <h1>{p.name}</h1>
           <p className="lede">{t.headline(p.position, Math.floor(p.age), p.team, p.competition, p.country)}</p>
+        <AddPickButton sport="basketball" id={p.id} name={p.name} line={`${p.team} · ${p.competition}`} tier={p.tier} from="card" />
         </div>
       </div>
       <div className="t-facts">

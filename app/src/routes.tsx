@@ -1,4 +1,6 @@
 import type { RouteObject } from 'react-router-dom';
+import { Account } from './screens/Account/Account';
+import { MyPicks } from './screens/Account/MyPicks';
 import { BlindPick } from './screens/BlindPick/BlindPick';
 import { Evidence } from './screens/Evidence/Evidence';
 import { PlayerCard } from './screens/PlayerCard/PlayerCard';
@@ -29,4 +31,6 @@ export const screenRoutes: RouteObject[] = [
   { path: 'player/:id', element: <PlayerCard /> },
   { path: 'time-machine', element: <BySport football={<TimeMachine />} tennis={<TennisTimeMachine />} basketball={<BasketTimeMachine />} /> },
   { path: 'evidence', element: <BySport football={<Evidence />} tennis={<TennisEvidence />} basketball={<BasketEvidence />} /> },
+  { path: 'account', element: <Account /> },
+  { path: 'my-picks', element: <MyPicks /> },
 ];

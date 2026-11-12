@@ -118,3 +118,17 @@ test('a port that is taken gives one clear line and a non-zero code', async () =
     await new Promise((resolve) => first.server.close(resolve));
   }
 });
+
+test('PORT in the environment sets the port and opens the server to every interface', () => {
+  assert.deepEqual(parseArgs([], 'dist', { PORT: '8080' }), { port: 8080, host: '0.0.0.0', dir: 'dist' });
+});
+
+test('without PORT the server stays on 127.0.0.1 and the default port', () => {
+  assert.deepEqual(parseArgs([], 'dist', {}), { port: 4173, host: '127.0.0.1', dir: 'dist' });
+  assert.deepEqual(parseArgs([], 'dist', { PORT: 'abc' }), { port: 4173, host: '127.0.0.1', dir: 'dist' });
+});
+
+test('the command line and HOST win over the defaults', () => {
+  assert.deepEqual(parseArgs(['--port', '5000', '--host', '127.0.0.1'], 'dist', { PORT: '8080' }), { port: 5000, host: '127.0.0.1', dir: 'dist' });
+  assert.equal(parseArgs([], 'dist', { PORT: '8080', HOST: '127.0.0.1' }).host, '127.0.0.1');
+});

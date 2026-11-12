@@ -116,6 +116,12 @@ Basketball follows the same four screens with its own data and model.
 
 `make basketball-data` rebuilds `app/public/data/basketball.json`.
 
+## Accounts and My picks
+
+A scout can create an account (a name and a password) and log in. Signed in, every revealed blind pick, every radar row and every player card of the three sports has an "Add to my picks" button, and the My picks screen lists the saved players by sport with a link back to each card.
+
+The app has no server, so accounts and lists are kept in the local storage of the browser they were made in: an account made on one computer does not exist on another, also when the app is served from a hosting service. A password is stored as a salted SHA-256 hash, which keeps it out of plain sight and is not protection against someone with access to that computer.
+
 ## Run it
 
 You need Python 3.12, the tool `uv`, Node.js with npm, and Chrome or Chromium for the health check and the browser checks.
@@ -136,6 +142,8 @@ The demo runs from the built app as plain static files, so it needs no network a
 
 1. `make build` builds the app into `app/dist`; run it first, `make demo` stops with a message if the build is missing.
 2. `make demo` serves `app/dist` on 127.0.0.1 and prints the address to open, `http://127.0.0.1:4173/`, which opens on the blind pick. After the first load the whole demo works with the network switched off. A direct address such as `/radar` also works. Another port: `node scripts/serve.mjs --port 5000`. Ctrl+C stops it.
+
+On a hosting service the same server is used: `npm run build` at the root installs and builds the app, `npm start` serves it. When the service sets `PORT`, the server listens on that port on every interface instead of 127.0.0.1 only; `HOST` or `--host` sets the interface outright.
 3. `make demo-check` runs the walkthrough in Chrome three times in a row on the production build, served by the same demo server: with the mouse, with the keyboard (the test itself puts the focus on the budget slider, every other step is a key), from the start address, with a direct `/radar` address, and once with every request blocked and the browser offline after the first load. It fails on any console error or network request after the first load.
 4. `make demo-record` runs the mouse walkthrough once, slowly, filmed with Chrome's own screencast (it needs only Chrome), and saves the recording as `demo/walkthrough.webm`, which plays in Chrome or VLC. The folder `demo/` is not under version control.
 

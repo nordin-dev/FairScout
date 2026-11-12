@@ -1,0 +1,10 @@
+{
+  "name": "fair-scout",
+  "private": true,
+  "description": "Root scripts for a hosting service: build the app, then serve it with the standard-library server.",
+  "engines": { "node": ">=20" },
+  "scripts": {
+    "build": "npm --prefix app ci && npm --prefix app run build",
+    "start": "node scripts/serve.mjs"
+  }
+}

@@ -32,3 +32,4 @@
 .simrow .pct{font:500 20px var(--mono);font-variant-numeric:tabular-nums}
 .say{font-size:20px;line-height:1.4;margin-top:14px}
 .say,.sim-meta{overflow-wrap:anywhere}
+.p-head .add-pick{display:inline-block;margin-top:14px}

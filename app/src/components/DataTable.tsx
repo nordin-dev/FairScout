@@ -5,6 +5,8 @@ export type Column<R> = {
   key: string;
   header: string;
   align?: 'left' | 'right';
+  /** Keeps the header for screen readers only (a column of buttons needs no visible title). */
+  hideHeader?: boolean;
   /** The cell content; `index` is the row's position in `rows`, from 0. */
   cell: (row: R, index: number) => ReactNode;
 };
@@ -30,7 +32,7 @@ export function DataTable<R>({ columns, rows, rowKey, label, onRowAction }: Prop
         <tr>
           {columns.map((c) => (
             <th key={c.key} scope="col" className={c.align === 'right' ? 'r' : undefined}>
-              {c.header}
+              {c.hideHeader ? <span className="vh">{c.header}</span> : c.header}
             </th>
           ))}
         </tr>

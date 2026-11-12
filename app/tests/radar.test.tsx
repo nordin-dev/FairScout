@@ -384,7 +384,7 @@ describe('radar screen', () => {
     renderRadar();
     await heading();
     const headers = screen.getAllByRole('columnheader').map((h) => h.textContent);
-    expect(headers).toEqual(['#', 'Player', 'Pos', 'Age', 'Price', 'Min', 'Rating', 'Outlook', 'Notes']);
+    expect(headers).toEqual(['#', 'Player', 'Pos', 'Age', 'Price', 'Min', 'Rating', 'Outlook', 'Notes', 'My picks']);
     const first = within(screen.getByRole('table')).getAllByRole('row')[1] as HTMLElement;
     expect(first).toHaveTextContent('Name a1');
     expect(first).toHaveTextContent('Club a1 · Croatia');
